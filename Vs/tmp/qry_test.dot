@@ -57,10 +57,10 @@
 					<table>
 						<tbody>
 							<tr>
-								<th width="30%">IP</th>
-								<th width="40%">时间</th>
-								<th width="15%" />
-								<th width="15%" />
+								<th width="20%">IP</th>
+								<th width="30%">时间</th>
+								<th width="40%">修改</th>
+								<th width="10%" />
 							</tr>
 						</tbody>
 						<tbody>
@@ -70,7 +70,7 @@
 										<td>{{=o.ip}}</td>
 										<td>{{=it.tmpo.tls.utTim.format(it.tmpo.tls.utTim.getDate(o.tim), "datetim")}}</td>
 										<td class="c">
-											<a href="javascript: dco.set('{{=o._id}}');">修改</a>
+											<a href="javascript: dco.set('{{=o._id}}');">{{=o._id}}</a>
 										</td>
 										<td class="c">
 											<a href="javascript: dco.del('{{=o._id}}');">删除</a>

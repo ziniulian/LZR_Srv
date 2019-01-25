@@ -30,6 +30,8 @@
             if (r) {
                 dco.memo(r);
             }
+
+			/* lzr_tools.trace(); */
         },
 
         /* 新增数据 */

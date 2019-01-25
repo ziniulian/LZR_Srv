@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>访问记录</title>
+		<title>数据库操作日志</title>
 		{{#def.meta}}
+
+		<style type="text/css">
+			/* 强制换行 */
+			.wb {
+				word-break:break-all;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -38,20 +45,18 @@
 					<table>
 						<tbody>
 							<tr>
+								<th class="c" width="55%">LOG</th>
+								<th width="20%">URL</th>
 								<th width="25%">时间</th>
-								<th width="15%">IP</th>
-								<th width="40%">URL</th>
-								<th width="15%">ID</th>
 							</tr>
 						</tbody>
 						<tbody>
 							{{~it.comDbSrvReturn:o:i}}
 								{{? i < it.tmpo.qry.size}}
 									<tr>
-										<td>{{=it.tmpo.tls.utTim.format(it.tmpo.tls.utTim.getDate(o.tim), "datetim")}}</td>
-										<td>{{=o.ip}}</td>
+										<td class="l wb">{{=o.dbLog}}</td>
 										<td>{{=o.url}}</td>
-										<td>{{=o.fgid || ""}}</td>
+										<td>{{=it.tmpo.tls.utTim.format(it.tmpo.tls.utTim.getDate(o.tim), "datetim")}}</td>
 									</tr>
 								{{?}}
 							{{~}}

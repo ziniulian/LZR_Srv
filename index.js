@@ -31,22 +31,24 @@ srv.ro.get("/base.css", function (req, res) {
 	});
 });
 
+// 公共工具
+srv.ro.get("/tools.js", function (req, res) {
+	res.sendFile("tools.js", {
+		root: "./common/"
+	});
+});
+
 // LZR库文件访问服务
 srv.ro.setStaticDir("/myLib/", LZR.curPath);
 
 // 记录访问信息
-srv.ro.all(/^\/((Vs)|(myLib))?(\/)?$/i, function (req, res, next) {
-	var t = tools.vs.getTls();
-	if (t.qryRo.db) {
-		t.qryRo.db.add( req, res, next, null, {
-			ip: t.utNode.getClientIp(req),
-			url: req.originalUrl,
-			tim: t.utTim.getTim()
-		}, true );
-	} else {
-		next();
-	}
-});
+srv.ro.all(/^\/((Gu)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
+
+// 股服务
+srv.use("/Gu/", require("./Gu"));
+
+// 日记服务
+srv.use("/Riji/", require("./Riji"));
 
 // 数据库管理服务
 srv.use("/Vs/", tools.vs);

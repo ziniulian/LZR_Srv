@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>盘量分析</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+		<script type="text/javascript" src="/tools.js"></script>
+		<script type="text/javascript" src="js/hdpan.js"></script>
+		<link rel="stylesheet" href="/base.css">
+
+		<style type="text/css">
+			td {
+				width: 25%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<a href="index.html" class="logohome" target="_blank"></a>
+				<input id="idDom" type="text" placeholder="请输入代码，并按回车键"></input>
+				<span id="namSdom"></span>
+			</div>
+			<div><table><tbody><tr>
+				<td id="szp"></td>
+				<td id="szs"></td>
+				<td id="szt"></td>
+				<td id="sza"></td>
+			</tr></tbody></table></div>
+			<div><table><tbody><tr>
+				<td id="shp"></td>
+				<td id="shs"></td>
+				<td id="sht"></td>
+				<td id="sha"></td>
+			</tr></tbody></table></div>
+			<hr />
+			<div><table><tbody id="tbs"></tbody></table></div>
+			<hr />
+			<div><table><tbody id="tbb"></tbody></table></div>
+			<hr />
+			<div id="dvv" class="r"></div>
+			<div id="mark" class="Lc_nosee"><br /><br />请稍候 ...</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

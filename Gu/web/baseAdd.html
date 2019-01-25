@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>基本面新增数据</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+		<script type="text/javascript" src="/tools.js"></script>
+		<script type="text/javascript" src="js/baseAdd.js"></script>
+		<link rel="stylesheet" href="/base.css">
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<a href="indexMgr.html" class="logohome" target="_blank"></a>
+			</div>
+			<div>
+				<textarea id="idDom" class="txtBox" type="textarea" placeholder="请输入代码"></textarea>
+				<br/><center><a href="javascript: dat.sub(idDom.value);">--添加--</a></center>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

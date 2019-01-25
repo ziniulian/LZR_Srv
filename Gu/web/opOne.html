@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>自选股详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+		<script type="text/javascript" src="/tools.js"></script>
+		<script type="text/javascript" src="js/opOne.js"></script>
+		<link rel="stylesheet" href="/base.css">
+
+		<style type="text/css">
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<a href="opMgr.html" class="logohome" target="_blank"></a>
+				<a id="namDom" href="javascript: dat.reset();"></a>
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dat.sav();">保存</a>
+			</div>
+			<div>
+				<table>
+					<tbody>
+						<tr>
+							<td class="k" id="sminDom">止损 ： </td>
+							<td class="v">
+								<input id="minDom" type="text" class="vTxt"></input>
+							</td>
+						</tr>
+						<tr>
+							<td class="k" id="smaxDom">止盈 ： </td>
+							<td class="v">
+								<input id="maxDom" type="text" class="vTxt"></input>
+							</td>
+						</tr>
+						<tr>
+							<td class="k c">
+								<input id="basDom" type="text" class="vTxt" placeholder="基价"></input>
+							</td>
+							<td class="v c">
+								<a href="javascript: dat.set(0);">V0</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(1);">V1</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(2);">V2</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(3);">V3</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(4);">V4</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(5);">V5</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(6);">V6</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(7);">V7</a>
+							</td>
+						</tr>
+						<tr>
+							<td id="vpDom" class="k c"></td>
+							<td class="v c">
+								<a href="javascript: dat.set(8);">V8</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(9);">V9</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(10);">V10</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(11);">V11</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(12);">V12</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(13);">V13</a>&nbsp;&nbsp;&nbsp;
+								<a href="javascript: dat.set(14);">V14</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr />
+			<div>
+				<table>
+					<tbody>
+						<tr>
+							<td>
+								<input id="dvDom" type="text" class="vTxt" placeholder="数量" autofocus="autofocus"></input>
+							</td>
+							<td class="k c"><a href="javascript: dat.sell();"> 卖 </a></td>
+						</tr>
+						<tr>
+							<td>
+								<input id="dpDom" type="text" class="vTxt" placeholder="价格"></input>
+							</td>
+							<td class="k c"><a href="javascript: dat.buy();"> 买 </a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<hr />
+			<div>
+				<table>
+					<tbody>
+						<tr>
+							<td class="k">成本价 ： </td>
+							<td id="pDom" class="v"></td>
+						</tr>
+						<tr>
+							<td class="k">数量 ： </td>
+							<td id="vDom" class="v"></td>
+						</tr>
+						<tr>
+							<td class="k">量上限 ： </td>
+							<td class="v">
+								<input id="vmaxDom" type="text" class="vTxt"></input>
+							</td>
+						</tr>
+						<tr>
+							<td class="k">量下限 ： </td>
+							<td class="v">
+								<input id="vminDom" type="text" class="vTxt"></input>
+							</td>
+						</tr>
+						<tr>
+							<td class="k">理想价 ： </td>
+							<td class="v">
+								<input id="p0Dom" type="text" class="vTxt"></input>
+							</td>
+						</tr>
+						<tr>
+							<td class="k">别名 ： </td>
+							<td class="v">
+								<input id="aliaDom" type="text" class="vTxt" placeholder="--"></input>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="memoDom" class="memo" onclick="dat.memoHid();"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

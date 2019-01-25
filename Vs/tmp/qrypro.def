@@ -7,5 +7,5 @@
 <input id="vDom" type="hidden" name="v" value="{{=it.tmpo.qry.v}}"/>
 <input id="smDom" type="hidden" name="sm" value="{{=it.tmpo.qry.sm}}"/>
 <input id="totalDom" type="hidden" name="total" value="{{=it.tmpo.qry.total}}"/>
-<input id="condDom" type="hidden" name="cond" value="{}"/>
-<input id="markDom" type="hidden" name="mark" value="{}"/>
+<input id="condDom" type="hidden" name="cond" value='{{=it.tmpo.qry.cond}}'/>
+<input id="markDom" type="hidden" name="mark" value='{{=it.tmpo.qry.mark}}'/>

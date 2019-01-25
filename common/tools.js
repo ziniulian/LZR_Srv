@@ -28,7 +28,7 @@ var lzr_tools = {
 	// 获取客户端公网IP
 	getNetIP: function(onNetIp) {
 		var js = document.createElement("script");
-		js.src = "http://pv.sohu.com/cityjson?ie=utf-8";
+		js.src = window.location.protocol + "//pv.sohu.com/cityjson?ie=utf-8";
 		js.onload = function () {
 			if (returnCitySN) {
 				onNetIp({

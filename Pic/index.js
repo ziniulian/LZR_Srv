@@ -10,8 +10,8 @@ LZR.load([
 
 // 创建路由
 var r = new LZR.Node.Router ({
-	path: "L:\\Doc\\Pic\\",
-	hd_web: "tmp"
+	path: "L:\\Doc\\Git\\",
+	hd_web: "LX_JS"
 });
 
 module.exports = r;

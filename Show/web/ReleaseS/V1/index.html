@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<div class="zhengzhou">
+<div id="trDom" class="zhengzhou">
 	 	<div class="top">
 			空气质量发布系统
 	    </div>
@@ -111,12 +111,11 @@
 			</div>
 	    </div>
 </div>
-
-
-
-
 </body>
 <script>
+	var r = document.body.offsetWidth / 1920;
+	trDom.style.transform = "scale(" + r + ")";
+	// document.body.style.height = r * 1080 + "px";
     init();
 </script>
 </html>

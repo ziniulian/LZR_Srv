@@ -215,6 +215,44 @@ function init() {
 
 	// 获取城市数据（单机版）
 	hwo.tim.dat.reset(hwo, "2016-7-4 17:00", "2016-7-3 20:00", hw);
+
+	// 随机生成近三天的空气质量信息
+	hwo.crtRandomAqi_levelNam = function (aqi) {
+		if (aqi > 300) {
+			return "严重";
+		} else if (aqi > 200) {
+			return "重度";
+		} else if (aqi > 150) {
+			return "中度";
+		} else if (aqi > 100) {
+			return "轻度";
+		} else if (aqi > 50) {
+			return "良";
+		} else {
+			return "优";
+		}
+	}
+	hwo.crtRandomAqi = function () {
+		var i, t, fom = ["pm25", "pm10", "co", "no2", "so2", "o3"], o = {};
+		for (i = 24; i < 73; i += 24) {
+			o[i] = {
+				hd_min: Math.floor(Math.random() * 500) + 1,
+				hd_max: Math.floor(Math.random() * 500) + 1,
+				memo: {},
+				mainFom: [fom[Math.floor(Math.random() * 6)]]
+			};
+			if (o[i].hd_min > o[i].hd_max) {
+				t = o[i].hd_max;
+				o[i].hd_max = o[i].hd_min;
+				o[i].hd_min = t;
+			}
+			o[i].memo.fomLevelName = hwo.crtRandomAqi_levelNam(o[i].hd_min);
+			o[i].memo.fomLevelName += "-";
+			o[i].memo.fomLevelName += hwo.crtRandomAqi_levelNam(o[i].hd_max);
+		}
+		return o;
+	};
+
 	hwo.list = new hw.Dm({
 		root: hwo,
 		id: "p001",
@@ -231,24 +269,24 @@ function init() {
 					"24": {
 						hd_min: 150,
 						hd_max: 305,
-						memo: { fomLevelName: "优-良" },
+						memo: { fomLevelName: "轻度-重度" },
 						alarmLevel: "v1",
 						mainFom: ["pm25"]
 					},
 					"48": {
 						hd_min: 253,
 						hd_max: 405,
-						memo: { fomLevelName: "轻度-中度" },
+						memo: { fomLevelName: "重度-严重" },
 						alarmLevel: "v2",
 						mainFom: ["pm25"]
 					},
 					"72": {
 						hd_min: 15,
 						hd_max: 73,
-						memo: { fomLevelName: "良-轻度" },
+						memo: { fomLevelName: "优-良" },
 						alarmLevel: "v3",
 						mainFom: ["pm25"]
-					},
+					}
 				}
 			},
 			"city_130800": {
@@ -256,12 +294,26 @@ function init() {
 				geoJson: [117.97, 40.96],
 				level: "city",
 				hd_aqis: {
-					"72": {
-						hd_min: 150,
-						hd_max: 305,
-						memo: { fomLevelName: "" },
+					"24": {
+						hd_min: 50,
+						hd_max: 100,
+						memo: { fomLevelName: "优-良" },
 						alarmLevel: "v1",
 						mainFom: ["pm25"]
+					},
+					"48": {
+						hd_min: 150,
+						hd_max: 200,
+						memo: { fomLevelName: "轻度-中度" },
+						alarmLevel: "v2",
+						mainFom: ["pm25"]
+					},
+					"72": {
+						hd_min: 300,
+						hd_max: 500,
+						memo: { fomLevelName: "重度-严重" },
+						alarmLevel: "v1",
+						mainFom: ["no2"]
 					}
 				}
 			},
@@ -270,57 +322,68 @@ function init() {
 				geoJson: [114.88, 40.78],
 				level: "city",
 				imgUrl: "images/foot.png",
+				hd_aqis: hwo.crtRandomAqi(),
 				broadcast: "3月10-11日，受强冷空气影响，珠三角地区空气质量以优为主，12日，空气质量优至良，首要污染物主要为PM2.5或NO2。"
 			},
 			"city_130300": {
 				name: "秦皇岛市",
 				geoJson: [119.61, 39.95],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130200": {
 				name: "唐山市",
 				geoJson: [118.19, 39.65],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_131000": {
 				name: "廊坊市",
 				geoJson: [116.68, 39.56],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130600": {
 				name: "保定市",
 				geoJson: [115.47, 38.89],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130900": {
 				name: "沧州市",
 				geoJson: [116.84, 38.32],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_131100": {
 				name: "衡水市",
 				geoJson: [115.66, 37.75],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130500": {
 				name: "邢台市",
 				geoJson: [114.51, 37.08],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130400": {
 				name: "邯郸市",
 				geoJson: [114.53, 36.64],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130682": {
 				name: "定州市",
 				geoJson: [114.996, 38.522],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			},
 			"city_130181": {
 				name: "辛集市",
 				geoJson: [115.22, 37.95],
-				level: "city"
+				level: "city",
+				hd_aqis: hwo.crtRandomAqi()
 			}
 		}
 	});
@@ -403,7 +466,7 @@ function init() {
 	// 获取模式AQI
 	v = hwo.barIp;
 	v += "&productionDate=";
-	v += hw.utTim.format(hwo.tim.dat.pro);
+	v += hw.utTim.format(hwo.tim.dat.pro, "datetim2");
 	v += "&startDate=";
 	v += hw.utTim.format(hwo.tim.dat.aqiS, "date");
 	v += "&endDate=";
@@ -529,11 +592,11 @@ function init() {
 		url += "&citycode=";
 		url += id;
 		url += "&productionDate=";
-		url += hw.utTim.format(hwo.tim.dat.pro);
+		url += hw.utTim.format(hwo.tim.dat.pro, "datetim2");
 		url += "&startDate=";
-		url += hw.utTim.format(hwo.tim.dat.aqiS);
+		url += hw.utTim.format(hwo.tim.dat.aqiS, "datetim2");
 		url += "&endDate=";
-		url += hw.utTim.format(hwo.tim.dat.aqiE);
+		url += hw.utTim.format(hwo.tim.dat.aqiE, "datetim2");
 		var dat = hw.utJson.toObj(hw.ajx.get(url));
 		var op = {
 			xAxis : [

@@ -1,0 +1,775 @@
+
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+
+/*总样式*/
+.RegS {
+	width: 100%;
+	height: 100%;
+	font-family: "微软雅黑";
+}
+
+@font-face {
+	font-family: 'bpicomoon';
+	src:url('fonts/bpicomoon.eot?iimmn4');
+	src:url('fonts/bpicomoon.eot?#iefixiimmn4') format('embedded-opentype'),
+		url('fonts/bpicomoon.ttf?iimmn4') format('truetype'),
+		url('fonts/bpicomoon.woff?iimmn4') format('woff'),
+		url('fonts/bpicomoon.svg?iimmn4#bpicomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'bpicomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/*图标*/
+.RegS .icon-calendar:before {
+	content: "\f068";
+}
+.RegS .icon-clock:before {
+	content: "\f046";
+}
+.RegS .icon-triangle-down:before {
+	content: "\f05b";
+}
+.RegS .icon-triangle-left:before {
+	content: "\f044";
+}
+.RegS .icon-triangle-right:before {
+	content: "\f05a";
+}
+.RegS .icon-triangle-up:before {
+	content: "\f0aa";
+}
+.RegS .icon-compass:before {
+	content: "\e61a";
+}
+.RegS .icon-stopwatch:before {
+	content: "\e600";
+}
+.RegS .icon-calendar2:before {
+	content: "\e601";
+}
+.RegS .icon-spinner2:before {
+	content: "\e602";
+}
+.RegS .icon-spinner9:before {
+	content: "\e603";
+}
+.RegS .icon-spinner10:before {
+	content: "\e604";
+}
+.RegS .icon-leaf:before {
+	content: "\e61b";
+}
+.RegS .icon-power:before {
+	content: "\e61c";
+}
+.RegS .icon-sphere:before {
+	content: "\e605";
+}
+.RegS .icon-earth:before {
+	content: "\e606";
+}
+.RegS .icon-eye-blocked:before {
+	content: "\e61e";
+}
+.RegS .icon-eye:before {
+	content: "\e61d";
+}
+.RegS .icon-play2:before {
+	content: "\e607";
+}
+.RegS .icon-pause:before {
+	content: "\e608";
+}
+.RegS .icon-stop:before {
+	content: "\e609";
+}
+.RegS .icon-previous:before {
+	content: "\e60a";
+}
+.RegS .icon-next:before {
+	content: "\e60b";
+}
+.RegS .icon-backward:before {
+	content: "\e60c";
+}
+.RegS .icon-forward2:before {
+	content: "\e60d";
+}
+.RegS .icon-circle-up:before {
+	content: "\e60e";
+}
+.RegS .icon-circle-right:before {
+	content: "\e60f";
+}
+.RegS .icon-circle-down:before {
+	content: "\e610";
+}
+.RegS .icon-circle-left:before {
+	content: "\e611";
+}
+.RegS .icon-checkbox-unchecked:before {
+	content: "\e620";
+}
+.RegS .icon-checkbox-checked:before {
+	content: "\e61f";
+}
+.RegS .icon-radio-unchecked:before {
+	content: "\e623";
+}
+.RegS .icon-radio-checked:before {
+	content: "\e621";
+}
+.RegS .icon-radio-checked2:before {
+	content: "\e622";
+}
+.RegS .icon-onedrive:before {
+	content: "\e612";
+}
+.RegS .icon-skype:before {
+	content: "\e613";
+}
+.RegS .icon-reddit:before {
+	content: "\e614";
+}
+.RegS .icon-lastfm:before {
+	content: "\e615";
+}
+.RegS .icon-flattr:before {
+	content: "\e616";
+}
+.RegS .icon-paypal2:before {
+	content: "\e617";
+}
+.RegS .icon-paypal3:before {
+	content: "\e618";
+}
+.RegS .icon-opera:before {
+	content: "\e619";
+}
+
+/*区域样式*/
+.RegS .area{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	height: 30px;
+	line-height: 25px;
+	overflow:hidden;
+}
+
+.RegS .main {
+	width: 100%;
+	height: calc(100% - 30px);
+	font-size: 0;
+}
+
+/*缩略图外框样式*/
+.RegS .tbnOut{
+	display: inline-block;
+	vertical-align: top;
+	width:181px;
+	height:100%;
+	/*overflow: hidden;*/
+}
+
+/*缩略图滚动条样式*/
+.RegS .tbnScroll {
+	margin: 0 5px 0 5px;
+	display: inline-block;
+	vertical-align: top;
+	width: 12px;
+	height:100%;
+	overflow: hidden;
+}
+
+/*地图外框样式*/
+.RegS .mapOut{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: calc(100% - 203px);
+	height:100%;
+	overflow: hidden;
+}
+
+/*首尾帧样式_上边*/
+.RegS .headTail {
+	width: 100%;
+	height: 23px;
+	text-align: center;
+	overflow: hidden;
+	background-color: #DDD;
+	border-radius: 8px 8px 0 0;
+	/*box-shadow: inset 0 0 2px 0 #999, 0 2px 2px -2px;*/
+	box-shadow: inset 0 0 2px 0 #999;
+}
+
+/*首尾帧样式_下边*/
+.RegS .headTail2 {
+	border-radius: 0 0 8px 8px;
+	box-shadow: inset 0 0 2px 0 #999, 0 -2px 2px -2px;
+}
+
+/*画布样式*/
+.RegS .tbnCanvas{
+	width:177px;
+	height: calc(100% - 46px);
+	border-left: 2px solid #CCC;
+	border-right: 2px solid #CCC;
+}
+
+/*标题样式*/
+.RegS .title{
+	width: calc(100% - 39px);;
+	height: 40px;
+	line-height: 40px;
+	margin-left: 39px;
+	overflow: hidden;
+	color: #666;
+	font-size : 20px;
+	text-align: center;
+	background-color: #DDD;
+	border-radius: 8px 8px 0 0;
+	box-shadow: inset 0 0 2px 0 #BBB;
+}
+
+.RegS .mapDiv{
+	width: 100%;
+	height: calc(100% - 40px);
+	/*background-color: yellow;*/
+}
+
+/*滚动条长条样式*/
+.RegS .scrollStrip {
+	width: 2px;
+	height: 100%;
+	margin-left: 5px;
+	margin-right: 5px;
+	background-color: #BBB;
+}
+
+/*滚动条按钮样式*/
+.RegS .scrollBtn {
+	width: 12px;
+	height: 180px;
+	background-color: #DDD;
+	border-radius: 3px;
+	box-shadow: inset 0 0 2px 0 #999;
+}
+
+/*滚动条按钮经过样式*/
+.RegS .scrollBtn:hover {
+	background-color: #6CF;
+}
+
+/*透明度滚动条长条样式*/
+.RegS .alphaStrip {
+	/*display: inline-block;*/
+	width: 70%;
+	height: 2px;
+	cursor: pointer;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	background-color: #6CF;
+	margin-left: 20%;
+}
+
+/*透明度按钮样式*/
+.RegS .alphaBtn {
+	text-align: center;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 20px;
+	/*background-color: #6CF;*/
+	/*color: #fff;*/
+	cursor: pointer;
+}
+
+/*右边页面样式（浮动）*/
+.RegS .right {
+	position: absolute;
+	right: 70px;
+	top: 80px;
+	width: 180px;
+	padding: 5px;
+	font-size: 0;
+	background-color: #FFF;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.RegS .right .date {
+	display: inline-block;
+	vertical-align: top;
+	width: 66%;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color: #999;
+	border: 0;
+	outline: none;
+	appearance:none;
+	-moz-appearance:none; /* Firefox */
+	-webkit-appearance:none; /* Safari 和 Chrome */
+}
+
+.RegS .right .tim {
+	width: 34%;
+}
+
+.RegS .right .mod {
+	margin: 2px 0 2px 10%;
+	width: 90%;
+}
+
+/*外框标题*/
+.RegS .generalTitle {
+	margin-top: 10px;
+	/*width: 100%;*/
+	height: 25px;
+	line-height: 23px;
+	font-size: 15px;
+	padding-left: 30px;
+	font-weight: bold;
+	color: #999;
+	background-color: #DDD;
+	border-radius: 5px 5px 0 0;
+	box-shadow: inset 0 0 2px 0 #999;
+}
+
+/*外框样式*/
+.RegS .generalOut {
+	/*text-align: center;*/
+	border-right: 2px solid #CCC;
+	border-left: 2px solid #CCC;
+	border-bottom: 2px solid #CCC;
+	/*border-width: 2px;*/
+	/*border-style: solid;*/
+	/*border-color: #CCC;*/
+	padding: 5px;
+}
+
+.RegS .titleFom {
+	background-image: url(/Pic/img/web/RegS/V0/fom.png);
+	background-position: 5px center;
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+}
+
+.RegS .titleCloud {
+	background-image: url(/Pic/img/web/RegS/V0/cloud.png);
+	background-position: 5px center;
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+}
+
+.RegS .titleLayer {
+	background-image: url(/Pic/img/web/RegS/V0/layer.png);
+	background-position: 5px center;
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+}
+
+.RegS .titlePlay {
+	background-image: url(/Pic/img/web/RegS/V0/video.png);
+	background-position: 5px center;
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+}
+
+.RegS .titleEyes {
+	background-image: url(/Pic/img/web/RegS/V0/eyes.png);
+	background-position: 5px center;
+	background-size: 18px 18px;
+	background-repeat: no-repeat;
+}
+
+/*播放外框样式*/
+.RegS .playOut {
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 10px;
+}
+
+/*鹰眼外框样式*/
+.RegS .eysOut {
+	padding: 0;
+	height: 140px;
+}
+
+/*画布样式*/
+.RegS .canvas{
+	width:100%;
+	height:100%;
+}
+
+/*默认样式*/
+	/*小时日均默认样式*/
+	.RegS .ttypDef{
+		height: 40px;
+		line-height: 40px;
+		font-size: 30px;
+		cursor: pointer;
+		padding-left: 5px;
+		padding-right: 7px;
+		color: #999;
+		/*background-color: transparent;*/
+	}
+
+	/*污染指标默认样式*/
+	.RegS .fomDef{
+		display: inline-block;
+		text-align: center;
+		width: 33%;
+		font-size: 17px;
+		height: 32px;
+		line-height: 32px;
+		cursor: pointer;
+		color: #999;
+	}
+
+	/*图层默认样式*/
+	.RegS .layerDef{
+		font-size: 18px;
+		cursor: pointer;
+		color: #999;
+		height: 20px;
+		line-height: 20px;
+		/*padding: 5px;*/
+	}
+
+	/*帧频默认样式*/
+	.RegS .framDef {
+		font-size: 20px;
+		cursor: pointer;
+		color: #999;
+		height: 20px;
+		line-height: 20px;
+		margin-left: 8px;
+	}
+
+	/*播放按钮默认样式*/
+	.RegS .playDef{
+		display: inline-block;
+		width: 33%;
+		text-align: center;
+		font-size: 39px;
+		cursor: pointer;
+		color: #6CF;
+	}
+
+	/*查询按钮默认样式*/
+	.RegS .conBtnDef{
+		display: inline-block;
+		width: 33%;
+		text-align: center;
+		font-size: 32px;
+		cursor: pointer;
+		color: #999;
+	}
+
+	/*浮动按钮默认样式*/
+	.RegS .floatDef{
+		z-index: 3;
+		position:absolute;
+		cursor: pointer;
+		font-size: 50px;
+		line-height: 50px;
+		padding: 20px;
+		color: #CCC;
+		top: 48%;
+		top: -webkit-calc(50% - 25px);
+		top: -moz-calc(50% - 25px);
+		top: -o-calc(50% - 25px);
+		top: calc(50% - 25px);
+		opacity: 1;
+	}
+
+	/*左浮动样式*/
+	.RegS .floatLeft{
+		left: 0;
+		padding-left: 50px;
+	}
+
+	/*右浮动样式*/
+	.RegS .floatRight{
+		right: 0;
+		padding-right: 10px;
+	}
+
+	/*首尾帧默认样式*/
+	.RegS .headTailDef {
+		font-size: 20px;
+		line-height: 25px;
+		padding-left: 80px;
+		padding-right: 80px;
+		cursor: pointer;
+		color: white;
+	}
+
+	/*首尾帧默认样式*/
+	.RegS .headTailDef2 {
+		line-height: 22px;
+	}
+
+	/*区域默认样式*/
+	.RegS .areaDefault{
+		color: #999;
+		text-align: center;
+		cursor: pointer;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+/*经过样式*/
+	/*小时日均经过样式*/
+	.RegS .ttypOver{
+		color: #666;
+	}
+
+	/*查询按钮经过样式*/
+	.RegS .conBtnOver{
+		color: #666;
+	}
+
+	/*浮动按钮经过样式*/
+	.RegS .floatOver{
+		color: #6CF;
+		opacity: 1;
+	}
+
+	/*首尾帧经过样式*/
+	.RegS .headTailOver {
+		color: #6CF;
+	}
+
+	/*区域经过样式*/
+	.RegS .areaOver{
+		color: #666;
+	}
+
+/*按下样式*/
+	/*小时日均按下样式*/
+	.RegS .ttypDown{
+		color: #6CF;
+		/*background-color: #6CF;*/
+	}
+
+	/*污染指标按下样式*/
+	.RegS .fomDown{
+		/*border-width: 2px;*/
+		/*border-style: solid;*/
+		/*border-color: #6CF;*/
+		font-weight: bold;
+		color: #6CF;
+	}
+
+	/*图层按下样式*/
+	.RegS .layerDown{
+		color: #6CF;
+	}
+
+	/*查询按钮按下字体不变样式*/
+	.RegS .conBtnNoSizeDown{
+		color: #6CF;
+	}
+
+	/*浮动按钮经过样式*/
+	.RegS .floatDown{
+		color: #f91;
+	}
+
+	/*区域按下样式*/
+	.RegS .areaDown{
+		color: #6CF;
+	}
+
+/*按钮文本样式*/
+	/*小时日均文本样式*/
+	.RegS .ttypTitle{
+		position: relative;
+		left: 2px;
+		top: -8px;
+		font-size: 15px;
+		font-weight: bold;
+	}
+
+	/*图层文本样式*/
+	.RegS .layerTitle{
+		position: relative;
+		left: 3px;
+		top: -3px;
+		font-size: 13px;
+		/*font-weight: bold;*/
+	}
+
+	/*帧频文本样式*/
+	.RegS .framTitle{
+		position: relative;
+		left: 3px;
+		top: -3px;
+		font-size: 13px;
+		/*font-weight: bold;*/
+	}
+
+/*全屏样式*/
+.RegS .fullScrnBtn {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 40px;
+	height: 20px;
+	z-index: 3;
+
+	font-size: 12px;
+	line-height: 20px;
+	text-align: center;
+	color: #666;
+}
+
+/*全屏*/
+.fullScrn {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 200;
+	background-color: #EEE;
+}
+
+.fullScrn .canvas{
+	width:100%;
+	height:100%;
+}
+
+.fullScrn .pencav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.fullScrn .toolbar {
+	position: absolute;
+	width: 60%;
+	height: 50px;
+	top: 0;
+	left: 20%;
+	background-color: rgba(200, 200, 200, 0.5);
+}
+
+.fullScrn .exit {
+	width: 30px;
+	height: 30px;
+	margin: 10px 20px 10px 0;
+	float: right;
+
+	color: #FFF;
+	font-size: 22px;
+	font-weight: bolder;
+	font-family: "微软雅黑";
+	line-height: 30px;
+	text-align: center;
+
+	background-color: red;
+	border-radius: 5px;
+}
+
+.fullScrn .eraserbtn {
+	display: inline-block;
+	height: 30px;
+	margin: 10px;
+	padding: 0 10px 0 10px;
+
+	color: #FFF;
+	font-size: 22px;
+	font-weight: bolder;
+	font-family: "微软雅黑";
+	line-height: 30px;
+	text-align: center;
+
+	background-color: red;
+	border-radius: 5px;
+}
+
+.fullScrn .colorbtn {
+	display: inline-block;
+	height: 30px;
+	margin: 10px;
+	padding: 0 10px 0 10px;
+
+	color: #FFF;
+	font-size: 22px;
+	font-weight: bolder;
+	font-family: "微软雅黑";
+	line-height: 30px;
+	text-align: center;
+
+	background-color: red;
+	border-radius: 5px;
+}
+.fullScrn .colorbtnSelect {
+	box-shadow: 0 0 10px #F91;
+}
+
+.nosee {
+	display: none;
+}
+
+.noselect {
+	/*文字不被选中*/
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+/*右边框固定修正*/
+
+ .RegS .right {
+ 	position: relative;
+ 	right: 0;
+ 	top: 0;
+ 	left: 5px;
+ 	display: inline-block;
+ 	vertical-align: top;
+ 	padding: 0;
+ }
+
+ .RegS .mapOut {
+ 	width: calc(100% - 388px);
+ }

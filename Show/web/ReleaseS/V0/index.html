@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=0.2" />
+<title>空气质量发布系统</title>
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<link href="/Pic/js/old/HTML5/expand/ol3/ol.css" rel="stylesheet" type="text/css" />
+
+
+<script src="/Pic/js/old/HTML5/expand/ol3/ol.js"></script>
+<script src="/myLib/LZR.js"></script>
+<script src="js/index.js"></script>
+</head>
+
+<body onload="init();">
+<!-- <body> -->
+	<div id="top"></div>
+
+	<div id="main">
+		<div class="main_left">
+			<div class="main_left_top">
+				<img src="/Pic/img/web/ReleaseS/V0/main_left_top.png" />
+				<h1>城市列表</h1>
+			</div>
+			<!--13个城市-->
+			<div id = "list" class="main_left_down">
+				<div id = "city" class="city noselect">
+					<div class="city_img">
+						<img id = "levelImg" class = "levelImg" src="" />
+					</div>
+					<div class="city_r">
+						<div>
+							<h2 id = "name"></h2>
+							<div id = "_1" class="number_left">
+								<h3 id = "minFom" class="number-a"></h3>
+								<h3 id = "midFom" class="number-0"> - </h3>
+								<h3 id = "maxFom" class="number-b"></h3>
+							</div>
+						</div>
+						<div>
+							<div id = "mainFom" class="city_r_f1"></div>
+							<div id = "levelName" class="city_r_f2"></div>
+						</div>
+					</div>
+					<div id = "alarm" class="alarm"></div>
+				</div>
+			</div>
+		</div>
+
+    <div class="main_middle">
+			<div id = "tim" class="main_middle_top">
+				<div id = "curTim" class="main_middle_top_a"></div>
+				<div id = "tim24" class="main_middle_top_b noselect">24小时预报</div>
+				<div id = "tim48" class="main_middle_top_b noselect">48小时预报</div>
+				<div id = "tim72" class="main_middle_top_b noselect">72小时预报</div>
+				<div id = "baseTim" class="main_middle_top_c"></div>
+            </div>
+
+
+			<div id = "map" class="main_middle_main">
+
+			</div>
+			<div class="main_middle_foot"> 犟子工作室 </div>
+
+		</div>
+		<!--中间-->
+
+	<div class="main_right">
+			<div class="main_left_top">
+				<img src="/Pic/img/web/ReleaseS/V0/main_right_top.png" />
+				<h1>区域预报预警信息</h1>
+			</div>
+			  <div class="main_right_b">
+				<p id = "prvnBroadcast"></p>
+	  </div>
+
+
+				<div class="main_right_c">
+					<div id = "tips" class="main_right_c_a">
+						<div id = "name" class="rignt_c_1">健康提示</div>
+						<div id = "t1" class="rignt_c_2 noselect">一级</div>
+						<div id = "t2" class="rignt_c_2 noselect">二级</div>
+						<div id = "t3" class="rignt_c_2 noselect">三级</div>
+						<div id = "t4" class="rignt_c_2 noselect">四级</div>
+						<div id = "t5" class="rignt_c_2 noselect">五级</div>
+						<div id = "t6" class="rignt_c_2 noselect">六级</div>
+					</div>
+					<div id = "tipsContent" class="main_right_c_b"></div>
+				</div>
+
+
+				<div class="main_right_d">
+
+
+			 <img id = "cityImg" src="/Pic/img/web/ReleaseS/V0/city_.png" />
+				<div class="city_scenic">城市风采</div>
+				</div>
+
+
+
+
+
+
+
+	</div>
+	</div>
+		<!--DIV-->
+			 	<div id="middle_div" class="middle_div nosee">
+			 	<!-- <div id="middle_div" class="middle_div"> -->
+
+					<div class="m_div_top">
+						<img class="m_div_top_img" src="/Pic/img/web/ReleaseS/V0/icon.png" />
+						<div id = "name" class="city_name">石家庄市</div>
+						<img id = "off" class="off" src="/Pic/img/web/ReleaseS/V0/off.png" />
+					</div>
+
+					<div class="m_div_middle">
+						<div id = "titl24" class="m_div_middle_l">
+						<div id = "week" class="today">周四</div>
+						<div id = "date" class="today">3月1日</div>
+						<div id = "_2" class="today_img"><img id = "levelImg" src="" /></div>
+						<div id = "fom" class="today_n">
+
+						            <h6 id = "minFom_a" class="number_mid number-a">40</h6>
+							<h6 id = "midFom_b" class="number_mid number-0"> - </h6>
+							<h6 id = "maxFom_c" class="number_mid number-b">95</h6>
+
+
+						</div>
+						<div id = "levelName" class="today">良</div>
+						<div id = "mainFom" class="today_CD"></div>
+					    </div>
+
+
+
+					<div id = "titl48" class="m_div_middle_l">
+						<div id = "week" class="today">周四</div>
+						<div id = "date" class="today">3月1日</div>
+						<div id = "_2" class="today_img"><img id = "levelImg"  src="" /></div>
+						<div id = "fom" class="today_n">
+						 <h6 id = "minFom_a" class="number_mid number-a">40</h6>
+									<h6 id = "midFom_b" class="number_mid number-0"> - </h6>
+									<h6 id = "maxFom_c" class="number_mid number-b">95</h6>
+								</div>
+						<div id = "levelName" class="today">良</div>
+						<div id = "mainFom" class="today_CD"></div>
+					</div>
+
+					<div id = "titl72" class="m_div_middle_l">
+						<div id = "week" class="today">周四</div>
+						<div id = "date" class="today">3月1日</div>
+						<div id = "_2" class="today_img"><img id = "levelImg" src="" /></div>
+						<div id = "fom" class="today_n"><h6 id = "minFom_a" class="number_mid number-a">40</h6>
+									<h6 id = "midFom_b" class="number_mid number-0"> - </h6>
+									<h6 id = "maxFom_c" class="number_mid number-b">95</h6>
+									</div>
+						<div id = "levelName" class="today">良</div>
+						<div id = "mainFom" class="today_CD"></div>
+					</div>
+					</div>
+
+					<div class="span">城市预报预警信息：</div>
+					<div id = "broadcast" class="m_div_foot"></div>
+				</div>
+			<!--DIV-->
+        </script>
+</body>
+</html>

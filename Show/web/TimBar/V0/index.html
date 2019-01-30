@@ -1,0 +1,265 @@
+<html>
+	<head>
+		<title>时间控制条</title>
+		<meta charset="utf-8" />
+		<script src="/myLib/LZR.js"></script>
+
+		<style type="text/css">
+			html, body {
+				padding: 0;
+				margin: 0;
+				height: 100%;
+			}
+
+			/*背景*/
+			.back {
+				background-image: url(/Pic/img/web/Test/DivScallSt/bj.png);
+				height: 108px;
+				width: 100%;
+				position:fixed; left:0; bottom:0;
+			}
+
+			/*左边*/
+			.blockDoe {
+				display: inline-block;
+				vertical-align: top;
+				margin-top: 32px;
+				margin-left: 32px;
+				font-size: 0;
+			}
+				.BlockTimDoe {
+					display: inline-block;
+					vertical-align: top;
+				}
+
+				.AddBtn {
+					width: 70px;
+					height: 20px;
+					cursor: pointer;
+				}
+				.AddBtn:hover {
+					background-color: rgba(76, 80, 99, 0.8);
+					border-radius: 2px;
+				}
+				.AddBtn img {
+					margin-top: 8px;
+					margin-left: 29px;
+				}
+
+				.SubBtn {
+					width: 70px;
+					height: 20px;
+					background-color: #272931;
+					cursor: pointer;
+				}
+				.SubBtn:hover {
+					background-color: rgba(76, 80, 99, 0.8);
+					border-radius: 2px;
+				}
+				.SubBtn img {
+					margin-top: 3px;
+					margin-left: 29px;
+				}
+
+				.TxtView {
+					height: 26px;
+					line-height: 26px;
+					text-align: center;
+					font-family: "微软雅黑";
+					font-size: 17px;
+					color: white;
+					background-color: #171a23;
+					font-weight: bold;
+					float: left;
+					margin-left: 20px;
+				}
+				.TxtView_a{
+					width: 50px;
+					height: 26px;
+					line-height: 26px;
+					text-align: center;
+					font-family: "微软雅黑";
+					font-size: 17px;
+					color: white;
+					background-color: #171a23;
+					font-weight: bold;
+					float: left;
+				}
+
+				.year {
+					line-height: 26px;
+					text-align: center;
+					font-family: "微软雅黑";
+					font-size: 17px;
+					color: white;
+					font-weight: bold;
+					height: 26px;
+					width: 70px;
+					background-color: #171a23;
+				}
+				.y-m-d {
+					line-height: 26px;
+					text-align: center;
+					font-family: "微软雅黑";
+					font-size: 17px;
+					color: white;
+					font-weight: bold;
+					height: 26px;
+					width: 70px;
+					background-color: #171a23;
+				}
+				.y{
+					float: left;
+				}
+
+			/*中间*/
+			.stripDoe {
+				display: inline-block;
+				vertical-align: top;
+				width: 60%;
+				height: 56px;
+				margin: 38px 0 0 20px;
+				background-color: rgba(76, 80, 99, 0.80);
+			}
+				.point{
+					position: absolute;
+					width: 1px;
+					height: 100%;
+					z-index: 100;
+					background-color: red;
+				}
+				.btn{
+					position: absolute;
+					width: 20px;
+					height: 20px;
+					top: -25px;
+					left: -10px;
+					font-size: 12px;
+					line-height: 18px;
+					color: #EEE;
+					text-align: center;
+					border-radius: 10px;
+					background-color: yellow;
+				}
+
+			/*右边*/
+			.scdDoe {
+				display: inline-block;
+				/* vertical-align: bottom; */
+				margin-top: 30px;
+			}
+				.scdBtn {
+					width: 50px;
+					height: 15px;
+					margin: 0 0 5px 5px;
+					font-family: "微软雅黑";
+					font-size: 10px;
+					line-height: 15px;
+					text-align: center;
+					background-color: yellow;
+				}
+				.scdBtn_s {
+					height: 30px;
+					line-height: 30px;
+					font-size: 20px;
+					font-weight: bold;
+				}
+				#tv {
+					text-align: center;
+					line-height: 5;
+					font-size: 5vw;
+				}
+		</style>
+
+		<script>
+			function init() {
+				LZR.load([
+					"LZR.Base.Time",
+					"LZR.HTML.Base.Ctrl.TimBase.DivScallSt"
+				]);
+				LZR.loadAnnex({
+					css_0: "/Lib/css/HTML/Base/Ctrl/TimBase/StDivScall_1.css"
+				});
+				var de = LZR.HTML.Base.Doe;
+				var cls = LZR.HTML.Base.Ctrl.TimBase.DivScallSt;
+				var utTim = LZR.getSingleton(LZR.Base.Time);
+
+				var a = new de ({
+					hd_doe: document.getElementById("a")
+				});
+
+				var c = new cls ({
+					scdCss: "scdBtn_s"
+				});
+
+				var t = utTim.normalize();
+				tv.innerHTML = utTim.format(t, "hourChn");
+
+				c.add(a, {
+					hd_tim: t,
+					dtMax: new Date("2022/2/2")
+				});
+
+				c.evt.chg.add(function(d, v) {
+					tv.innerHTML = utTim.format(v, "hourChn");
+				});
+
+				// a.subs["hct_StDivScall_stripDoe"].calcPosition();
+				window.onresize = function () {
+					c.resize(a.subs["hct_StDivScall_stripDoe"]);
+				};
+			}
+		</script>
+	</head>
+
+	<body class="body" onload="init()">
+		<div id="tv"></div>
+		<div id = "a" class = "back Lc_noselect">
+			<div id = "hct_StDivScall_blockDoe" class = "blockDoe">
+				<div id = "hct_BlockTimDoe_y" class="BlockTimDoe">
+					<div id = "hct_BlockNumAddBtn" class="AddBtn"><img src="/Pic/img/web/Test/DivScallSt/top.png"></div>
+					<div class="year">
+						<div id = "hct_BlockNumTxtView" class="TxtView_a" contenteditable="true">2016</div>
+						<div class="y">年</div>
+					</div>
+					<div id = "hct_BlockNumSubBtn" class="SubBtn"><img src="/Pic/img/web/Test/DivScallSt/bottom.png"></div>
+				</div>
+				<div id = "hct_BlockTimDoe_M" class="BlockTimDoe">
+					<div id = "hct_BlockNumAddBtn" class="AddBtn"><img src="/Pic/img/web/Test/DivScallSt/top.png"></div>
+					<div class="y-m-d">
+						<div id = "hct_BlockNumTxtView" class="TxtView" contenteditable="true">05</div>
+						<div class="y">月</div>
+					</div>
+					<div id = "hct_BlockNumSubBtn" class="SubBtn"><img src="/Pic/img/web/Test/DivScallSt/bottom.png"></div>
+				</div>
+				<div id = "hct_BlockTimDoe_d" class="BlockTimDoe">
+					<div id = "hct_BlockNumAddBtn" class="AddBtn"><img src="/Pic/img/web/Test/DivScallSt/top.png"></div>
+					<div class="y-m-d">
+						<div id = "hct_BlockNumTxtView" class="TxtView" contenteditable="true">18</div>
+						<div class="y">日</div>
+					</div>
+					<div id = "hct_BlockNumSubBtn" class="SubBtn"><img src="/Pic/img/web/Test/DivScallSt/bottom.png"></div>
+				</div>
+				<div id = "hct_BlockTimDoe_h" class="BlockTimDoe">
+					<div id = "hct_BlockNumAddBtn" class="AddBtn"><img src="/Pic/img/web/Test/DivScallSt/top.png"></div>
+					<div class="y-m-d">
+						<div id = "hct_BlockNumTxtView" class="TxtView" contenteditable="true">10</div>
+						<div class="y">时</div>
+					</div>
+					<div id = "hct_BlockNumSubBtn" class="SubBtn"><img src="/Pic/img/web/Test/DivScallSt/bottom.png"></div>
+				</div>
+			</div>
+			<div id = "hct_StDivScall_stripDoe" class = "stripDoe">
+				<div id = "hct_StripNumBtn" class = "point">
+					<div class = "btn"></div>
+				</div>
+			</div>
+
+			<div id = "hct_StDivScall_scdDoe" class = "scdDoe">
+				<div id = "hct_StDivScall_scdDoe_h" class = "scdBtn">时</div>
+				<div id = "hct_StDivScall_scdDoe_d" class = "scdBtn">日</div>
+				<div id = "hct_StDivScall_scdDoe_M" class = "scdBtn">月</div>
+			</div>
+		</div>
+	</body>
+</html>

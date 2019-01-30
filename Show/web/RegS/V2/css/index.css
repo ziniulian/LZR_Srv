@@ -1,0 +1,488 @@
+
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+
+.RegS {
+	width: 100%;
+	height: 100%;
+}
+
+.RegS .map {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.RegS .date{
+	width: calc(100% - 5px);
+	height: 100%;
+	line-height: 100%;
+	padding: 0 0 0 5px;
+	font-family: "微软雅黑";
+	font-size: 16px;
+	color: #333;
+	border-radius: 4px;
+	border: 0;
+	outline: none;
+	appearance:none;
+	-moz-appearance:none; /* Firefox */
+	-webkit-appearance:none; /* Safari 和 Chrome */
+}
+
+.RegS .date_L{
+	width: 95%;
+	padding: 0 0 0 3%;
+}
+
+.RegS .timeAxis {
+	position: absolute;
+	bottom: 20px;
+	left: 2%;
+	width: 96%;
+	z-index: 1;
+}
+
+.RegS_zm {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	color:#878787;
+	font-family: "微软雅黑";
+}
+
+.RegS_zm .left{
+height: 690px;
+width: 340px;
+background-color:#229ffb;
+padding-top: 10px;
+/*margin-top: 50px;*/
+border-radius: 6px 6px 6px 6px;
+border: 1px solid #229ffb;
+}
+
+.RegS_zm .top {
+    margin-left: 20px;
+}
+
+.RegS_zm .top h1{
+font-weight: bold;
+/*float: left;*/
+width: 280px;
+
+font-size: 15px;
+letter-spacing: 1px;
+}
+
+.RegS_zm .Selection_a{
+padding-top: 10px;
+height: 40px;
+width: 300px;
+padding-left: 20px;
+background-color:#229ffb;
+padding-bottom: 12px;
+padding-right: 20px;
+}
+
+.RegS_zm .Selection_a_l{
+    float:left;
+	width: 70px;
+	height: 40px;
+}
+
+.RegS_zm img.a_1{
+	margin-left: 14px;}
+
+.RegS_zm .Selection_a_m{
+	width:134px;
+	height:40px;
+	float:left;
+	border-radius:3px 3px 3px 3px;
+	background-color:#f9f9f9;
+	box-shadow: 2px 2px 3px RGBA(99, 92, 92, 0.25);
+
+}
+
+.RegS_zm .Selection_a_r{
+	width:86px;
+	height:40px;
+	float:left;
+	border-radius:3px 3px 3px 3px;
+	background-color:#f9f9f9;
+	box-shadow: 2px 2px 3px RGBA(99, 92, 92, 0.25);
+    margin-left: 10px;
+}
+
+.RegS_zm .Selection_b{
+padding-top: 12px;
+height: 40px;
+width: 300px;
+padding-left: 20px;
+background-color:#229ffb;
+padding-bottom: 12px;
+padding-right: 20px;
+
+}
+
+.RegS_zm .Selection_a_r_b{
+	width:230px;
+	height:40px;
+	float:left;
+	border-radius:3px 3px 3px 3px;
+	background-color:#f9f9f9;
+	box-shadow: 2px 2px 3px RGBA(99, 92, 92, 0.25);
+
+}
+
+.RegS_zm .Selection_a_m h2, .RegS_zm .Selection_a_r h2, .RegS_zm .Selection_a_r_b h2{
+font-family: "微软雅黑";
+font-size: 14px;
+line-height: 40px;
+text-align: center;
+float: left;
+margin-left: 7px;}
+
+/*----------------------------------------------------------*/
+
+.RegS_zm *{
+	margin:0;
+	padding:0;
+	box-sizing: content-box;
+}
+
+.RegS_zm h1,.RegS_zm h2,.RegS_zm h3,.RegS_zm h4,.RegS_zm h5,.RegS_zm h6{
+	font-weight:normal;
+	font-family:"΢���ź�";
+	line-height: normal;
+}
+
+.RegS_zm h1{
+	font-size: 14px;
+	color:#fefefe;
+	font-family: "微软雅黑";
+}
+
+.RegS_zm img.a_m {
+    margin-right: 10px;
+    margin-top: 17px;
+    float: right;
+}
+
+.RegS_zm img.a_r {
+	position: relative;
+	right: 8px;
+	top: -20px;
+float: right;
+}
+
+.RegS_zm img.a_r_b{
+	position: relative;
+	right: 8px;
+	top: -20px;
+float: right;
+
+}
+
+.RegS_zm .Selection_c{
+padding-top: 12px;
+height: 40px;
+width: 300px;
+padding-left: 20px;
+background-color:#229ffb;
+padding-bottom: 12px;
+padding-right: 20px;
+
+}
+
+/*区域选择*/
+.RegS_zm .Selection_a_r_c{
+width: 230px;
+height: 36px;
+float: left;
+border-radius: 3px 3px 3px 3px;
+background-color: #f9f9f9;
+box-shadow: 2px 2px 3px RGBA(99, 92, 92, 0.25);
+padding-top: 4px;
+}
+
+/*按钮滑动样式*/
+.RegS_zm .faster-animation {
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+.RegS_zm .toggle-span {
+	position: absolute;
+	left: 95px;
+	width:102px;
+	height:33px;
+	background-image:url(/Pic/img/web/RegS/V2/button.png);
+	border-radius:3px 3px 3px 3px;
+	text-align: center;
+	line-height: 33px;
+	color:#FFFFFF;
+	font-size:14px;
+}
+
+.RegS_zm .toggle-span_area {
+	width:70px;
+}
+
+.RegS_zm .toggle-line {
+	height: 5px;
+	width: 65px;
+	background-color: #71cc93;
+	position: absolute;
+	left: 5px;
+	top: 37px;
+}
+
+/*污染物*/
+.RegS_zm .Selection_d{
+padding-top: 12px;
+height: 210px;
+width: 300px;
+padding-left: 20px;
+background-color:#229ffb;
+padding-bottom: 12px;
+padding-right: 20px;
+
+}
+
+.RegS_zm .Selection_a_r_d{
+	width:230px;
+	height:200px;
+	float:left;
+	border-radius:3px 3px 3px 3px;
+	background-color:#f9f9f9;
+	box-shadow: 2px 2px 3px RGBA(99, 92, 92, 0.25);
+    padding-top: 10px;
+}
+
+/*温湿压*/
+.RegS_zm .Selection_e{
+padding-top: 12px;
+height: 50px;
+width: 300px;
+padding-left: 20px;
+background-color:#229ffb;
+padding-bottom: 12px;
+padding-right: 20px;
+
+}
+
+.RegS_zm .Selection_a_r_e{
+	position: relative;
+width: 230px;
+height: 50px;
+float: left;
+border-radius: 3px 3px 3px 3px;
+background-color: RGBA(255, 255, 255, 0.25);
+padding-top: 4px;
+}
+
+/*播放速度*/
+.RegS_zm  .speedBtnOut {
+   margin: 0 18px 0 18px;
+   padding: 5px 0 0 0;
+}
+
+.RegS_zm .a_left{
+width:102px;
+height:33px;
+border-radius:3px 3px 3px 3px;
+text-align: center;
+float:left;
+line-height:33px;
+margin-left: 5px;
+font-size:14px;
+}
+
+.RegS_zm .a_right{
+width:102px;
+height:33px;
+border-radius:3px 3px 3px 3px;
+text-align: center;
+float:left;
+line-height:33px;
+margin-left: 18px;
+font-size:14px;
+}
+
+.RegS_zm .a_left_c{
+    width: 70px;
+    height: 33px;
+    border-radius: 3px 3px 3px 3px;
+    text-align: center;
+    float: left;
+    line-height: 33px;
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.RegS_zm .a_middle_c{
+width: 70px;
+height: 33px;
+border-radius: 3px 3px 3px 3px;
+text-align: center;
+float: left;
+line-height: 33px;
+margin-left: 5px;
+font-size: 14px;
+}
+
+.RegS_zm .a_right_c{
+width: 70px;
+height: 33px;
+border-radius: 3px 3px 3px 3px;
+text-align: center;
+float: left;
+line-height: 33px;
+margin-left: 5px;
+font-size: 14px;
+}
+
+.RegS_zm .li{
+list-style:none;
+height:30px;
+list-style: none;
+height: 30px;
+width: 220px;
+padding-left: 10px;
+line-height: 30px;
+font-size: 13px;
+}
+
+.RegS_zm .li_b{
+background-color:#71cc93;
+color:#FFFFFF;}
+
+.RegS_zm .li_b span{
+color:#FFFFFF;}
+
+.RegS_zm .li_b sub{
+color:#FFFFFF;}
+
+.RegS_zm img.a_left_img{
+margin-top:5px;
+float:left;
+
+}
+
+.RegS_zm .a_e{
+	width: 70px;
+	height: 33px;
+
+	text-align: center;
+	float: left;
+	line-height: 33px;
+	margin-left: 5px;
+	color:#FFFFFF;
+}
+
+.RegS_zm .speedBtn {
+	display: inline-block;
+	height: 20px;
+	width: 33%;
+	font-family: 微软雅黑;
+	font-weight: bold;
+	font-size: 12px;
+	text-align: center;
+	color:#FFFFFF;
+}
+.RegS_zm .speedBtn:hover {
+	background-color: rgba(0, 204, 255, 0.2);
+}
+
+.RegS_zm .speedBtnOut .selected {
+    background-color:#fda101;
+}
+.RegS_zm .speedBtnOut .selected:hover {
+    background-color:#fda101;
+}
+
+.RegS_zm span{
+
+    font-size: 22px;
+    font-weight: bold;
+    font-family:"微软雅黑";
+	color:#70cb92;
+	margin-right: 20px;
+   float: right;
+}
+
+/* --------------- 蓝色的时间轴样式调整 ----------------- */
+/*时间刻度外框样式*/
+.RegS .LHU_BpTimeAxis_tb {
+	color: #229FFB;
+	border-color: #229FFB;
+}
+
+/*时间条覆盖样式*/
+.RegS .LHU_BpTimeAxis_cs {
+	background-color: #229FFB;
+}
+
+/*鼠标提示框样式*/
+.RegS .LHU_BpTimeAxis_mt {
+	background-image: url(/Pic/js/old/css/img/LHBU_BpTimeAxis_mt_blue.png);
+}
+
+/*播放按钮样式*/
+.RegS .LHU_BpTimeAxis_play {
+	background-image: url(/Pic/js/old/css/img/LHBU_BpTimeAxis_play_blue.png);
+}
+
+/*暂停按钮样式*/
+.RegS .LHU_BpTimeAxis_pause {
+	background-image: url(/Pic/js/old/css/img/LHBU_BpTimeAxis_pause_blue.png);
+}
+
+/*风场图层样式*/
+.RegS .windCanvasStyle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.RegS .eulerCanvasStyle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	background-color: #FF0;
+	background-image: url(http://www.ziniulian.tk/favicon.ico);
+	background-repeat: no-repeat;
+	background-position: center center;
+	/*background-image: url(http://img.ui.cn/data/file/1/1/5/253511.gif);*/
+	/*background-size: cover;*/
+}
+
+.nosee {
+	display: none;
+}
+
+.noselect {
+	/*文字不被选中*/
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	cursor: pointer;
+}

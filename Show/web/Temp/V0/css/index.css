@@ -1,0 +1,13 @@
+
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	font-family: "Microsoft YaHei";
+	font-size: 1vw;
+}
+
+/*总样式*/
+.boso {
+	font-size: 0;
+}

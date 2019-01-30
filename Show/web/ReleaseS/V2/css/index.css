@@ -1,0 +1,539 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6{
+  font-weight:normal;
+}
+ul{
+  list-style:none
+}
+a{
+  text-decoration:none;
+  display:block;
+}
+html, body{
+  margin:0;
+
+    font-family:"微软雅黑";
+  width:100%;
+  height:100%;
+    font-size: 14px;
+   }
+
+.background{
+  background-image: url(/Pic/img/web/ReleaseS/V2/background.jpg);
+  background-repeat:repeat;
+  width: 100%;
+  height:100%;
+  background-size: 100% 100%;
+  max-height: 1000px;
+  min-height: 930px;
+  min-width: 1000px;
+}
+header{
+  padding-top: 50px;
+  width: 1000px;
+  height: 77px;
+  margin: auto;
+}
+.logo{
+  width: 83px;
+    height: 77px;
+    float: left;
+}
+.name{
+  width: 917px;
+  height: 77px;
+  float: left;
+
+}
+.name_top{
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    line-height: 48px;
+}
+.name_foot{
+    font-size: 15px;
+    font-weight: 400;
+    color: white;
+   letter-spacing: 1.2px;
+}
+.main{
+  width: 1000px;
+    margin: auto;
+    padding-top: 25px;
+}
+.line{
+  width: 1000px;
+    height:4px;
+    background-color: #c15600;
+}
+.main_top{
+     height: 48px;
+     width: 1000px;
+     background-image: url(/Pic/img/web/ReleaseS/V2/nav.png);
+     box-shadow: 2px 2px 5px RGBA(0, 0, 0, 0.26);
+
+}
+nav{
+   height: 28px;
+     padding-top: 10px;
+   }
+nav li{
+   color:#ffffff;
+     font-size: 14px;
+     float: left;
+     line-height: 28px;
+}
+
+li.title{
+  width: 76px;
+  border-right:1px #4daed4 solid;
+  text-align: center;
+}
+li.date-a,li.date-b,li.date-c{
+
+  width: 78px;
+  border-right:1px #4daed4 solid;
+  text-align: center;
+}
+li.trend{
+  text-align: center;
+  width: 160px;
+}
+li.prediction
+ {
+    text-align: center;
+    padding-left: 140px;
+    font-size: 18px;
+    font-weight: 600;
+}
+li.date-d{
+  text-align: center;
+  padding-left: 60px;
+}
+
+.main_main{
+  width: 998px;
+  height: 620px;
+  border:1px #055ca8 solid;
+  background-color: #ffffff;
+}
+.city{
+  margin: 2px;
+  width: 465px;
+    height: 86px;
+    border-radius:3px 3px 3px 3px;
+    border:1px #055ca8 solid;
+    box-shadow: 2px 2px 2px #bcbcbc;
+    cursor: pointer;
+}
+.city_name{
+  width: 78px;
+    height: 88px;
+    float: left;
+}
+.city_name h1{
+  font-size: 17px;
+    line-height: 20px;
+    padding-top: 30px;
+    text-align: center;
+    height: 20px;
+}
+
+.city_name .more{
+  width: 7px;
+  height: 4px;
+  margin: 5px 0 0 35px;
+  background-image: url("/Pic/img/web/ReleaseS/V2/a.png");
+}
+
+
+
+
+/*24小时*/
+.city_24hour{
+  width: 78px;
+    height: 88px;
+    float: left;
+
+}
+.number_24 {
+    width: 78px;
+    height: 28px;
+    float: left;
+    padding-top: 10px;
+}
+.number {
+    font-size: 17px;
+    font-weight: 600;
+    float: left;
+}
+
+.number-a{
+color:#56c400;
+}/*0-50,优*/
+.number-b{
+color:#f3cb00;
+}/*51-100,良*/
+.number-c{
+color:#ff9300;
+}/*101-150,轻度污染*/
+.number-d{
+color:#ff2b19;
+}/*151-200,中度污染*/
+.number-e{
+color:#d20485;
+}/*201-300,重度污染*/
+.number-f{
+color:#94020e;
+} /*>300,严重污染*/
+.number-0{
+color:#999;
+}
+
+.number-a-bg{
+background-color:#56c400;
+}/*0-50,优*/
+.number-b-bg{
+background-color:#f3cb00;
+}/*51-100,良*/
+.number-c-bg{
+background-color:#ff9300;
+}/*101-150,轻度污染*/
+.number-d-bg{
+background-color:#ff2b19;
+}/*151-200,中度污染*/
+.number-e-bg{
+background-color:#d20485;
+}/*201-300,重度污染*/
+.number-f-bg{
+background-color:#94020e;
+} /*>300,严重污染*/
+.number-0-bg{
+background-color:#999;
+}
+
+
+.level {
+    color: #0078b8;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 14px;
+    height: 20px;
+    float: left;
+    width: 78px;
+
+}
+
+.element {
+    width: 60px;
+    font-size: 12px;
+    background-color: #0078b8;
+    height: 25px;
+    float: left;
+    color: white;
+    text-align: center;
+    line-height: 25px;
+     border-radius:3px 3px 3px 3px;
+}
+
+/*48小时*/
+.city_48hour{
+  width: 78px;
+    height: 88px;
+    float: left;
+
+}
+.number_48 {
+    width: 78px;
+    height: 28px;
+    float: left;
+    padding-top: 10px;
+}
+
+/*72小时*/
+.city_72hour{
+  width: 78px;
+    height: 88px;
+    float: left;
+
+}
+.number_72 {
+    width: 78px;
+    height: 28px;
+    float: left;
+    padding-top: 10px;
+}
+
+.city_right {
+    width: 130px;
+    height: 70px;
+    border: 1px dashed #b9bbbc;
+    float: left;
+    margin-top: 7px;
+
+}
+
+.miniBar {
+  position: relative;
+  display: inline-block;
+  vertical-align: bottom;
+  width: 23%;
+  margin: 0 5% 0 5%;
+}
+
+.miniBar_null {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 1px;
+  height: 100%;
+}
+
+.miniBar_0 {
+  height: 30%;
+}
+
+.miniBar_1 {
+  height: 46%;
+}
+
+.miniBar_2 {
+  height: 70%;
+}
+
+.miniBar_txt {
+  position: absolute;
+  left: 0;
+  top: -16px;
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: #000;
+}
+
+
+
+.m_left {
+    width: 477px;
+    height: 620px;
+    float: left;
+    overflow-y:scroll;
+   overflow-x:hidden;
+}
+.m_right{width: 514px;
+    height:613px;
+    border: 1px solid;
+    float: left;
+    border-radius:3px 3px 3px 3px;
+    margin: 2px;
+    position:relative;
+
+    }
+
+  footer{
+    font-size: 14px;
+    text-align: center;
+    line-height: 40px;
+    padding-top: 10px;
+  }
+
+  .foot_foot{
+    width: 1000px;
+    margin: 0 auto;
+  }
+
+  .city_more{
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: -2px;
+    padding-bottom: 10px;
+    width: 465px;
+    /*height: 260px;*/
+    border-radius: 3px 3px 3px 3px;
+    border: 1px #055ca8 solid;
+    box-shadow: 2px 2px 2px #bcbcbc;
+    display: none;
+}
+  h4 {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 24px;
+    color: #474747;
+    margin-left: 5px;
+}
+.city_more_a {
+    width: 440px;
+    margin: 0 auto;
+    border: 1px #eaeaea solid;
+    height: 120px;
+    background-color: #f3f3f3;
+}
+.city_more_b {
+  margin: 4px;
+    width: 440px;
+    margin: 0 auto;
+    border: 1px #eaeaea solid;
+    height: 80px;
+    background-color: #f3f3f3;
+    color: #000;
+    font-size: 14px;
+    line-height: 20px;
+}
+.city_more_b p{
+  width: 420px;
+    height: 80px;
+margin: 0 auto;
+}
+
+.city:hover{
+  background-color:rgba(229,229,229,0.5);
+               border-radius:30px 0px 0px 0px;
+            transition: all 0.7s;
+
+}
+.massageBtn {
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+	width: 16px;
+	height: 16px;
+	background-color: #fffaf4;
+	background-image: url("/Pic/img/web/ReleaseS/V2/message_b.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+.message{
+  background-color: #fffaf4;
+  width: 330px;
+  height: 236px;
+  border: 1px solid #d7d7d7;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+.message_top {
+    width: 300px;
+    height: 40px;
+    border-bottom: 1px dashed #a8a5a5;
+    margin-left: 15px;
+}
+.message_top p {
+    float: left;
+    padding-top: 10px;
+    line-height: 20px;
+    padding-left: 10px;
+    font-size: 14px;
+}
+img.message_img_a{
+   padding-top: 15px;
+   float: left;
+ }
+
+img.message_img_b{
+   padding-top: 12px;
+float: left;
+padding-left: 180px;}
+
+.message_foot {
+	height: 190px;
+	overflow-y: auto;
+}
+
+.message_foot p {
+    width: 310px;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 25px;
+    padding-top: 10px;
+}
+
+.lavel_caution{
+  float: left;
+  width: 20px;
+  height: 86px;
+  margin-top: 1px;
+  text-align: center;
+  color: #FFF;
+}
+.alarm1 {
+  background: linear-gradient(#f3cb00, #ff9300);
+}/*三级预警*/
+.alarm2 {
+  background: linear-gradient(#ff2b19,#d20485);
+} /*二级预警*/
+.alarm3 {
+ background: linear-gradient(#94020e, #999); /*一级预警*/
+}
+
+
+
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.bar .btn {
+  display: inline-block;
+  vertical-align: top;
+  width: 100px;
+  height: 30px;
+  margin: 5px;
+  text-align: center;
+  line-height: 30px;
+  background-color: yellow;
+}
+.bar .btn:hover {
+  background-color: red;
+}
+.bar .btnScd {
+  background-color: #F91;
+}
+.bar .btnScd:hover {
+  background-color: #F91;
+}
+
+.bot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /*background-color: green;*/
+}
+
+.mid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /*background-color: red;*/
+}
+
+.chart {
+	width: 100%;
+	height: 100%;
+	/*background-color: red;*/
+}
+
+.nosee {
+	display: none !important;
+}

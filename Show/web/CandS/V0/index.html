@@ -1,0 +1,123 @@
+<html>
+	<head>
+		<title>城市站点信息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/index.css"/>
+		<link href="/Pic/js/old/HTML5/expand/ol3/ol.css" rel="stylesheet" type="text/css" />
+		<script src="/Pic/js/old/HTML5/expand/ol3/ol.js"></script>
+		<script src="/Pic/js/old/HTML5/expand/jquery/jquery.min.js"></script>
+		<script src="/Pic/js/old/HTML5/expand/jquery/jquery.nicescroll.js"></script>
+		<script src="/Pic/js/old/HTML5/expand/echarts/all.js"></script>
+		<script src="/Pic/js/old/LZR.js"></script>
+		<script src="js/HelloWorld.js"></script>
+		<script src="js/index.js"></script>
+	</head>
+
+	<body class="body">
+		<div id="bLeft" class="CandS">
+			<div id = "map" class = "map"></div>
+
+			<!-- 筛选条件 -->
+			<div id="CandS_selectBar" style="display: none;" class="selectBar">
+				<div class="selectOut cityOut" id="CandS_cityOut">
+					<select class="select selectAll" id="CandS_city">
+						<option value="all" class="selectAll" selected><所有省份></option>
+					</select>
+				</div>
+
+				<div class="selectOut" id="CandS_primaryOut">
+					<select class="select selectAll" id="CandS_primary" style="visibility: hidden;">
+						<option value="all" class="selectAll" selected><首污></option>
+						<option value="pm2.5" class="selectOption">PM<sub>2.5</sub></option>
+						<option value="pm10" class="selectOption">PM<sub>10</sub></option>
+						<option value="o3" class="selectOption">O<sub>3</sub></option>
+						<option value="so2" class="selectOption">SO<sub>2</sub></option>
+						<option value="no2" class="selectOption">NO<sub>2</sub></option>
+						<option value="co" class="selectOption">CO</option>
+					</select>
+				</div>
+
+				<div class="selectOut" id="CandS_levelOut">
+					<select class="select selectAll" id="CandS_level" style="visibility: hidden;">
+						<option value="all" class="selectAll" selected><等级></option>
+						<option value="6" class="selectOption fomLevel_6">严重污染</option>
+						<option value="5" class="selectOption fomLevel_5">重度污染</option>
+						<option value="4" class="selectOption fomLevel_4">中度污染</option>
+						<option value="3" class="selectOption fomLevel_3">轻度污染</option>
+						<option value="2" class="selectOption fomLevel_2">良</option>
+						<option value="1" class="selectOption fomLevel_1">优</option>
+					</select>
+				</div>
+
+				<div class="order noselect" id="CandS_order" title="从小到大排序">▲</div>
+			</div>
+
+			<div id = "CandS_leftOut" class="CandS_zm">
+				<div class="left">
+					<div class="top">
+						<h1 class="title">城市站点</h1>
+						<!-- <img class="hidden" src="/Pic/img/web/CandS/V1/hidden.png" />
+						<img class="off"  src="/Pic/img/web/CandS/V1/off.png" /> -->
+					</div>
+
+					<div class="Selection_a">
+						<div class="Selection_a_l">
+							<img class="a_1" src="/Pic/img/web/CandS/V1/a_1.gif" />
+							<h1 class="a_1">产品时间</h1>
+						</div>
+						<div class="Selection_a_m">
+							<input id="CandS_date" class="date date_L" value="2015-11-15" required="true" type="text" />
+							<!-- <h2 id = "CandS_date_out"></h2>
+							<img class="a_m" src="/Pic/img/web/CandS/V1/select.png" /> -->
+						</div>
+						<div class="Selection_a_r">
+							<select id="CandS_tim" class="date">
+								<option value="20" selected>20时</option>
+								<option value="8">08时</option>
+							</select>
+							<!-- <h2 id = "CandS_tim_out"></h2> -->
+							<img class="a_r" src="/Pic/img/web/CandS/V1/select.png" />
+						</div>
+			 		</div>
+
+					<div class="Selection_b">
+						<div class="Selection_a_l">
+							<img class="a_1"  src="/Pic/img/web/CandS/V1/a_1-2.gif" />
+							<h1 class="a_1">预报模式</h1>
+						</div>
+						<div class="Selection_a_r_b">
+							<select id="CandS_mod" class="date">
+								<option value="naqpms" selected>NAQPMS</option>
+								<option value="cmaq" >CMAQ</option>
+								<option value="camx" >CAMx</option>
+								<option value="wrfch" >WRF-Chem</option>
+							</select>
+							<!-- <h2 id = "CandS_mod_out"></h2> -->
+							<img class="a_r_b" src="/Pic/img/web/CandS/V1/select.png" />
+						</div>
+		 			</div>
+
+					<div id = "stations" class="stations_out">
+						<!--  -->
+					</div>
+
+					<div id = "CandS_speeds" class=" speedBtnOut ">
+						<!-- <div class=" speedBtn noselect selected ">快</div>
+						<div class=" speedBtn noselect ">中</div>
+						<div class=" speedBtn noselect ">慢</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="bRight" class="nosee bRight">
+			<!--  -->
+		</div>
+		<div id="loading" class="loading nosee">
+			<!--  -->
+		</div>
+	</body>
+	<script>
+		init();
+	</script>
+</html>

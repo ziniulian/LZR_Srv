@@ -1,0 +1,79 @@
+<html>
+	<head>
+		<title>空气质量预警</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/index.css"/>
+		<script src="/Pic/js/old/LZR.js"></script>
+		<script src="js/index.js"></script>
+	</head>
+
+	<body>
+		<div class="RegS">
+			<div id="area" class="area"></div>
+
+			<div class="main">
+				<div class="tbnOut">
+					<div id="top" class="headTail"></div>
+					<canvas id="tbn" class="tbnCanvas"></canvas>
+					<div id="bot" class="headTail headTail2"></div>
+				</div>
+
+				<div id="scroll" class="tbnScroll"></div>
+
+				<div class="mapOut">
+					<div id="title" class="title"></div>
+					<div id="fullScrnBtn" class="fullScrnBtn noselect">全屏</div>
+					<div id="mapDiv" class="mapDiv">
+						<canvas id="map" class="canvas"></canvas>
+					</div>
+				</div>
+
+				<div class="right">
+					<div>
+						<div id="regsDate" class="date" contenteditable="true">2015-08-23</div>
+						<select id="regsTim" class="date tim">
+							<option value="20" selected>20时</option>
+							<option value="8">08时</option>
+						</select>
+					</div>
+					<select id="regsMod" class="date mod">
+						<option value="NAQPMS" selected>NAQPMS</option>
+						<option value="CAMx" >CAMx</option>
+						<option value="CMAQ" >CMAQ</option>
+						<option value="WRFchem" >WRF-Chem</option>
+					</select>
+					<div id="ttyp"></div>
+					<div class="generalTitle titleFom">污染物</div>
+					<div id="fom" class="generalOut"></div>
+					<div class="generalTitle titleCloud">气象条件</div>
+					<div id="cloud" class="generalOut"></div>
+					<div class="generalTitle titleLayer">图层</div>
+					<div id="layer" class="generalOut"></div>
+					<div class="generalTitle titlePlay">动画播放</div>
+					<div class="generalOut">
+						<div id="playOut" class="playOut"></div>
+						<div id="fram"></div>
+					</div>
+					<div class="generalTitle titleEyes">鹰眼</div>
+					<div class="generalOut eysOut">
+						<canvas id="eys" class="canvas"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fullScrn" class="nosee">
+			<div id="cav" class="canvas">
+				<canvas id="pencav" class="pencav"></canvas>
+			</div>
+			<center id="bar" class="toolbar">
+				<div id="exit" class="exit noselect">X</div>
+				<div id="eraser" class="eraserbtn noselect">清空</div>
+			</center>
+		</div>
+	</body>
+	<script>
+		init();
+	</script>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh">
+<meta charset="utf-8">
+<title>空气质量发布系统</title>
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/Pic/js/old/HTML5/expand/jquery/jquery.min.js"></script>
+<script type="text/javascript"  src="/Pic/js/old/HTML5/expand/jquery/jquery.nicescroll.js"></script>
+<script type="text/javascript"  src="/Pic/js/old/HTML5/expand/echarts/all.js"></script>
+<script type="text/javascript" src="/myLib/LZR.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+</head>
+<body>
+
+    <div class="background">
+        <header>
+            <div class="logo"><img src="/Pic/img/web/ReleaseS/V2/logo.png" /></div>
+            <div class="name">
+                 <div class="name_top">空气质量发布系统
+                 </div>
+                 <div class="name_foot">
+                 </div>
+
+            </div>
+        </header>
+
+        <div class="main">
+            <div class="line"></div>
+            <div class="main_top">
+               <nav>
+                   <ul id="tim">
+                       <li class="title">城市</li>
+                       <li idLzr="d24" class="date-a"></li>
+                       <li idLzr="d48" class="date-b"></li>
+                       <li idLzr="d72" class="date-c"></li>
+                       <li class=" trend ">潜势预报趋势</li>
+                       <li class="prediction">环境空气质量预报</li>
+                       <li idLzr="pub" class="date-d"></li>
+                   </ul>
+                </nav>
+            </div><!--导航标题-->
+            <div class="main_main">
+                <div id="out" class="m_left">
+                <!--********************************-->
+	<div idLzr="mod">
+                    <div idLzr="city" class="city">
+                        <div class="city_name">
+                            <h1 idLzr="cityName"></h1>
+                            <div class=more></div>
+                        </div><!--城市名称-->
+                        <div idLzr="d24" class="city_24hour">
+                                <div class="number_24">
+                                    <h3 idLzr="min" class="number"></h3>
+                                    <h3 idLzr="strand" class="number"></h3>
+                                    <h3 idLzr="max" class="number"></h3>
+                                </div>
+                             <div idLzr="level" class="level"></div>
+                            <div idLzr="element" class="element"></div>
+                        </div><!--24小时-->
+
+                        <div idLzr="d48" class="city_48hour">
+                                <div class="number_48">
+                                    <h3 idLzr="min" class="number"></h3>
+                                    <h3 idLzr="strand" class="number"></h3>
+                                    <h3 idLzr="max" class="number"></h3>
+                                </div>
+                             <div idLzr="level" class="level"></div>
+                            <div idLzr="element" class="element"></div>
+                        </div><!--48小时-->
+                        <div idLzr="d72" class="city_72hour">
+                                <div class="number_72">
+                                    <h3 idLzr="min" class="number"></h3>
+                                    <h3 idLzr="strand" class="number"></h3>
+                                    <h3 idLzr="max" class="number"></h3>
+                                </div>
+                             <div idLzr="level" class="level"></div>
+                            <div idLzr="element" class="element"></div>
+                        </div><!--72小时-->
+
+		<div idLzr="bar" class="city_right">
+			<div class="miniBar_null"></div>
+			<div idLzr="b0" class="miniBar">
+				<div idLzr="t0" class="miniBar_txt"></div>
+			</div>
+			<div idLzr="b1" class="miniBar">
+				<div idLzr="t1" class="miniBar_txt"></div>
+			</div>
+			<div idLzr="b2" class="miniBar">
+				<div idLzr="t2" class="miniBar_txt"></div>
+			</div>
+		</div>
+                        <div idLzr="alarm" class="lavel_caution"></div>
+                    </div>
+
+                    <div idLzr="cm" class="city_more">
+	                    <h4 idLzr="straqi"></h3>
+	                    <div class="city_more_a"></div>
+
+			<div idLzr="broadOut">
+				<h4 idLzr="strinfo"></h3>
+				<div class="city_more_b">
+					<p idLzr="broad"></p>
+				</div>
+			</div>
+
+                    </div>
+	</div>
+                    <!--***************************-->
+                    </div>
+
+		<div id="img" class="m_right">
+			<div idLzr="bot" class="bot"></div>
+			<div idLzr="mid" class="mid"></div>
+			<div idLzr="top" class="top"></div>
+			<div idLzr="bar" class="bar">
+				<div idLzr="0" class="btn"></div>
+				<div idLzr="1" class="btn"></div>
+				<div idLzr="2" class="btn"></div>
+			</div>
+
+		<div id="msgBtn" class="massageBtn" onclick="document.getElementById('msg').className='message';"></div>
+                    <div id="msg" class="message">
+                        <div class="message_top">
+                            <img class="message_img_a" src="/Pic/img/web/ReleaseS/V2/message_a.png"/>
+                            <p>预报信息：</p>
+                            <img class="message_img_b" src="/Pic/img/web/ReleaseS/V2/message_b.png" onclick="document.getElementById('msg').className='nosee';"/>
+                            </div>
+                        <div class="message_foot">
+                        <p id="msgTxt"></p>
+                        </div>
+                    </div>
+
+		</div>
+
+		<div id="chart" class="nosee"></div>
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+   <footer>
+    <div class="foot_top">犟子工作室</div>
+    <div class="foot_foot"><img src="/Pic/img/web/ReleaseS/V2/b.png"/>
+
+   </div>
+   </footer>
+
+
+    </div>
+    <script type="text/javascript">
+            $('.m_left').niceScroll({
+                cursorcolor: "rgba(0, 157, 202, 0.58)",//#CC0071 光标颜色
+                cursoropacitymax: 1, //改变不透明度非常光标处于活动状态（scrollabar“可见”状态），范围从1到0
+                touchbehavior: false, //使光标拖动滚动像在台式电脑触摸设备
+                cursorwidth: "5px", //像素光标的宽度
+                cursorborder: "0", //   游标边框css定义
+                cursorborderradius: "5px",//以像素为光标边界半径
+                autohidemode: false //是否隐藏滚动条
+            });
+
+	init();
+        </script>
+</body>
+</html>

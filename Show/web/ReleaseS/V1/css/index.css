@@ -1,0 +1,346 @@
+@charset "utf-8";
+/* CSS Document */
+html, body{ margin:0; height:100%; }
+
+.zhengzhou{
+    width: 100%;
+    height:100%;
+    background-image:url(/Pic/img/web/ReleaseS/V1/background.png);
+    background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+.zhengzhou *{
+    margin:0;padding:0;
+}
+
+.zhengzhou h1,.zhengzhou h2,.zhengzhou h3,.zhengzhou h4,.zhengzhou h5,.zhengzhou h6{
+	font-weight:normal;
+	font-family:"微软雅黑";
+}
+
+.zhengzhou li{
+	list-style: none;
+}
+
+body{
+font-family: "微软雅黑";
+}
+
+.zhengzhou .top{
+font-size: 32px;
+font-weight: bold;
+line-height: 242px;
+text-align: center;
+width: 100%;
+height: 242px;
+color: #ffffff;
+text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.29);
+
+}
+.zhengzhou .middle{
+    width: 64%;
+    height:278px;
+    padding-left: 18%;
+    /*margin-left: 7px;*/
+}
+
+.zhengzhou .middle_img{
+width: 247px;
+height: 278px;
+float: left;
+
+}
+.zhengzhou .middle_24hour{
+width: 247px;
+height: 278px;
+float: left;
+
+}
+.zhengzhou .middle_48hour{
+width: 247px;
+height: 278px;
+float: left;
+
+}
+.zhengzhou .middle_72hour{
+width: 247px;
+height: 278px;
+float: left;
+
+}
+.zhengzhou .middle_24hour_text{
+	width: 76px;
+	height: 278px;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	color: #ffffff;
+    line-height: 278px;
+text-align: center;}
+
+.zhengzhou .middle_48hour_text{
+	width: 76px;
+	height: 278px;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	color: #ffffff;
+    line-height: 278px;
+    text-align: center;}
+.zhengzhou .middle_72hour_text{
+	width: 76px;
+	height: 278px;
+	float: left;
+	font-size: 16px;
+	font-weight: bold;
+	color: #ffffff;
+    line-height: 278px;
+    text-align: center;}
+    .zhengzhou .number {
+    /*width: 213px;*/
+    height: 48px;
+    /*float: left;*/
+    /*padding-left: 34px;*/
+    margin-top: 50px;
+    line-height: 48px;
+    font-size: 0px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.29);
+}
+
+   .zhengzhou .number-all {
+        /*float: left;*/
+        display: inline;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+.zhengzhou .number-0{
+color:#FFF;
+}/*0-50,优*/
+.zhengzhou .number-a{
+color:#56c400;
+}/*0-50,优*/
+.zhengzhou .number-b{
+color:#f3cb00;
+}/*51-100,良*/
+.zhengzhou .number-c{
+color:#ff9300;
+}/*101-150,轻度污染*/
+.zhengzhou .number-d{
+color:#ff2b19;
+}/*151-200,中度污染*/
+.zhengzhou .number-e{
+color:#d20485;
+}/*201-300,重度污染*/
+.zhengzhou .number-f{
+color:#94020e;
+} /*>300,严重污染*/
+
+    .zhengzhou .Level{
+/*width: 147px;*/
+height: 48px;
+/*float: left;*/
+/*padding-left: 100px;*/
+line-height: 48px;
+font-size: 0px;
+text-align: center;
+font-weight: bold;}
+
+    .zhengzhou .Level-a {
+    /*float: left;*/
+    display: inline;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: bold;
+    }
+    .zhengzhou .Level-0 {
+    float: left;
+    color: #ffffff;
+    font-weight: bold;
+    }
+    .zhengzhou .Level-b {
+    float: left;
+    color:#ffffff;
+    font-weight: bold;
+    }
+.zhengzhou .pollutant {
+    width: 247px;
+    height: 48px;
+    float: left;
+    text-align: center;
+    line-height: 48px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;}
+.zhengzhou .foot{
+width: 64%;
+height: 285px;
+margin-left: 18%;
+background-color: rgba(255, 255, 255, 0.2);
+border-radius: 10px;
+padding-top: 15px;
+}
+.zhengzhou .weather{
+	width: 390px;
+	height: 270px;
+	background-color: #6cb2dd;
+	border-radius: 5px;
+	margin-left: 15px;
+	float: left;
+}
+.zhengzhou .health{
+	width: 390px;
+	height: 270px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	margin-left: 15px;
+	float: left;
+}
+.zhengzhou .prediction{
+	width: 390px;
+	height: 270px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	margin-left: 15px;
+	float: left;
+}
+
+.zhengzhou .weather_a_1 {
+    width: 220px;
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+    margin-left: 40px;
+    margin-top: 40px;
+    float: left;
+    line-height: 57px;
+}
+
+
+.zhengzhou .weather_a_img{
+width: 130px;
+height: 57px;
+float: left;
+margin-top: 40px;}
+
+.zhengzhou .weather_b_1 {
+    width: 220px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin-left: 40px;
+
+    float: left;
+    line-height: 30px;
+}
+.zhengzhou .weather_b_2{
+width: 130px;
+line-height: 30px;
+float: left;
+margin-top: 20px;
+font-size: 20px;
+color: white;
+font-weight: bold;
+}
+.zhengzhou .weather_c_img{
+width: 22px;
+margin-left: 30px;
+float: left;
+}
+
+.zhengzhou .weather_c_1{
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 26px;
+	color: white;
+	margin-left: 15px;
+}
+
+.zhengzhou .weather_d_img{
+width: 22px;
+margin-left: 30px;
+float: left;
+}
+
+.zhengzhou .weather_d_1{
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 26px;
+	color: white;
+	margin-left: 15px;
+}
+.zhengzhou .weather_e_img{
+width: 22px;
+margin-left: 30px;
+float: left;
+}
+
+.zhengzhou .weather_e_1{
+	font-weight: bold;
+	font-size: 16px;
+	line-height: 26px;
+	color: white;
+	margin-left: 15px;
+}
+.zhengzhou .health_top{
+	width: 390px;
+	height: 40px;
+	background: #67c0e6;
+	color: white;
+}
+
+.zhengzhou .health_title {
+    width: 87px;
+    height: 40px;
+    float: left;
+    line-height: 40px;
+    font-weight: bold;
+    padding-left: 20px;
+}
+.noselect {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+.zhengzhou .rignt_c_2 {
+    height: 40px;
+    width: 46px;
+    float: left;
+    line-height: 40px;
+    text-align: center;
+}
+.zhengzhou .rignt_c_2_scd {
+    background-color:#a6cc0c;
+}
+.zhengzhou .health_foot{
+height: 190px;
+width: 370px;
+padding-left: 10px;
+padding-top: 10px;
+line-height: 30px;
+font-size: 14px;
+}
+.zhengzhou .prediction_top{
+
+	width: 370px;
+	height: 40px;
+	background: #67c0e6;
+	color: white;
+	line-height: 40px;
+    font-weight: bold;
+    padding-left: 20px;
+}
+.zhengzhou .prediction_foot{
+height: 190px;
+width: 370px;
+padding-left: 10px;
+padding-top: 10px;
+line-height: 30px;
+font-size: 14px;
+}

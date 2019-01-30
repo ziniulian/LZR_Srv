@@ -1,0 +1,273 @@
+
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	font-family: "Microsoft YaHei";
+	font-size: 2vw;
+}
+
+/*总样式*/
+.boso {
+	font-size: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/*查询条件*/
+.boso .condition {
+	display: inline-block;
+	vertical-align: top;
+	width: 12rem;
+}
+
+.boso .condition .date {
+	width: 60%;
+	margin: 5%;
+	font-size: 0.6rem;
+}
+
+.boso .condition .time {
+	width: 25%;
+	margin: 0;
+	font-size: 0.6rem;
+}
+
+.boso .condition .out {
+	width: calc(96% - 2px);
+	margin: 0.5rem 2%;
+	border: 1px solid #AAA;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.boso .condition .title {
+	width: 95%;
+	height: 1rem;
+	padding: 0 0 0 5%;
+	color: #000;
+	font-size: 0.6rem;
+	line-height: 1rem;
+	background-color: #EEE;
+	border-bottom: 1px solid #AAA;
+}
+
+.boso .condition .body {
+	width: 90%;
+	margin: 0.1rem auto;
+	text-align: left;
+}
+
+.boso .condition .btn {
+	display: inline-block;
+	vertical-align: top;
+	width: calc(31% - 2px);
+	height: 1rem;
+	margin: 1%;
+	color: #000;
+	font-size: 0.5rem;
+	line-height: 1rem;
+	text-align: center;
+	border: 1px solid #AAA;
+}
+
+.boso .condition .btn2 {
+	display: block;
+	width: 100%;
+}
+
+.boso .condition .scd {
+	color: #FFF;
+	background-color: #3499DB;
+}
+
+/*缩略图*/
+.boso .tub {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 7rem;
+	height: 100%;
+	overflow: hidden;
+}
+
+.boso .tub .slider {
+	position: absolute;
+	left: 0;
+	width: 100%;
+}
+
+.boso .tub .block {
+	width: 100%;
+}
+
+.boso .tub .scd {
+	box-shadow:inset 0 0 10px #F00;
+}
+
+.boso .tub .block .imgout {
+	width: calc(100% - 1rem);
+	height: 4.7rem;
+	padding: 0.5rem;
+}
+
+.boso .tub .block .img {
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	/*background-color: yellow;*/
+}
+
+.boso .tub .block .memo {
+	width: 100%;
+	height: 1.3rem;
+	line-height: 1.3rem;
+	font-size: 0.8rem;
+	text-align: center;
+	/*background-color: red;*/
+}
+
+/*滚动条*/
+.boso .scrllOut {
+	display: inline-block;
+	vertical-align: top;
+	width: 1rem;
+	height: 100%;
+}
+
+.boso .scrll {
+	position: relative;
+	width: 0.2rem;
+	height: calc(100% - 2rem);
+	margin: 1rem auto;
+	background-color: yellow;
+}
+
+.boso .scrll .btn0 {
+	position: absolute;
+	width: 100%;
+	height: 0;
+}
+
+.boso .scrll .btn {
+	position: absolute;
+	width: 0.6rem;
+	height: 2rem;
+	top: -1rem;
+	left: -0.2rem;
+	background-color: red;
+}
+
+/*内容*/
+.boso .content {
+	display: inline-block;
+	vertical-align: top;
+	width: calc(100% - 20rem);
+	height: 100%;
+}
+
+.boso .bigImg {
+	width: 100%;
+	height: 100%;
+}
+
+.boso .bigImg .ctrlBar {
+	width: 100%;
+	height: 1.5rem;
+}
+
+.boso .bigImg .ctrlBar .scall {
+	display: inline-block;
+	vertical-align: middle;
+	width: 2.5rem;
+	line-height: 1.5rem;
+	font-size: 0.7rem;
+	text-align: center;
+	color: #000;
+}
+
+.boso .bigImg .ctrlBar .btn {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1.5rem;
+	height: 1rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+.boso .bigImg .ctrlBar .play {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Play.png);
+}
+.boso .bigImg .ctrlBar .stop {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Pause.png);
+}
+
+.boso .bigImg .ctrlBar .prv {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Rewind.png);
+}
+
+.boso .bigImg .ctrlBar .next {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Fast-Forward.png);
+}
+
+.boso .bigImg .ctrlBar .big {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Add.png);
+}
+
+.boso .bigImg .ctrlBar .small {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Delete.png);
+}
+
+.boso .bigImg .ctrlBar .fit {
+	background-image: url(http://d.lanrentuku.com/down/png/0905/17Button/Button-Close.png);
+}
+
+.boso .bigImg .ctrlBar .speed {
+	display: inline-block;
+	vertical-align: middle;
+	/*width: 1.5rem;*/
+	height: 1.2rem;
+	margin: 0 0.3rem;
+	padding: 0 0 0 0.2rem;
+	font-size: 0.5rem;
+	font-family: "Microsoft YaHei";
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+.boso .bigImg .imgOut {
+	width: 100%;
+	height: calc(100% - 1.5rem);
+	text-align: center;
+	overflow: hidden;
+}
+
+.boso .bigImg .imgOut .img {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+/*通用*/
+.boso .hid {
+	visibility: hidden !important;
+}
+
+.boso .nosee {
+	display: none !important;
+}
+
+.boso .noselect {
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	cursor:pointer;
+}

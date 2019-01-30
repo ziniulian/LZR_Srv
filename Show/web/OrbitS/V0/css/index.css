@@ -1,0 +1,90 @@
+
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+
+/*总样式*/
+.OrbitS {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-family: "微软雅黑";
+	font-size: 0;
+}
+
+.OrbitS .map {
+	width: 100%;
+	height: 100%;
+}
+
+.OrbitS .condition {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	background-color: yellow;
+}
+
+.OrbitS .citys {
+	display: inline-block;
+	width: 120px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	color: #AAA;
+}
+.OrbitS .citysOver {
+	color: #888;
+}
+.OrbitS .citysDown {
+	color: #09F;
+	font-size: 19px;
+}
+
+.OrbitS .heights {
+	display: inline-block;
+	width: 80px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	color: #999;
+}
+.OrbitS .heightsOver {
+	color: #777;
+}
+.OrbitS .heightsDown {
+	color: #EEE;
+}
+.OrbitS .heightsPic {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	background-color: #EEE;
+}
+.OrbitS .heights1 {
+	background-color: red;
+}
+.OrbitS .heights5 {
+	background-color: green;
+}
+.OrbitS .heights10 {
+	background-color: blue;
+}
+
+.nosee {
+	display: none;
+}
+
+.noselect {
+	/*文字不被选中*/
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	cursor: pointer;
+}

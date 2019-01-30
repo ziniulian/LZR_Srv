@@ -44,6 +44,12 @@ srv.ro.setStaticDir("/myLib/", LZR.curPath);
 // 记录访问信息
 srv.ro.all(/^\/((Gu)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
 
+// 临时图床
+srv.use("/Pic/", require("./Pic"));
+
+// 作品展示
+srv.use("/Show/", require("./Show"));
+
 // 股服务
 srv.use("/Gu/", require("./Gu"));
 

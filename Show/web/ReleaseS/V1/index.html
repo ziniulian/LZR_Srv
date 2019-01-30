@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>空气质量发布系统</title>
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script src="/myLib/LZR.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+<div class="zhengzhou">
+	 	<div class="top">
+			空气质量发布系统
+	    </div>
+
+		<div id="fomMod" class="middle">
+	        <div class="middle_img"></div>
+	        <div class="middle_24hour_text">24小时</div>
+	        <div id="fom24" class="middle_24hour">
+
+	         	<div class="number">
+	         	<h3 id="minAqi" class="number-all"></h3>
+	         	<h3 class="number-all number-0">-</h3>
+	         	<h3 id="maxAqi" class="number-all"></h3>
+	         	</div>
+	            <div class="Level">
+	         	<h3 id="level" class=" Level-a"></h3>
+	         	<!-- <h3 class="number-0"> - </h3>
+	         	<h3 class=" Level-b">良</h3> -->
+	         	</div>
+	         	 <div id="main" class="pollutant"></div>
+			</div>
+	        <div class="middle_48hour_text">48小时</div>
+	        <div id="fom48" class="middle_48hour">
+				<div class="number">
+	         	<h3 id="minAqi" class="number-all"></h3>
+	         	<h3 class="number-all number-0">-</h3>
+	         	<h3 id="maxAqi" class="number-all"></h3>
+	         	</div>
+	            <div class="Level">
+	         	<h3 id="level" class=" Level-a"></h3><!--
+	         	<h3 class="number-0"> - </h3>
+	         	<h3 class=" Level-b">良</h3> -->
+	         	</div>
+	         	 <div id="main" class="pollutant"></div>
+	        </div>
+	        <div class="middle_72hour_text">72小时</div>
+	        <div id="fom72" class="middle_72hour">
+				<div class="number">
+	         	<h3 id="minAqi" class="number-all"></h3>
+	         	<h3 class="number-all number-0">-</h3>
+	         	<h3 id="maxAqi" class="number-all"></h3>
+	         	</div>
+	            <div class="Level">
+	         	<h3 id="level" class=" Level-a"></h3><!--
+	         	<h3 class="number-0"> - </h3>
+	         	<h3 class=" Level-b">良</h3> -->
+	         	</div>
+				<div id="main" class="pollutant"></div>
+			</div>
+	    </div>
+		<div class="foot">
+			<div id="weather" class="weather">
+	            <div class="weather_a">
+						<div id="temN" class="weather_a_1"></div>
+						<div class="weather_a_img"><img id="wsImg" /></div>
+				 </div>
+	             <div class="weather_b">
+	             		<div id="temA" class="weather_b_1"></div>
+						<div id="ws" class="weather_b_2"></div>
+
+	             </div>
+	              <div class="weather_c">
+
+						<div class="weather_c_img"><img src="/Pic/img/web/ReleaseS/V1/weather_a.png" /></div>
+						<div id="rh" class="weather_c_1"></div>
+
+
+	              </div>
+	               <div class="weather_d">
+						<div class="weather_d_img"><img src="/Pic/img/web/ReleaseS/V1/weather_a.png" /></div>
+						<div id="windD" class="weather_d_1"></div>
+
+	               </div>
+	                <div class="weather_e">
+	                <div class="weather_e_img"><img src="/Pic/img/web/ReleaseS/V1/weather_a.png" /></div>
+						<div id="windN" class="weather_e_1"></div>
+
+
+
+	                </div>
+
+
+			</div>
+			<div class="health">
+					<div id = "tips" class="health_top">
+					<div class="health_title">健康提示</div>
+					<div id = "t1" class="rignt_c_2 noselect">一级</div>
+					<div id = "t2" class="rignt_c_2 noselect">二级</div>
+					<div id = "t3" class="rignt_c_2 noselect">三级</div>
+					<div id = "t4" class="rignt_c_2 noselect">四级</div>
+					<div id = "t5" class="rignt_c_2 noselect">五级</div>
+					<div id = "t6" class="rignt_c_2 noselect">六级</div>
+					</div>
+					<div id = "tipMemo" class="health_foot"></div>
+			</div>
+			<div class="prediction">
+				<div class="prediction_top">预报信息</div>
+				<div id="broad" class="prediction_foot"></div>
+			</div>
+	    </div>
+</div>
+
+
+
+
+</body>
+<script>
+    init();
+</script>
+</html>

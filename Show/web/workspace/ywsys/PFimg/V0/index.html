@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/index.css"/>
+		<script src="/myLib/LZR.js"></script>
+		<script src="js/index.js"></script>
+	</head>
+
+	<body>
+		<div class="boso">
+			<div id="condition" class="condition">
+				<input idLzr = "date" type="date" class="date"/>
+				<select idLzr="time" class="time">
+					<option value="08">08时</option>
+					<option value="20" selected=true>20时</option>
+				</select>
+
+				<div class="out">
+					<div class="title"></div>
+					<div idLzr = "ttyp" class="body">
+						<div idLzr = "hour" class="btn noselect">小时</div><!-- 
+						 --><div idLzr = "day" class="btn noselect">日均</div>
+					</div>
+				</div>
+
+				<div class="out">
+					<div class="title">预报区域</div>
+					<div idLzr = "area" class="body">
+						<div idLzr = "d01" class="btn noselect">全国</div><!-- 
+						 --><div idLzr = "d02" class="btn noselect">中东部</div><!-- 
+						 --><div idLzr = "d03" class="btn noselect">京津冀</div>
+					</div>
+				</div>
+
+				<div class="out">
+					<div class="title">预报模式</div>
+					<div idLzr = "mod" class="body">
+						<div idLzr = "NAQPMS" class="btn noselect">NAQPMS</div><!-- 
+						 --><div idLzr = "CMAQ" class="btn noselect">CMAQ</div><!-- 
+						 --><div idLzr = "CAMx" class="btn noselect">CAMX</div><!-- 
+						 --><div idLzr = "WRF" class="btn noselect">WRFCH</div>
+					</div>
+				</div>
+
+				<div class="out">
+					<div class="title">污染指标</div>
+					<div idLzr = "fom" class="body">
+						<div idLzr = "aqi" class="btn noselect">AQI</div><!-- 
+						 --><div idLzr = "pm25" class="btn noselect">PM<sub>2.5</sub></div><!-- 
+						 --><div idLzr = "pm10" class="btn noselect">PM<sub>10</sub></div><!-- 
+						 --><div idLzr = "o3" class="btn noselect">O<sub>3</sub></div><!-- 
+						 --><div idLzr = "co" class="btn noselect">CO</div><!-- 
+						 --><div idLzr = "so2" class="btn noselect">SO<sub>2</sub></div><!-- 
+						 --><div idLzr = "no2" class="btn noselect">NO<sub>2</sub></div><!-- 
+						 --><div idLzr = "o38" class="btn noselect">O<sub>3</sub>_8H</div><!-- 
+						 --><div idLzr = "dult" class="btn noselect">沙尘</div><!-- 
+						 --><div idLzr = "seasalt" class="btn noselect">海盐</div>
+					</div>
+				</div>
+
+			</div><!-- 
+			 --><div id="tub" class="tub">
+				<div idLzr = "hct_ThumbnailsSlider" class = "slider">
+					<div idLzr = "hct_ThumbnailsTemplate" class = "block">
+						<div class = "imgout">
+							<div idLzr = "img" class = "img"></div>
+						</div>
+						<div idLzr = "memo" class = "memo"></div>
+					</div>
+				</div>
+			</div><!-- 
+			 --><div class="scrllOut">
+			 	<div id="scrll" class="scrll">
+					<div idLzr="hct_StripNumBtn" class = "btn0">
+						<div class = "btn noselect"></div>
+					</div>
+				</div>
+			 </div><!-- 
+			 --><div id="content" class="content">
+			 	<div id="bigImg" class = "bigImg">
+				 	<div class="ctrlBar">
+			 			 <select idLzr="speed" class="speed">
+			 			 	<option value=300 selected=true>快</option>
+			 			 	<option value=700>中</option>
+			 			 	<option value=1200>慢</option>
+			 			 </select>
+			 			 <div idLzr="play" class="btn noselect play"></div>
+			 			 <div idLzr="prv" class="btn noselect prv"></div>
+			 			 <div idLzr="next" class="btn noselect next"></div>
+			 			 <div idLzr="big" class="btn noselect big"></div>
+			 			 <div idLzr="small" class="btn noselect small"></div>
+			 			 <div idLzr="fit" class="btn noselect fit"></div>
+				 		<div idLzr="scall" class="scall">100%</div>
+				 	</div>	
+			 		<div idLzr="imgOut" class="imgOut">
+			 			 <div idLzr="img" class="img"></div>
+			 		</div>
+			 	</div>
+			 </div>
+		</div>
+	</body>
+	<script>
+		document.body.onload = init;
+	</script>
+</html>

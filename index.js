@@ -50,6 +50,30 @@ srv.use("/Pic/", require("./Pic"));
 // 作品展示
 srv.use("/Show/", require("./Show"));
 
+// 虚拟实验作品展示
+if (process.env.OPENSHIFT_NODEJS_PORT) {
+	srv.ro.get("/ShowVr/", function (req, res) {
+		res.redirect("https://www.ziniulian.tk/ProVr/web/");
+	});
+} else {
+	srv.use("/ShowVr/", new LZR.Node.Router ({
+		path: "L:\\Doc\\Git\\ProVr\\",
+		hd_web: "web"
+	}));
+}
+
+// 长征网作品展示
+if (process.env.OPENSHIFT_NODEJS_PORT) {
+	srv.ro.get("/ShowLongMarch/", function (req, res) {
+		res.redirect("https://www.ziniulian.tk/LongMarch/");
+	});
+} else {
+	srv.use("/ShowLongMarch/", new LZR.Node.Router ({
+		path: "L:\\Doc\\Git\\",
+		hd_web: "LongMarch"
+	}));
+}
+
 // 股服务
 srv.use("/Gu/", require("./Gu"));
 

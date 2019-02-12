@@ -14,4 +14,11 @@ var r = new LZR.Node.Router ({
 	hd_web: "LX_JS"
 });
 
+
+if (process.env.OPENSHIFT_NODEJS_PORT) {
+	r.get("*", function (req, res) {
+		res.redirect("https://www.ziniulian.tk/LX_JS" + req.url);
+	});
+}
+
 module.exports = r;

@@ -48,9 +48,21 @@ html, body {
 .RegS_zm {
 	position: absolute;
 	top: 5px;
-	left: 5px;
+	left: 35px;
 	color:#878787;
 	font-family: "微软雅黑";
+}
+.menu {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	top: 5px;
+	left: 5px;
+	cursor: pointer;
+	background-image: url(/Pic/img/web/RegS/V2/menu.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
 }
 
 .RegS_zm .left{
@@ -467,7 +479,7 @@ float:left;
 	height: 100%;
 	z-index: 100;
 	background-color: #FF0;
-	background-image: url(http://www.ziniulian.tk/favicon.ico);
+	background-image: url(/favicon.ico);
 	background-repeat: no-repeat;
 	background-position: center center;
 	/*background-image: url(http://img.ui.cn/data/file/1/1/5/253511.gif);*/

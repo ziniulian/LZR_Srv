@@ -771,5 +771,13 @@ function init () {
 	t.cofDat();
 	t.placeView();
 	t.run();
+}
 
+// 隐藏菜单
+function hidMenu () {
+	if (RegS_leftOut.className === "RegS_zm") {
+		RegS_leftOut.className = "nosee";
+	} else {
+		RegS_leftOut.className = "RegS_zm";
+	}
 }

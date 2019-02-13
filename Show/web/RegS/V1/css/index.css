@@ -1,0 +1,140 @@
+.noselect {
+	/*文字不被选中*/
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+.map {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.timeAxis {
+	position: absolute;
+	width: 96%;
+	bottom: 10px;
+	padding-left: 2%;
+}
+.windCanvasStyle {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	/*background-color: red;*/
+	/*opacity: 0.5;*/
+}
+.hover {
+	position: relative;
+	left: 45px;
+	width: calc(100% - 45px);
+	height: 150px;
+	/*background-color: rgba(120, 120, 120, 0.6);*/
+}
+.hover_img {
+	position: absolute;
+	width: 180px;
+	top: 0;
+	height: 85%;
+	background-size: contain;
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	opacity: 0.6;
+}
+.hover_img:hover {
+	opacity: 1;
+}
+.hover_txt {
+	position: absolute;
+	bottom: 0;
+	width:100%;
+	font-family:'微软雅黑';
+	font-size: 15px;
+	text-align: center;
+	line-height: 20px;
+}
+.hover_v {
+	position: absolute;
+	width: 180px;
+	bottom: 0;
+	height: 15%;
+	background-image: url(../../../../../../../data/RegImg/v.png);
+	background-size: contain;
+	background-position: center bottom;
+	background-repeat: no-repeat;
+}
+.mark {
+	position: absolute;
+	top: 3px;
+	width: 6px;
+	height: 6px;
+	box-shadow: 0 0 2px 1px #FFF;
+	border-radius: 10px;
+	left: 250px;
+}
+.mark:hover {
+	box-shadow: 0 0 7px 4px #FFF;
+}
+.mark_title {
+	position: absolute;
+	width: 120px;
+	height: 18px;
+	top: -26px;
+	font-family:'微软雅黑';
+	font-size: 15px;
+	font-weight: bold;
+	padding-left: 30px;
+	padding-right: 15px;
+}
+.button {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	top: 10px;
+	left: 10px;
+	background-color: yellow;
+	border-radius: 10px;
+}
+.ctrlDiv {
+	position: absolute;
+	/*display: none;*/
+	left: 20px;
+	/*bottom: 20px;*/
+	/*right: 20px;*/
+	top: 20px;
+	/*background-color: red;*/
+	/*opacity: 0.2;*/
+}
+.out {
+	float: left;
+}
+.normal {
+	font-family: 微软雅黑;
+	font-weight: bold;
+	font-size: 16px;
+	padding: 10px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	color: #999;
+	background-color: rgba(0,0,0,0.2);
+
+	/*鼠标样式*/
+	cursor: pointer;
+}
+.normal:hover {
+	color: #ccc;
+	background-color: rgba(0,0,0,0.5);
+}
+.selected {
+	color: #666;
+	font-weight: bold;
+	background-color: rgba(255, 255, 0, 0.8);
+}
+.selected:hover {
+	color: #333;
+	background-color: rgba(255, 255, 0, 1);
+}
+.date {
+	height: 49px;
+}

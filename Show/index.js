@@ -31,4 +31,7 @@ r.get("/windSrv/", function (req, res, next) {
 	tools.winds.qry(req.query, res);
 });
 
+// 测温演示
+r.use("/TmpMg/", require("./TmpTagMgmt"));
+
 module.exports = r;

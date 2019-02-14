@@ -1,0 +1,138 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	/*height: 100%;*/
+	font-size: 20px;
+	font-family: "Microsoft YaHei"
+}
+
+/*导航*/
+.navOut {
+	margin: 1rem;
+}
+
+.navS {
+	display: inline-block;
+	vertical-align: middle;
+	width: 0.1rem;
+	height: 2rem;
+	background-color: red;
+}
+
+.nav {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0 2rem;
+	line-height: 2rem;
+	color: black;
+	outline: none;
+	font-weight: bold;
+	border-right: 0.1rem solid red;
+}
+
+.navC {
+	color: red;
+}
+
+/* -------------------------------------- */
+
+/*外层*/
+.boso {
+	height: 100%;
+}
+
+/* -------------------------------------- */
+
+/*设备*/
+.devOut {
+	text-align: center;
+}
+
+.dev {
+	display: inline-block;
+	vertical-align: middle;
+	width: 16rem;
+	height: 15rem;
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-size: contain;
+	background-image: url("../img/dev.png");
+}
+
+.devOdd {
+	background-image: url("../img/devodd.png");
+}
+
+.txtOut {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.nam {
+	line-height: 3;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: left;
+}
+
+.txt {
+	line-height: 2;
+	text-align: left;
+}
+
+/*标签列表*/
+.tagOut {
+	width: 100%;
+	max-width: 36rem;
+	margin: 0 auto;
+	font-size: 0;
+}
+
+.tagNam {
+	width: 47%;
+	width: calc(50% - 0.5rem);
+	padding-left: 0.5rem;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 1rem;
+	text-align: left;
+}
+
+.tagTmp {
+	width: 30%;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 1.2rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+.tagStat {
+	width: 20%;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 1rem;
+	text-align: center;
+}
+
+.tagTitle {
+	width: 100%;
+	font-weight: bold;
+	line-height: 2;
+	text-align: center;
+	border-bottom: 0.1rem solid red;
+}
+
+.tagBigF {
+	font-size: 1.2rem;
+}
+
+.tagBody {
+	width: 100%;
+	line-height: 2.6;
+}
+
+.odd {
+	color: red;
+	background-color: yellow;
+}

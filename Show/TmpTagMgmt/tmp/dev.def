@@ -1,0 +1,8 @@
+{{for (var s in it.devs) {}}
+	<a href="{{= it.tmpo.url.base + '/../devInfo/' + s}}" target="_blank">
+		<div class="dev{{=it.devs[s].stat?'':' devOdd'}}">
+			<div class="nam">{{=it.devs[s].nam}}</div>
+			<div class="num">{{=it.devs[s].num}}</div>
+		</div>
+	</a>
+{{}}}

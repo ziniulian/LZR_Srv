@@ -41,8 +41,11 @@ srv.ro.get("/tools.js", function (req, res) {
 // LZR库文件访问服务
 srv.ro.setStaticDir("/myLib/", LZR.curPath);
 
+// 其它JS库
+srv.ro.setStaticDir("/comLib/", "./common/Lib/");
+
 // 记录访问信息
-srv.ro.all(/^\/((Gu)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
+srv.ro.all(/^\/((Show)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
 
 // 临时图床
 srv.use("/Pic/", require("./Pic"));
@@ -88,8 +91,8 @@ srv.ro.setStaticDir("/", "./web");
 
 // 收尾处理
 srv.use("*", function (req, res) {
-	res.status(404).send("404!");
 	// res.redirect("https://www.ziniulian.tk/home.html");
+	res.send("404");
 });
 
 // 服务启动

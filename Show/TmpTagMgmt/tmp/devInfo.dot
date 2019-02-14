@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>设备详情</title>
+		{{#def.meta}}
+		<link rel="stylesheet" href="tmp2web/css/devInfo.css">
+	</head>
+
+	<body>
+		<div class="boso">
+			{{
+				it.nav = {
+					"首页": it.tmpo.url.base + "/../"
+				};
+				it.nav[it.nam] = "";
+			}}
+			{{#def.nav}}
+
+			<div class="devOut">
+				<div class="dev{{=it.stat?'':' devOdd'}}"></div>
+				<div class="txtOut">
+					<div class="nam">设备名：{{=it.nam}}</div>
+					<div class="txt">设备编号：{{=it.num}}</div>
+					<div class="txt">状态：{{=it.stat?"正常":"异常"}}</div>
+				</div>
+			</div>
+
+			<div class="tagOut">
+				<div class="tagTitle">
+					<div class="tagNam tagBigF">标签名</div>
+					<div class="tagTmp tagBigF">当前温度</div>
+					<div class="tagStat tagBigF">状态</div>
+				</div>
+				<div class="tagBody">
+					{{#def.tag}}
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

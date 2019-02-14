@@ -1,0 +1,9 @@
+{{for (var s in it.tags) {}}
+	<div{{=it.tags[s].stat?"":" class='odd'"}}>
+		<a href="{{= it.tmpo.url.base}}/../tagInfo/{{=it.id}}/{{=s}}/1" target="_blank">
+			<div class="tagNam">{{=it.tags[s].nam}}</div>
+		</a>
+		<div class="tagTmp">{{=it.tags[s].cur}}℃</div>
+		<div class="tagStat">{{=it.tags[s].stat?"正常":"异常"}}</div>
+	</div>
+{{}}}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>标签信息</title>
+		{{#def.meta}}
+		<link rel="stylesheet" href="tmp2web/css/tagInfo.css">
+		<script type="text/javascript" src="/comLib/echarts.js"></script>
+		<script type="text/javascript" src="tmp2web/js/tagInfo.js"></script>
+	</head>
+
+	<body>
+		<div class="boso">
+			{{
+				it.nav = {
+					"首页": it.tmpo.url.base + "/../"
+				};
+				it.nav[it.devNam] = it.tmpo.url.base + "/../devInfo/" + it.devId;
+				it.nav[it.nam] = "";
+			}}
+			{{#def.nav}}
+
+			<div class="tagOut">
+				<div class="tag{{=it.stat?'':' tagOdd'}}"></div>
+				<div class="txtOut">
+					<div class="nam">标签名：{{=it.nam}}</div>
+					<div class="txt">当前温度：{{=it.cur}}℃</div>
+					<div class="txt">温度范围最小值：{{=it.min}}℃</div>
+					<div class="txt">温度范围最大值：{{=it.max}}℃</div>
+					<div class="txt">EPC：{{=it.epc}}</div>
+					<div class="txt">TID：{{=it.tid}}</div>
+					<div class="txt">状态：{{=it.stat?"正常":"异常"}}</div>
+				</div>
+			</div>
+
+			<div class="logOut">
+				<div class="timOut">
+					<a href="./1">近 1 小时</a> |
+					<a href="./4">近 4 小时</a> |
+					<a href="./8">近 8 小时</a> |
+					<a href="./12">近 12 小时</a>
+					<div class="logTitle">历史数据</div>
+				</div>
+				<div id="logs" class="logs"></div>
+			</div>
+
+		</div>
+	</body>
+
+{{? it.logs}}
+	<script type="text/javascript">
+		var initObj = {
+			logs: '{{=it.logs}}',
+			logsDom: document.getElementById("logs"),
+			max: {{=it.max}},
+			min: {{=it.min}}
+		};
+		document.body.onload = init;
+	</script>
+{{?}}
+</html>

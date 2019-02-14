@@ -1,0 +1,107 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	/*height: 100%;*/
+	font-size: 20px;
+	font-family: "Microsoft YaHei"
+}
+
+/* -------------------------------------- */
+
+.boso {
+	height: 100%;
+}
+
+/* -------------------------------------- */
+
+/*搜索框*/
+.searchOut {
+	width: 100%;
+	text-align: right;
+}
+
+.odd {
+	display: inline-block;
+	vertical-align: bottom;
+	height: 2rem;
+	padding-left: 2rem;
+	line-height: 2rem;
+	cursor: pointer;
+	background-repeat: no-repeat;
+	background-position: 0.4rem 0.45rem;
+	background-size: 1.2rem 1.2rem;
+	background-image: url("../img/nosec.png");
+}
+
+.isodd {
+	background-image: url("../img/issec.png");
+}
+
+.keyword {
+	display: inline-block;
+	vertical-align: bottom;
+	width: 15rem;
+	height: 1.6rem;
+	margin: 0 1rem;
+	padding: 0 0.5rem;
+	line-height: 1.6rem;
+	text-align: left;
+	outline: none;
+	border-bottom: .1rem solid red;
+}
+
+.btn {
+	display: inline-block;
+	vertical-align: bottom;
+	cursor: pointer;
+	width: 2rem;
+	height: 2rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 1.8rem 1.8rem;
+	background-image: url("../img/search.png");
+}
+.btn:hover {
+	background-image: url("../img/curSearch.png");
+}
+
+/*设备*/
+.devOut {
+	width: 100%;
+	max-width: 50rem;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.dev {
+	display: inline-block;
+	cursor: pointer;
+	vertical-align: middle;
+	width: 10rem;
+	padding-top: 7.3rem;
+	margin: 0.5rem;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: 8rem;
+	background-image: url("../img/dev.png");
+}
+.dev:hover {
+	background-color: #eee;
+}
+
+.devOdd {
+	background-image: url("../img/devodd.png");
+}
+
+.nam {
+	line-height: 1.2;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.num {
+	line-height: 1.5;
+	font-size: 0.8rem;
+	color: #666;
+	font-style: italic;
+}

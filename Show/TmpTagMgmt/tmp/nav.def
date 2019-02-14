@@ -1,0 +1,14 @@
+{{? it.nav}}
+	<div class="navOut">
+		<div class="navS"></div>
+		{{for (var s in it.nav) {}}
+			{{? it.nav[s]}}
+				<a href="{{=it.nav[s]}}" target="_blank">
+					<div class="nav">{{=s}}</div>
+				</a>
+			{{??}}
+				<div class="nav navC">{{=s}}</div>
+			{{?}}
+		{{}}}
+	</div>
+{{?}}

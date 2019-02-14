@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>设备浏览</title>
+		{{#def.meta}}
+		<link rel="stylesheet" href="tmp2web/css/devBrowse.css">
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+		<script type="text/javascript" src="tmp2web/js/devBrowse.js"></script>
+	</head>
+
+	<body>
+		<div class="boso">
+			<div class="searchOut">
+				<div id="odd" class="odd{{=it.isodd?' isodd':''}}">只显示异常设备</div>
+				<div id="keyword" class="keyword"></div>
+				<div id="btn" class="btn"></div>
+			</div>
+			<div class="devOut">
+				{{#def.dev}}
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		var initObj = {
+			url: "{{=it.tmpo.url.base}}",
+			keyword: "{{=it.keyword}}",
+			odd: {{=it.isodd}},
+			oddDom: document.getElementById("odd"),
+			btnDom: document.getElementById("btn"),
+			keywordDom: document.getElementById("keyword")
+		};
+		document.body.onload = init;
+	</script>
+</html>

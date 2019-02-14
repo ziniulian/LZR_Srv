@@ -1,0 +1,117 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	/*height: 100%;*/
+	font-size: 20px;
+	font-family: "Microsoft YaHei"
+}
+
+/*导航*/
+.navOut {
+	margin: 1rem;
+}
+
+.navS {
+	display: inline-block;
+	vertical-align: middle;
+	width: 0.1rem;
+	height: 2rem;
+	background-color: red;
+}
+
+.nav {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0 2rem;
+	line-height: 2rem;
+	color: black;
+	outline: none;
+	font-weight: bold;
+	border-right: 0.1rem solid red;
+}
+
+.navC {
+	color: red;
+}
+
+/* -------------------------------------- */
+
+/*外层*/
+.boso {
+	height: 100%;
+}
+
+/* -------------------------------------- */
+
+/*标签*/
+.tagOut {
+	text-align: center;
+}
+
+.tag {
+	display: inline-block;
+	vertical-align: middle;
+	width: 16rem;
+	height: 15rem;
+	background-repeat: no-repeat;
+	background-position: left center;
+	background-size: contain;
+	background-image: url("../img/tag.png");
+}
+
+.tagOdd {
+	background-image: url("../img/tagodd.png");
+}
+
+.txtOut {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.nam {
+	line-height: 3;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: left;
+}
+
+.txt {
+	line-height: 2;
+	text-align: left;
+}
+
+/*日志*/
+.logOut {
+	width: 100%;
+	max-width: 36rem;
+	margin: 3rem auto;
+	font-size: 0;
+}
+
+.timOut {
+	position: relative;
+	font-size: 0.8rem;
+	text-align: right;
+	border-bottom: 0.1rem solid red;
+}
+
+.timOut a {
+	text-decoration: none;
+	padding: 0 0.5rem;
+	line-height: 1.5;
+}
+
+.logTitle {
+	position: absolute;
+	bottom: 0;
+	left: 0.1rem;
+	z-index: 10;
+	font-size: 1.5rem;
+	line-height: 1.2;
+}
+
+.logs {
+	width: 100%;
+	height: 23rem;
+	margin-top: 0.5rem;
+}

@@ -5,7 +5,7 @@ html, body {
 	width: 100%;
 	height: 100%;
 	font-family: "Microsoft YaHei";
-	font-size: 20px;
+	font-size: 2.7vh;
 	color: #000;
 }
 
@@ -84,13 +84,13 @@ a{
 
 /*中字体*/
 .mfs {
-	font-size: 1.1rem;
-	line-height: 1.5rem;
+	font-size: 1.3rem;
+	line-height: 1.5;
 }
 
 /*小字体*/
 .sfs {
-	font-size: 0.7rem;
+	font-size: 0.9rem;
 	line-height: 1.5;
 }
 
@@ -121,8 +121,8 @@ a{
 }
 
 .home_title_size {
-	font-size: 1rem;
-	line-height: 2;
+	font-size: 1.3rem;
+	line-height: 2.2;
 }
 
 .home_tim {
@@ -163,7 +163,7 @@ a{
 .home_block_txt {
 	display: inline-block;
 	vertical-align: bottom;
-	font-size: 0.9rem;
+	font-size: 1.2rem;
 }
 
 .home_block_scan {
@@ -347,11 +347,11 @@ a{
 .check_out {
 	position: relative;
 	width: 100%;
-	height: 48.8%;
+	height: 46.5%;
 	margin-top: 3%;
 	background-repeat: no-repeat;
 	background-position: left top;
-	background-size: cover;
+	background-size: contain;
 	background-image: url(../img/datbg.png);
 	/*background-color: red;*/
 }
@@ -380,8 +380,8 @@ a{
 
 .check_set {
 	position: absolute;
-	bottom: 0.1rem;
-	right: 0.5rem;
+	bottom: 0.3rem;
+	right: 1.5rem;
 	color: #00F;
 	text-decoration: underline;
 	z-index: 20;
@@ -484,7 +484,7 @@ a{
 }
 
 .about_txt {
-	margin: 8.5rem 0 0 1.3rem;
+	margin: 13rem 0 0 2rem;
 	line-height: 2;
 }
 
@@ -509,7 +509,7 @@ a{
 .scan_ing {
 	position: absolute;
 	left: 0.1rem;
-	top: 3.15rem;
+	top: 4.3rem;
 	width: 100%;
 	height: 60%;
 	background-repeat: no-repeat;
@@ -521,7 +521,7 @@ a{
 .scan_btn {
 	position: absolute;
 	left: 0;
-	top: 10rem;
+	top: 14rem;
 	width: 100%;
 	height: 14.6%;
 	background-repeat: no-repeat;
@@ -564,7 +564,7 @@ a{
 	vertical-align: middle;
 	cursor: pointer;
 	background-repeat: no-repeat;
-	background-position: 2.5rem center;
+	background-position: 3rem center;
 	background-size: 1rem 1rem;
 	background-image: url(../img/scd.png);
 }
@@ -612,6 +612,7 @@ a{
 	font-size: 1rem;
 	line-height: 2.2rem;
 	text-align: center;
+	font-family: "SimHei";
 	background-image: url(../img/sbtn.png);
 }
 .clear_btn:hover {

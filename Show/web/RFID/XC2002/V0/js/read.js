@@ -58,6 +58,7 @@ dat = {
 
 	// 退出页面
 	back: function () {
+		rfdo.stop();	// 兼容模拟器
 		location.href = "home.html";
 	}
 

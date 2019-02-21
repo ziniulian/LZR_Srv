@@ -69,6 +69,10 @@ rfid = {
 	},
 	showDatePicker: function (y, m, d, min) {
 		rfdo.showDatePicker (y, m, d, min);
+	},
+
+	exit: function () {
+		rfdo.exit();
 	}
 
 };

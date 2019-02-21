@@ -131,11 +131,14 @@ dat = {
 		var d = Math.floor(Date.parse(strd + " 0:0:0") / 1000);
 		if (!isNaN(d)) {
 			if (min) {
-				dat.min = d;
-			} else {
+				if (d < dat.max) {
+					dat.min = d;
+					dat.qry();
+				}
+			} else if (d > dat.min) {
 				dat.max = d;
+				dat.qry();
 			}
-			dat.qry();
 		}
 	},
 
@@ -231,7 +234,11 @@ dat = {
 	},
 
 	back: function () {
-		window.location.href = "home.html";
+		if (rfdo.dtShow) {
+			rfdo.hidDatePicker();
+		} else {
+			window.location.href = "home.html";
+		}
 	}
 
 };

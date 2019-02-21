@@ -11,7 +11,7 @@ dat = {
 	// 退出页面
 	back: function () {
 		if (document.title === "Exit") {
-			rfdo.exit();
+			rfid.exit();
 		} else {
 			document.title = "Exit";
 			exit.className = "exit sfs";

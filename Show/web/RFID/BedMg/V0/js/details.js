@@ -77,6 +77,10 @@ dat = {
 			r += sn;
 		}
 		return r;
+	},
+
+	back: function () {
+		window.history.back();
 	}
 
 };

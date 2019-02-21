@@ -256,3 +256,29 @@ table, tbody, tr {
     width: 100%;
     text-align: center;
 }
+
+/*---------------------- 时间选择器 ----------------------*/
+.dtpo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background-color: #F9F9F9;
+}
+.dtpTxt {
+	margin: 3rem 0;
+	font-size: 2rem;
+}
+.dtpBtn {
+	display: inline-block;
+	cursor: pointer;
+	margin: 2rem 0;
+	padding: 1rem 2rem;
+	background-color: yellow;
+}
+
+#timmin, #timmax, #num, .typ, .today {
+	cursor: pointer;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>WhOut</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+
+		<link href="../css/base.css" rel="stylesheet" type="text/css" />
+		<link href="../css/s01.css" rel="stylesheet" type="text/css" />
+
+		<script src="../js/rfidSimulatorInf.js" type="text/javascript"></script>
+		<script src="../js/main.js"></script>
+		<script src="../js/tools.js"></script>
+		<script src="../js/rfid.js"></script>
+		<script src="../js/whOut.js"></script>
+
+		<style type="text/css">
+			.wh_tb td span{
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso Lc_noadr hom_bg">
+			<div class="hom_top clr_bar bfs">
+				出库.<span id="namDom"></span>
+			</div>
+			<div class="wh_bot midOut">
+				<div class="midTop"></div><!--
+				--><div class="midSub mfs">
+					已出库：<span id="okNumDom">0</span> ，
+					总数：<span id="numDom">0</span>
+				</div>
+			</div>
+			<div id="outDoe" class="wh_body">
+				<table class="wh_out_tb">
+					<tbody id="rdyListDom"></tbody>
+					<tbody id="noListDom"></tbody>
+					<tbody id="okListDom">
+						<!-- <tr>
+							<td>
+								<table class="wh_tb sfs">
+									<tr>
+										<td class="wh_out_tb_img wh_out_tb_img_ok"></td>
+										<td class="wh_tb_g"></td>
+										<td>名称</td>
+									</tr>
+									<tr>
+										<td class="wh_tb_k">S/N</td>
+										<td class="wh_tb_g">:</td>
+										<td>aaaa</td>
+									</tr>
+									<tr>
+										<td class="wh_tb_k">型号</td>
+										<td class="wh_tb_g">:</td>
+										<td>aaaabbbbbbbbbbbcccccccccccdddddddddd</td>
+									</tr>
+								</table>
+								<div class="wh_tb_t sfs">1000</div>
+								<div class="midOut">
+									<div class="whout_btn mfs"
+										ontouchstart = "this.className = 'whout_btn mfs whout_btn_scd';"
+										ontouchend = "this.className = 'whout_btn mfs';">保存</div>
+									<div class="whout_btn mfs"
+										ontouchstart = "this.className = 'whout_btn mfs whout_btn_scd';"
+										ontouchend = "this.className = 'whout_btn mfs';">取消</div>
+								</div>
+							</td>
+						</tr> -->
+					</tbody>
+				</table>
+			</div>
+			<div id="memoDom" class="hom_memo memo sfs midOut"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

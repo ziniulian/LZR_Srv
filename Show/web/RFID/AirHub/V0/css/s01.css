@@ -1,0 +1,332 @@
+.clr_bg {
+    color: #444;
+    background-color: #D5D5D5;
+}
+.clr_bar {
+    color: #EEE;
+    background-color: #0634A1;
+}
+
+/*信息提示*/
+.memo {
+	color: red;
+	font-style: italic;
+	margin-top: 0.7rem;
+}
+
+/*---------------------- Transition 开机画面 ----------------------*/
+.trstn_bg {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-image: url(../img/trstn_bg.jpg);
+}
+
+/*---------------------- SignIn 登录 ----------------------*/
+.sign_in_bg {
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+    background-image: url(../img/bg.png);
+}
+.sign_in_top {
+    height: 20%;
+    font-weight: bold;
+}
+.sign_in_logo {
+    width: 10%;
+    height: 100%;
+    margin: 0 3%;
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-size: contain;
+	background-image: url(../img/logo.png);
+}
+.sign_in_out {
+	width: 70%;
+	margin: 1rem auto 0 auto;
+	padding: 0 3%;
+	border-bottom: solid 0.1rem #444;
+	line-height: 1.5;
+	font-weight: bold;
+}
+.sign_in_txt {
+	width: 60%;
+	font-weight: normal;
+	background-color: inherit;
+}
+.sign_in_btn_out {
+	text-align: center;
+    margin: 2rem;
+}
+.sign_in_btn {
+	display: inline-block;
+	line-height: 1.5;
+	padding: 0 2rem;
+    border-radius: 3rem;
+}
+.sign_in_btn:hover {
+/* .sign_in_btn_scd { */
+	background-color: #F00;
+}
+.sign_in_set {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+    background-image: url(../img/settingH.png);
+}
+
+/*---------------------- Home 主页 ----------------------*/
+.hom_bg {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	background-image: url(../img/homeBg.jpg);
+}
+.hom_top {
+    height: 10%;
+    font-weight: bolder;
+    padding-left: 0.5rem;
+    line-height: 2.5;
+}
+.hom_body {
+	height: 90%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.hom_out {
+	text-align: center;
+	padding-top: 0.3rem;
+}
+.hom_memo {
+	position: fixed;
+	bottom: 1rem;
+	width: 100%;
+}
+.hom_btn {
+	display: inline-block;
+	text-align: left;
+	margin: 2%;
+	padding-left: 17%;
+	width: 28%;
+	line-height: 4;
+	background-color: rgba(222, 240, 255, 0.8);
+	color: #222;
+	background-repeat: no-repeat;
+	background-position: 0.3rem center;
+	background-size: 2.3rem 2.3rem;
+}
+.hom_btn:hover {
+    color: #EEE;
+    background-color: #0634A1;
+}
+
+.hom_btn_whIn {
+	background-image: url(../img/whIn.png);
+}
+.hom_btn_whIn:hover {
+	background-image: url(../img/whInH.png);
+}
+
+.hom_btn_whOut {
+	background-image: url(../img/whOut.png);
+}
+.hom_btn_whOut:hover {
+	background-image: url(../img/whOutH.png);
+}
+
+.hom_btn_whPan {
+	background-image: url(../img/whPan.png);
+}
+.hom_btn_whPan:hover {
+	background-image: url(../img/whPanH.png);
+}
+
+.hom_btn_whScn {
+	background-image: url(../img/whScn.png);
+}
+.hom_btn_whScn:hover {
+	background-image: url(../img/whScnH.png);
+}
+
+.hom_btn_about {
+	background-image: url(../img/about.png);
+}
+.hom_btn_about:hover {
+	background-image: url(../img/aboutH.png);
+}
+
+.hom_btn_setting {
+	background-image: url(../img/setting.png);
+}
+.hom_btn_setting:hover {
+	background-image: url(../img/settingH.png);
+}
+
+.hom_btn_signOut {
+	background-image: url(../img/signOut.png);
+}
+.hom_btn_signOut:hover {
+	background-image: url(../img/signOutH.png);
+}
+
+/*---------------------- About 关于 ----------------------*/
+.abt_bg {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	background-image: url(../img/aboutBg.jpg);
+}
+.abt_body {
+	position: absolute;
+	bottom: 2rem;
+	left: 1rem;
+}
+
+/*---------------------- Setting 设置 ----------------------*/
+.set_txt_out {
+    margin-top: 1rem;
+}
+.set_item {
+	width: 30%;
+	line-height: 2;
+	text-align: right;
+}
+.set_txt {
+	padding-left: 0.3rem;
+	width: 55%;
+}
+
+/*---------------------- WhInList 待入库清单 ----------------------*/
+.wh_list {
+    display: block;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+	background-color: rgba(222, 240, 255, 0.8);
+    color: #222;
+}
+.wh_list:hover {
+/* .wh_list_scd { */
+    background-color: rgba(250, 230, 0, 0.3);
+}
+.wh_list_nam {
+    font-weight: bolder;
+}
+.wh_list_remark {
+    font-style: italic;
+    text-align: right;
+    color: #666;
+}
+
+/*---------------------- WhIn 入库 ----------------------*/
+.wh_body {
+	height: 80%;
+	overflow-x: hidden;
+	overflow-y: auto;
+    -webkit-overflow-scrolling: auto;
+}
+.wh_bot {
+	height: 10%;
+}
+.wh_out_tb {
+    width: 95%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0 0.8rem;
+}
+.wh_out_tb tr {
+    background-color: rgba(222, 240, 255, 0.8);
+}
+.wh_out_tb td {
+    position: relative;
+}
+.wh_out_tb_img {
+    width: 15%;
+    height: 2rem;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+/* 完全匹配 */
+.wh_out_tb_img_ok {
+    background-image: url(../img/stmatch.png);
+}
+/* 部分匹配 */
+.wh_out_tb_img_ok2 {
+    background-image: url(../img/stcover.png);
+}
+/* 准备匹配 */
+.wh_out_tb_img_rdy {
+    background-image: url(../img/sttmp.png);
+}
+/* 未匹配 */
+.wh_out_tb_img_no {
+    background-image: url(../img/stplan.png);
+}
+/* 错误 */
+.wh_out_tb_img_err {
+    background-image: url(../img/stno.png);
+}
+.wh_tb {
+    width: 100%;
+    border-spacing: 0 0.5rem;
+}
+.wh_tb tr {
+    background-color: transparent;
+}
+.wh_tb tr:hover {
+    background-color: transparent;
+}
+.wh_tb td {
+    word-break:break-all;
+}
+.wh_tb_k {
+    text-align: right;
+}
+.wh_tb_g {
+    width: 5%;
+    text-align: center;
+}
+.wh_tb_t {
+    position: absolute;
+    top: 0;
+    right: 0.2rem;
+    font-style: italic;
+    text-align: right;
+    color: #666;
+}
+
+/*---------------------- WhOut 出库 ----------------------*/
+.whout_btn {
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    margin: 0 0.5rem;
+    font-weight: bold;
+    color: blue;
+}
+.whout_btn:hover {
+/* .whout_btn_scd { */
+    color: red;
+}
+
+/*---------------------- Qry 查询 ----------------------*/
+.wh_out_tb .qry_scd:hover {
+/* .wh_out_tb .qry_scd { */
+    background-color: rgba(250, 230, 0, 0.3);
+}
+
+/*---------------------- Info 设备详情 ----------------------*/
+.info_tb {
+    width: 95%;
+    margin: 1rem auto;
+    border-spacing: 0 0.5rem;
+    background-color: rgba(222, 240, 255, 0.8);
+}
+.info_tb td {
+    word-break:break-all;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Log</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+
+		<link href="../css/base.css" rel="stylesheet" type="text/css" />
+		<link href="../css/s01.css" rel="stylesheet" type="text/css" />
+
+		<script src="../js/rfidSimulatorInf.js" type="text/javascript"></script>
+		<script src="../js/main.js"></script>
+		<script src="../js/tools.js"></script>
+		<script src="../js/log.js"></script>
+
+		<style type="text/css">
+			.wh_out_tb .wh_tb_k {
+				width: 30%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso Lc_noadr hom_bg">
+			<div class="hom_top clr_bar bfs">
+				设备详情
+			</div>
+			<div id="outDoe" class="hom_body">
+				<table class="info_tb sfs">
+					<tbody id="infoDoe"></tbody>
+				</table>
+				<div class="bfs">&nbsp;&nbsp;&nbsp;&nbsp;领用记录 ：</div>
+				<table class="wh_out_tb">
+					<tbody id="listDoe"></tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		document.body.onload = init;
+	</script>
+</html>

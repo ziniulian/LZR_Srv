@@ -1,0 +1,70 @@
+/* RFID模拟器 */
+html, body {
+	padding: 0;
+	margin: 0;
+	font-size: 20px;
+}
+
+#boso {
+	font-size: 0;
+}
+
+/* 框架 */
+.frm {
+	display: inline-block;
+	vertical-align: top;
+	width: 80%;
+	text-align: center;
+}
+.frm iframe {
+	width: 133.33vh;
+	height: 100vh;
+	border: none;
+}
+
+/* 控制板 */
+.ctrl {
+	display: inline-block;
+	vertical-align: top;
+	width: 20%;
+	font-size: 1rem;
+	background-color: #FF0;
+	text-align: center;
+}
+
+@media screen and (max-aspect-ratio:5/3){
+	.ctrl {
+		width: 100%;
+		margin-top: 0.5rem;
+    }
+	.frm {
+		width: 100%;
+    }
+	.frm iframe {
+		width: 120vh;
+		height: 90vh;
+	}
+}
+
+@media screen and (max-aspect-ratio:4/3){
+	.frm iframe {
+		width: 100vw;
+		height: 75vw;
+	}
+}
+
+.Lc_nosee {
+	display: none !important;
+}
+
+.scdBtn {
+	display: inline-block;
+	width: 30%;
+	margin: 3% 1%;
+	font-size: 15px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.scdBtn:hover {
+	background-color: #FC0;
+}

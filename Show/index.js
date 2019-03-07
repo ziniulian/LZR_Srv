@@ -53,7 +53,8 @@ if (process.env.OPENSHIFT_NODEJS_PORT) {
 // 虚拟实验作品展示
 if (process.env.OPENSHIFT_NODEJS_PORT) {
 	r.get("/ShowVr/", function (req, res) {
-		res.redirect("https://www.ziniulian.tk/ProVr/web/");
+		// res.redirect("https://www.ziniulian.tk/ProVr/web/");
+		res.send("机密！不公开");
 	});
 } else {
 	r.use("/ShowVr/", new LZR.Node.Router ({

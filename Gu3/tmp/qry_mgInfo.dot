@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>基本管理</title>
+		{{#def.meta}}
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<a href="{{=it.tmpo.url.rout}}add/">&nbsp;&nbsp;&nbsp;添加</a>
+				<a class="logohome" target="_blank" href="/"></a>
+			</div>
+			<form id="qryFmDom" action="{{=it.tmpo.url.base}}/" method="post" target="_self">
+				{{#def.qrypro}}
+				<input id="markDom" type="hidden" name="mark" value='{}'/>
+				<input id="contDom" type="hidden" name="cont" value="{}"/>
+			</form>
+			{{? it.comDbSrvReturn.length > 0}}
+				<div>
+					<table>
+						<td class="c" width="50%">
+							{{? it.tmpo.qry.sm === 1}}
+								<a href="javascript: dco.pre('{{=it.comDbSrvReturn[0][it.tmpo.qry.k]}}');">上一页</a>
+							{{?}}
+						</td>
+						<td class="c" width="50%">
+							{{? it.comDbSrvReturn.length > it.tmpo.qry.size}}
+								<a href="javascript: dco.next('{{=it.comDbSrvReturn[it.tmpo.qry.size][it.tmpo.qry.k]}}');">下一页</a>
+							{{?}}
+						</td>
+					</table>
+				</div>
+				<br />
+				<div>
+					<table>
+						<tbody>
+							<tr>
+								<th width="20%">代码</th>
+								<th width="20%">名称</th>
+								<th width="30%">时间</th>
+								<th width="25%">操作</th>
+								<th width="5%" />
+							</tr>
+						</tbody>
+						<tbody>
+							{{~it.comDbSrvReturn:o:i}}
+								{{? i < it.tmpo.qry.size}}
+									<tr>
+										<td>{{=o.id || ""}}</td>
+										<td>{{=o.nam || ""}}</td>
+										{{? o.rpTim}}
+											<td>{{=it.tmpo.tls.utTim.formatUTC(o.rpTim, "date2")}}</td>
+											<td class="c">
+												<a href="javascript: dco.update('{{=o.id}}');">更新</a>
+											</td>
+											<td class="c">
+												<!-- <a href="javascript: dco.clear('{{=o.id}}');">删除</a> -->
+											</td>
+										{{??}}
+											<td></td>
+											<td class="c">
+												<a href="javascript: dco.update('{{=o.id}}', 1);">初始化</a>
+											</td>
+											<td class="c">
+												<a href="javascript: dco.clear('{{=o.id}}');">删除</a>
+											</td>
+										{{?}}
+									</tr>
+								{{?}}
+							{{~}}
+						</tbody>
+					</table>
+				</div>
+				<br />
+				<div>
+					<table>
+						<td class="c" width="50%">
+							{{? it.tmpo.qry.sm === 1}}
+								<a href="javascript: dco.pre('{{=it.comDbSrvReturn[0][it.tmpo.qry.k]}}');">上一页</a>
+							{{?}}
+						</td>
+						<td class="c" width="50%">
+							{{? it.comDbSrvReturn.length > it.tmpo.qry.size}}
+								<a href="javascript: dco.next('{{=it.comDbSrvReturn[it.tmpo.qry.size][it.tmpo.qry.k]}}');">下一页</a>
+							{{?}}
+						</td>
+					</table>
+				</div>
+			{{?}}
+			<div id="memoDom" class="memo"></div>
+		</div>
+	</body>
+
+	{{#def.qry_js}}
+	<script type="text/javascript">
+		/*数据更新*/
+		dco.update = function (id, init) {
+			var u = "{{=it.tmpo.url.base}}/update/" + id;
+			if (init) {
+				u += "/1";
+			}
+			qryFmDom.action = u;
+			qryFmDom.submit();
+		};
+
+		/*删除*/
+		dco.clear = function (id) {
+			var d = prompt("请输入要删除的代码 ：");
+			if (d === id) {
+				d = confirm("确定要删除 " + id + " 相关的所有数据吗?");
+				if (d) {
+					mtDom.value = "clear";
+					condDom.value = "{\"id\":\"" + id + "\"}";
+					qryFmDom.submit();
+				} else {
+					dco.memo("操作已取消！");
+				}
+			} else {
+				dco.memo("输入有误！");
+			}
+		};
+
+		document.body.onload = dco.init;
+	</script>
+</html>

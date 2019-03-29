@@ -57,7 +57,7 @@ srv.use("/Show/", require("./Show"));
 srv.use("/Gu/", require("./Gu"));
 
 // 股服务
-srv.use("/G/", require("./Gu2"));
+srv.use("/G/", require("./Gu3"));
 
 // 日记服务
 srv.use("/Riji/", require("./Riji"));

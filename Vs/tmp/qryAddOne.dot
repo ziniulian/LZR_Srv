@@ -15,7 +15,7 @@
 	<body>
 		<div id="boso" class="boso">
 			<div class="logo">
-				<a class="logohome" target="_blank" href="/"></a>
+				<a class="logohome" target="_blank" href="{{=it.tmpo.url.rout}}qry_test/"></a>
 			</div>
 			<form id="qryFmDom" action="{{=it.tmpo.url.rout}}{{=it.tmpo.qry.bck}}/" method="post" target="_self">
 				{{#def.qrypro}}

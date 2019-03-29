@@ -173,7 +173,8 @@
 			中文备注
 		]
 	*/
-	id:"tmp",
+	typ: "tmp",
+	id: "eastmoney",	// 东方财富版
 	main: {	// 主要指标
 		crt: [
 			"main.per",
@@ -705,6 +706,7 @@
 	tim: "变动日期",	// 日时间戳
 	t: "总股本",
 	a: "流通A股",
+	msg: "变动原因"
 	o: {},	// 其它
 },
 
@@ -732,9 +734,9 @@
 	}
 },
 
-{	// 经营分析
+{	// 收入构成
 	// http://f10.eastmoney.com/BusinessAnalysis/BusinessAnalysisAjax?code=SH600186
-	typ: "analysis",
+	typ: "inccop",
 	id: "股票代码",
 	tim: "报告期",	// 日时间戳
 	simi: "分类",	// 1:主营产品构成,2:行业收入构成,3:地区收入构成
@@ -745,3 +747,5 @@
 	scaleC: "成本占比",
 	gpm: "毛利率"
 },
+
+// 业绩预告

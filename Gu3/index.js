@@ -168,17 +168,6 @@ r.get("/qry_mgInfo/", function (req, res, next) {
 tools.qryRo.init("/");
 tools.utGu.db = tools.qryRo.db;
 
-// 修正删除条件
-r.post("/qry_mgInfo/", function (req, res, next) {
-	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
-	if (o.mt === "clear") {
-		o.cond = "{\"typ\":\"info\"}";
-		tools.qryRo.qry(req, res, next, o);
-	} else {
-		next();
-	}
-});
-
 tools.tmpRo.initTmp("/", "tmp", tools.tmpTools);
 
 /********************************/

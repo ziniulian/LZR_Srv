@@ -111,7 +111,7 @@
 				d = confirm("确定要删除 " + id + " 相关的所有数据吗?");
 				if (d) {
 					mtDom.value = "clear";
-					condDom.value = "{\"id\":\"" + id + "\"}";
+					contDom.value = "{\"id\":\"" + id + "\"}";
 					qryFmDom.submit();
 				} else {
 					dco.memo("操作已取消！");

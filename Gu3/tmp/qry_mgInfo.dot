@@ -50,7 +50,7 @@
 										<td>{{=o.id || ""}}</td>
 										<td>{{=o.nam || ""}}</td>
 										{{? o.rpTim}}
-											<td>{{=it.tmpo.tls.utTim.formatUTC(o.rpTim, "date2")}}</td>
+											<td>{{=it.tmpo.tls.utTim.formatUTC(o.rpTim, 1, "date2")}}</td>
 											<td class="c">
 												<a href="javascript: dco.update('{{=o.id}}');">更新</a>
 											</td>

@@ -1,21 +1,10 @@
 /*******  表名 ： gub  *******/
-
-// 年报更新错误日志
-{
-	typ: "err",
-	id: "股票代码",
-	tim: "报告期",
-	cod: "错误码",	// 301:未知属性;302:连接失败;
-	btyp: "信息类型",
-	k: "属性",
-	v: "值"
-},
-
+var gub = [
 {	// 个股基本信息
 	typ:"info",
 	id: "股票代码",
 	ec: "所属的交易所",	// sh:上证,sz:深证
-	sim:[分类1, 分类2, ...],	// 分类
+	sim: ["分类1", "分类2", "..."],	// 分类
 	nam: "名称",
 	pe: "底部市盈率",	// 根据150综合市盈率分析出来的底部
 		// 第一种判断方法 （默认方案） ： 以历年参照市盈率的最低值
@@ -53,7 +42,7 @@
 		vf: "换手率",
 		r: "参照市盈率",		// 自定义安全边际 = (平均市盈率 + 最低市盈率) / 2
 		rf: "以参照市盈率为参考的振幅范围",	// = (最高市盈率 - 最低市盈率) / 参照市盈率
-		ry: "参照市盈率同比变化", // 用于与 营收、扣非利润、毛利率 同比进行比较
+		ry: "参照市盈率同比变化" // 用于与 营收、扣非利润、毛利率 同比进行比较
 		// 营业收入同比变化,	profit.inc.otyoy	// 该指标越大越好，历年数据不得低于20%，且要尽量稳定
 		// 扣非净利润同比变化,	profit.np.nt.yoy	// 该指标越大越好，历年数据要稳定，且不得低于10%
 		// 毛利率,	profit.gpm	// 该指标历年要稳中有增
@@ -104,19 +93,19 @@
 		cost: {},	// 成本
 		np: {	// 净利润
 			total: {	// 利润总额
-	 			t: 0,	// 合计
+				t: 0,	// 合计
 				operate: {	// 营业利润
-		 			t: 0,	// 合计
+					t: 0,	// 合计
 					invest: {	// 加:投资收益
 						joint: 0,	// 其中:对联营企业和合营企业的投资收益
 					}
 				},
 				norev: {	// 营业外收入
-		 			t: 0,	// 合计
+					t: 0,	// 合计
 					asset: 0,	// 资产处置
 				},
 				noexp: {	// 营业外支出
-		 			t: 0,	// 合计
+					t: 0,	// 合计
 					asset: 0,	// 资产处置
 				}
 			},
@@ -176,14 +165,6 @@
 	typ: "tmp",
 	id: "eastmoney",	// 东方财富版
 	main: {	// 主要指标
-		crt: [
-			"main.per",
-			"main.grop",
-			"main.profit",
-			"main.quality",
-			"main.operat",
-			"main.risk"
-		],
 		date: ["tim", 4, "报告期"],
 		jbmgsy: ["main.per.jbmgsy", 1, "基本每股收益(元)"],
 		kfmgsy: ["main.per.kfmgsy", 1, "扣非每股收益(元)"],
@@ -193,46 +174,34 @@
 		mgwfply: ["main.per.mgwfply", 1, "每股未分配利润(元)"],
 		mgjyxjl: ["main.per.mgjyxjl", 1, "每股经营现金流(元)"],
 		yyzsr: ["main.grop.yyzsr", 3, "营业总收入(元)"],
-		mlr: ["main.grop.mlr", 1, ""],
-		gsjlr: ["main.grop.gsjlr", 1, ""],
-		kfjlr: ["main.grop.kfjlr", 1, ""],
-		yyzsrtbzz: ["main.grop.yyzsrtbzz", 1, ""],
-		gsjlrtbzz: ["main.grop.gsjlrtbzz", 1, ""],
-		kfjlrtbzz: ["main.grop.kfjlrtbzz", 1, ""],
-		yyzsrgdhbzz: ["main.grop.yyzsrgdhbzz", 1, ""],
-		gsjlrgdhbzz: ["main.grop.gsjlrgdhbzz", 1, ""],
-		kfjlrgdhbzz: ["main.grop.kfjlrgdhbzz", 1, ""],
-		jqjzcsyl: ["main.profit.jqjzcsyl", 1, ""],
-		tbjzcsyl: ["main.profit.tbjzcsyl", 1, ""],
-		tbzzcsyl: ["main.profit.tbzzcsyl", 1, ""],
-		mll: ["main.profit.mll", 1, ""],
-		jll: ["main.profit.jll", 1, ""],
-		sjsl: ["main.profit.sjsl", 1, ""],
-		yskyysr: ["main.quality.yskyysr", 1, ""],
-		xsxjlyysr: ["main.quality.xsxjlyysr", 1, ""],
-		jyxjlyysr: ["main.quality.jyxjlyysr", 1, ""],
-		zzczzy: ["main.operat.zzczzy", 1, ""],
-		yszkzzts: ["main.operat.yszkzzts", 1, ""],
-		chzzts: ["main.operat.chzzts", 1, ""],
-		zcfzl: ["main.risk.zcfzl", 1, ""],
-		ldzczfz: ["main.risk.ldzczfz", 1, ""],
-		ldbl: ["main.risk.ldbl", 1, ""],
-		sdbl: ["main.risk.sdbl", 1, ""]
+		mlr: ["main.grop.mlr", 3, "毛利润(元)"],
+		gsjlr: ["main.grop.gsjlr", 3, "归属净利润(元)"],
+		kfjlr: ["main.grop.kfjlr", 3, "扣非净利润(元)"],
+		yyzsrtbzz: ["main.grop.yyzsrtbzz", 1, "营业总收入同比增长(%)"],
+		gsjlrtbzz: ["main.grop.gsjlrtbzz", 1, "归属净利润同比增长(%)"],
+		kfjlrtbzz: ["main.grop.kfjlrtbzz", 1, "扣非净利润同比增长(%)"],
+		yyzsrgdhbzz: ["main.grop.yyzsrgdhbzz", 1, "营业总收入滚动环比增长(%)"],
+		gsjlrgdhbzz: ["main.grop.gsjlrgdhbzz", 1, "归属净利润滚动环比增长(%)"],
+		kfjlrgdhbzz: ["main.grop.kfjlrgdhbzz", 1, "扣非净利润滚动环比增长(%)"],
+		jqjzcsyl: ["main.profit.jqjzcsyl", 1, "加权净资产收益率(%)"],
+		tbjzcsyl: ["main.profit.tbjzcsyl", 1, "摊薄净资产收益率(%)"],
+		tbzzcsyl: ["main.profit.tbzzcsyl", 1, "摊薄总资产收益率(%)"],
+		mll: ["main.profit.mll", 1, "毛利率(%)"],
+		jll: ["main.profit.jll", 1, "净利率(%)"],
+		sjsl: ["main.profit.sjsl", 1, "实际税率(%)"],
+		yskyysr: ["main.quality.yskyysr", 1, "预收款/营业收入"],
+		xsxjlyysr: ["main.quality.xsxjlyysr", 1, "销售现金流/营业收入"],
+		jyxjlyysr: ["main.quality.jyxjlyysr", 1, "经营现金流/营业收入"],
+		zzczzy: ["main.operat.zzczzy", 1, "总资产周转率(次)"],
+		yszkzzts: ["main.operat.yszkzzts", 1, "应收账款周转天数(天)"],
+		chzzts: ["main.operat.chzzts", 1, "存货周转天数(天)"],
+		zcfzl: ["main.risk.zcfzl", 1, "资产负债率(%)"],
+		ldzczfz: ["main.risk.ldzczfz", 1, "流动负债/总负债(%)"],
+		ldbl: ["main.risk.ldbl", 1, "流动比率"],
+		sdbl: ["main.risk.sdbl", 1, "速动比率"]
 	},
 	balance: {	// 资产负债表
 		typ: 4,	// 数据格式类型 （对应东方财富接口的 companyType 参数）
-		crt: [
-			"balance.assets.current",
-			"balance.assets.current.fa",
-			"balance.assets.nc",
-			"balance.assets.nc.bp",
-			"balance.liability.current",
-			"balance.liability.current.fl",
-			"balance.liability.nc",
-			"balance.equity.parent",
-			"balance.equity.parent.oe",
-			"balance.equity.minority"
-		],
 		SECURITYCODE: ["id", 0, "股票代码"],
 		REPORTDATE: ["tim", 2, "报告期"],
 		MONETARYFUND: ["balance.assets.current.MONETARYFUND", 1, "货币资金"],
@@ -450,17 +419,6 @@
 	},
 	profit: {	// 利润表
 		typ: 4,	// 数据格式类型
-		crt: [
-			"profit.inc",
-			"profit.cost",
-			"profit.np.total.operate.invest",
-			"profit.np.total.norev",
-			"profit.np.total.noexp",
-			"profit.np.nt",
-			"profit.oinc",
-			"profit.cinc",
-			"profit.eps"
-		],
 		REPORTDATE: ["tim", 2, ""],
 		TOTALOPERATEREVE: ["profit.inc.t", 1, "营业总收入"],
 		OPERATEREVE: ["profit.inc.ot", 1, "营业收入"],
@@ -515,7 +473,6 @@
 		REPORTTYPE: [0, 0, ""],
 		TYPE: [0, 0, ""],
 		TOTALOPERATEREVE_YOY: [0, 0, ""],
-		OPERATEREVE_YOY: [0, 0, ""],
 		INTREVE_YOY: [0, 0, ""],
 		PREMIUMEARNED_YOY: [0, 0, ""],
 		COMMREVE_YOY: [0, 0, ""],
@@ -563,15 +520,6 @@
 	},
 	cash: {	// 现金流量表
 		typ: 4,	// 数据格式类型
-		crt: [
-			"cash.operate.in",
-			"cash.operate.out",
-			"cash.investment.in",
-			"cash.investment.out",
-			"cash.financing.in",
-			"cash.financing.out",
-			"cash.ceq"
-		],
 		REPORTDATE: ["tim", 2, ""],
 		SALEGOODSSERVICEREC: ["cash.operate.in.SALEGOODSSERVICEREC", 1, "销售商品、提供劳务收到的现金"],
 		NIDEPOSIT: ["cash.operate.in.NIDEPOSIT", 1, "客户存款和同业存放款项净增加额"],
@@ -706,7 +654,7 @@
 	tim: "变动日期",	// 日时间戳
 	t: "总股本",
 	a: "流通A股",
-	msg: "变动原因"
+	msg: "变动原因",
 	o: {},	// 其它
 },
 
@@ -749,3 +697,4 @@
 },
 
 // 业绩预告
+];

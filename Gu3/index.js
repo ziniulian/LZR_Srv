@@ -908,7 +908,7 @@ var tools = {
 				}
 			}
 			k = o.dvd[0];
-			if ((k.tim > o.info.dvdTim) && (k.regTim === 0 || k.regTim > t)) {
+			if (k && (k.tim > o.info.dvdTim) && (k.regTim === 0 || k.regTim > t)) {
 				o.info.dvdTim = k.tim;
 				o.info.dvd = {
 					cn: k.cn

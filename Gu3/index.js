@@ -134,7 +134,9 @@ var tools = {
 								t: 0
 							};
 						}
-						o.balance.dar = o.balance.liability.t / o.balance.assets.t * 100;
+						if (o.balance.assets) {
+							o.balance.dar = o.balance.liability.t / o.balance.assets.t * 100;
+						}
 					}
 
 					// 补充毛利率

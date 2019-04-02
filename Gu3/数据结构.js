@@ -29,7 +29,6 @@ var gub = [
 	quarter: "季度",
 	nam: "名称",
 	num: "总股本",	// 最接近报告期的总股本
-	p: "参考价",	// 最接近报告期的收盘价
 	pe: {	// 报告期后未来150个自然日的市盈率分析
 		p: "扣非每股收益参照值", // 所有市盈率参照此值来计算。 main.per.kfmgsy ， 1-3季报以上年度年报为准
 		o: "开盘市盈率",
@@ -38,8 +37,8 @@ var gub = [
 		l: "最低市盈率",
 		m: "平均市盈率",	// 以每天的最低价进行平均计算
 		f: "涨幅",
-		v: "成交量",
-		vf: "换手率",
+		v: "总成交量",
+		vf: "日均换手率",
 		r: "参照市盈率",		// 自定义安全边际 = (平均市盈率 + 最低市盈率) / 2
 		rf: "以参照市盈率为参考的振幅范围",	// = (最高市盈率 - 最低市盈率) / 参照市盈率
 		ry: "参照市盈率同比变化" // 用于与 营收、扣非利润、毛利率 同比进行比较
@@ -128,6 +127,22 @@ var gub = [
 		eps: {	// 每股收益
 			t: 0,	// 基本每股收益
 			dilute: 0,	// 稀释每股收益
+		},
+		cop: {	// 经营构成分析
+			// http://f10.eastmoney.com/BusinessAnalysis/BusinessAnalysisAjax?code=SH600186
+			goods: [	// 按产品分类
+				{
+					item: "产品名",
+					inc: "收入",
+					cost: "成本",
+					scl: "利润占比",
+					incScl: "收入占比",
+					costScl: "成本占比",
+					gpm: "毛利率"
+				}
+			],
+			area: [],	// 按区域分类
+			industry: []	// 按行业分类
 		},
 		gpm: 0	// 毛利率 = (profit.inc.ot - profit.cost.ot) / profit.inc.ot
 	},
@@ -682,19 +697,35 @@ var gub = [
 	}
 },
 
-{	// 收入构成
-	// http://f10.eastmoney.com/BusinessAnalysis/BusinessAnalysisAjax?code=SH600186
-	typ: "inccop",
+{	// 更新错误信息
+	typ:"error",
 	id: "股票代码",
-	tim: "报告期",	// 日时间戳
-	simi: "分类",	// 1:主营产品构成,2:行业收入构成,3:地区收入构成
-	item: "项目",
-	income: "收入",
-	scaleI: "收入占比",
-	cost: "成本",
-	scaleC: "成本占比",
-	gpm: "毛利率"
+	tim: "时间",	// 日时间戳
+	msg: [ ]	// 错误信息
 },
 
 // 业绩预告
+];
+
+/*******  表名 ： guk  *******/
+var guk = [
+{	// 日线数据
+	id:"代码",	// 个股日线数据 : http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600519&scale=240&ma=no&datalen=2000
+	tim:"日时间戳",
+	c:"收盘价",
+	o:"开盘价",
+	h:"最高价",
+	l:"最低价",
+	f:"涨幅",
+	v:"成交量",
+	t:"成交额",
+	cc:"均价",	// 当有成交额时，可计算出均价。用此均价处理均线比用收盘价更合理。
+	p:"扣非市盈率",
+	m5:"周线",
+	m10:"十日均线",
+	m20:"月线",
+	m60:"季线",
+	m120:"半年线",
+	m250:"年线"
+}
 ];

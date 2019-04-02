@@ -51,9 +51,6 @@ var tools = {
 		// 数据库
 		db: null,
 
-		// 模板工具
-		tools: null,
-
 		// 报表模板
 		tmp: null,
 
@@ -83,11 +80,10 @@ var tools = {
 		}),
 
 		// 初始化
-		init: function (r, tr, qr, tls) {
+		init: function (r, tr, qr) {
 			this.ro = r;
 			this.tmpRo = tr;
 			this.qryRo = qr;
-			this.tools = tls;
 
 			this.initAjax();
 
@@ -97,10 +93,173 @@ var tools = {
 			this.ro.post("/add/", LZR.bind(this, this.addR));
 			this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateGetInfo));	// 获取基础数据
 			this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateGetNum));	// 查询股本
-			// this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateGetCop));	// 查询收入构成
-			// this.ro.post("/qry_mgInfo/update/:id/:init/", LZR.bind(this, this.updateGetK));	// 获取历史日线数据
-			// this.ro.post("/qry_mgInfo/update/:id/:init/", LZR.bind(this, this.updateCalc));	// 市盈率分析、换算日线的市盈率
 			this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateEnd));	// 结束更新
+		},
+
+		// 数据整理
+		arrange: function (d) {
+			var i, s, o, ni, nmt, r = [];
+			ni = d.num.length - 1;	// 股本指针
+			nmt = d.num[ni].tim;	// 最小股本记录日
+			for (s in d.report) {
+				// 此循环默认报告期是从小到大遍历的
+				if (s > d.info.rpTim) {
+					o = d.report[s];
+					o.typ = "report";
+					o.id = d.id;
+					o.tim = s - 0;
+					o.nam = d.info.nam;
+
+					// 判断股本
+					if (o.tim < nmt) {
+						if (o.profit && o.profit.np.parent && o.profit.eps) {
+							o.num = Math.floor(o.profit.np.parent / o.profit.eps.base);
+						}
+					} else {
+						while (ni && o.tim >= d.num[ni - 1].tim) {
+							ni --;
+						}
+						o.num = d.num[ni].t;
+					}
+
+					// 年、季
+					i = this.utTim.getDate(this.utTim.parseDayTimestamp(o.tim));
+					o.year = i.getFullYear();
+					o.quarter = Math.floor( i.getMonth() / 3 ) + 1;
+
+					// 补充资产负债率
+					if (o.balance) {
+						if (!o.balance.liability) {
+							o.balance.liability = {
+								t: 0
+							};
+						}
+						o.balance.dar = o.balance.liability.t / o.balance.assets.t * 100;
+					}
+
+					// 补充毛利率
+					if (o.profit && o.profit.inc && o.profit.cost) {
+						o.profit.gpm = (o.profit.inc.ot - o.profit.cost.ot) / o.profit.inc.ot * 100;
+					}
+
+					// 补充年化扣非每股收益
+					if (!o.num && r.length) {
+						// 股本推算
+						o.num = r[r.length - 1].num;
+					}
+					if (o.num) {
+						if (o.quarter === 4 && o.profit && o.profit.np.nt) {
+							o.pe = {p: o.profit.np.nt.t / o.num};
+							d.info.eps = o.pe.p;
+							r.push(o);
+						} else if (d.info.eps) {
+							o.pe = {p: d.info.eps};
+							r.push(o);
+						}
+					}
+				} else {
+					LZR.del(d.report, s);
+				}
+			}
+
+			// 补充基本信息-最新报告期
+			if (o && d.info.rpTim < o.tim) {
+				d.info.rpTim = o.tim;
+			}
+
+			return r;
+		},
+
+		// 市盈率分析
+		calcEps: function (o, d) {
+			var i, j, k, t, p, a1, a2;
+			t = this.utTim.getDayTimestamp();	// 当日时间戳
+			p = [];
+			i = 0;
+			j = 0;
+
+			var getP = function (pi) {
+				if (pi < o.length) {
+					if (!p[pi] && (o[pi].tim + 150 <= t)) {
+						p[pi] = {
+							s: o[pi].tim,
+							e: o[pi].tim + 150,
+							d: []
+						};
+					}
+					return p[pi];
+				}
+				return null;
+			};
+
+			while (i < d.length) {
+				a1 = getP(j);
+				if (a1) {
+					k = d[i].tim;
+					if (k < a1.e) {
+						if (k >= a1.s) {
+							a1.d.push(d[i]);
+							a2 = getP(j + 1);
+							if (a2 && k >= a2.s) {
+								a2.d.push(d[i]);
+							}
+						}
+						i ++;
+					} else {
+						if (!a1.d.length) {
+							p[j] = null;
+						}
+						j ++;
+					}
+				} else {
+					break;
+				}
+			}
+
+			for (i = 0; i < p.length; i ++) {
+				if (p[i]) {
+					k = p[i].d;
+					t = o[i].pe;
+					if (t.p > 0.003) {
+						t.o = k[0].o / t.p;
+						t.h = k[0].h;
+						t.l = k[0].l;
+						t.v = k[0].v;
+						t.m = k[0].t;
+						for (j = 1; j < k.length; j ++) {
+							t.v += k[j].v;
+							t.m += k[j].t;
+							if (k[j].h > t.h) {
+								t.h = k[j].h;
+							}
+							if (k[j].l < t.l) {
+								t.l = k[j].l;
+							}
+						}
+						t.c = k[j - 1].c / t.p;
+						t.h /= t.p;
+						t.l /= t.p;
+						t.m = t.m / t.v / t.p;
+						t.f = (t.c - t.o) / t.o * 100;
+						t.vf = t.v / k.length / o[i].num * 100;
+						t.r = (t.m + t.l) / 2;
+						t.rf = (t.h - t.l) / t.r * 100;
+
+						// 计算同比 ry
+						k = 1;
+						while (k <= i) {
+							a1 = o[i].year - o[i - k].year;
+							if (a1 > 1) {
+								break;
+							} else if ((a1 === 1) && (o[i].quarter === o[i - k].quarter) && (o[i - k].pe.r)){
+								t.ry = (t.r - o[i - k].pe.r) / o[i - k].pe.r * 100;
+								break;
+							}
+							k ++;
+						}
+					}
+				}
+			}
 		},
 
 		// Ajax初始化
@@ -133,16 +292,73 @@ var tools = {
 				}
 			}));
 
+			// 新浪历史数据接口
+			this.ajax.evt.sinaH.add (LZR.bind(this, function (r, req, res, next) {
+				var i, j, d, p, e, o = LZR.fillPro(req, "qpobj.gu.dat");
+				// r = this.utJson.toObj(r);
+				r = eval(r);
+				if (r && r.length) {
+					o.k = [];
+					j = 1;
+					p = r[0].open;
+					e = o.sid[2][0].pe.p;
+					for (i = 0; i < r.length; i ++) {
+						d = {
+							id: o.id,
+							tim: this.getVal(r[i].day, 4),
+							c: this.getVal(r[i].close, 1),
+							o: this.getVal(r[i].open, 1),
+							h: this.getVal(r[i].high, 1),
+							l: this.getVal(r[i].low, 1),
+							v: this.getVal(r[i].volume, 1),
+							p: 0
+						};
+						d.f = (d.c - p) / p * 100;	// 涨幅
+						d.cc = d.c;	// 假设均价等于收盘价
+						d.t = d.v * d.cc;	// 推算成交额
+						p = d.c;
+
+						// 计算扣非市盈率
+						if (d.tim >= o.sid[2][0].tim) {
+							if (j && d.tim >= o.sid[2][j].tim) {
+								j ++;
+								if (j < o.sid[2].length) {
+									e = o.sid[2][j].pe.p;
+								} else {
+									j = 0;
+								}
+							}
+							if (e > 0.003) {
+								d.p = d.cc / e;
+							}
+						}
+
+						o.k.push(d);
+					}
+
+					o.info.days = o.k[0].tim;
+					o.info.daye = d.tim;
+				}
+
+				// 市盈率分析
+				console.log (o.info.nam + " : A. 已获取K线数据");
+				this.calcEps (o.sid.pop(), o.k);
+				console.log (o.info.nam + " : B. 市盈率分析完毕");
+
+				next();
+			}));
+
 			// 东方财富——股本结构
 			this.ajax.evt.eastNum.add (LZR.bind(this, function (r, req, res, next) {
 				var o = LZR.fillPro(req, "qpobj.gu.dat");
 				var d = this.utJson.toObj(r);
-				var i, j, k;
+				var i, j, k, n;
 				if (d.ShareChangeList) {
 					o.num = [];
 					d = d.ShareChangeList;
 					o = o.num;
-					for (i = 0; i < d[0].changeList.length; i ++) {
+					n = d[0].changeList.length - 1;
+					for (i = 0; i <= n; i ++) {
 						k = {
 							typ: "num",
 							id: req.params.id,
@@ -163,7 +379,7 @@ var tools = {
 									break;
 							}
 						}
-						if (!i || k.msg !== "定期报告") {
+						if ((i === 0) || (i === n) || (k.msg !== "定期报告")) {
 							o.push (k);
 						}
 					}
@@ -171,8 +387,9 @@ var tools = {
 						o.shift();
 					}
 
-					// res.json(req.qpobj.gu);
-					this.ajax.qry("eastDvd", req, res, next, req.qpobj.gu.dat.sid);
+					o = req.qpobj.gu.dat;
+					console.log (o.info.nam + " : 2. 已获取股本");
+					this.ajax.qry("eastDvd", req, res, next, o.sid);
 				} else {
 					req.qpobj.gu.ok = false;
 					req.qpobj.gu.msg = "股本结构 : " + (d.message || "数据格式错误！");
@@ -253,9 +470,10 @@ var tools = {
 					});
 				}
 
-				// res.json(req.qpobj.gu);
-				req.qpobj.gu.dat.sid.push("0");
-				this.ajax.qry("eastMain", req, res, next, req.qpobj.gu.dat.sid);
+				o = req.qpobj.gu.dat;
+				console.log (o.info.nam + " : 3. 已获取分红");
+				o.sid.push("0");
+				this.ajax.qry("eastMain", req, res, next, o.sid);
 			}));
 
 			// 东方财富——主要指标
@@ -279,7 +497,7 @@ var tools = {
 					}
 				}
 
-				// res.json(req.qpobj.gu);
+				console.log (o.info.nam + " : 4. 已获取主要指标");
 				o.sid[1] = "&a=";
 				this.ajax.qry("eastBlc", req, res, next, o.sid);
 			}));
@@ -290,6 +508,8 @@ var tools = {
 					// res.json(req.qpobj.gu);
 					req.qpobj.gu.dat.sid[1] = "&a=";
 					this.ajax.qry("eastPf", req, res, next, req.qpobj.gu.dat.sid);
+				} else {
+					console.log (req.qpobj.gu.dat.info.nam + " : 5. 资产负债表 - " + req.qpobj.gu.dat.sid[1]);
 				}
 			}));
 
@@ -299,23 +519,72 @@ var tools = {
 					// res.json(req.qpobj.gu);
 					req.qpobj.gu.dat.sid[1] = "&a=";
 					this.ajax.qry("eastCash", req, res, next, req.qpobj.gu.dat.sid);
+				} else {
+					console.log (req.qpobj.gu.dat.info.nam + " : 6. 利润表 - " + req.qpobj.gu.dat.sid[1]);
 				}
 			}));
 
 			// 东方财富——现金流量表
 			this.ajax.evt.eastCash.add (LZR.bind(this, function (r, req, res, next) {
 				if (this.qryRun(r, req, res, next, "cash", "eastCash", "现金流量表")) {
-					res.json(req.qpobj.gu);
-					// ...
-					// this.ajax.qry("eastCop", req, res, next, req.qpobj.gu.dat.sid);
+					// res.json(req.qpobj.gu);
+					req.qpobj.gu.dat.sid[1] = "";
+					this.ajax.qry("eastCop", req, res, next, req.qpobj.gu.dat.sid);
+				} else {
+					console.log (req.qpobj.gu.dat.info.nam + " : 7. 现金流量表 - " + req.qpobj.gu.dat.sid[1]);
 				}
 			}));
 
 			// 东方财富——收入构成
 			this.ajax.evt.eastCop.add (LZR.bind(this, function (r, req, res, next) {
-			}));
+				var i, j, d, t, o = LZR.fillPro(req, "qpobj.gu.dat");
+				r = this.utJson.toObj(r);
+				if (r && r.zygcfx) {
+					r = r.zygcfx;
+					for (i = 0; i < r.length; i ++) {
+						t = this.getVal(r[i].rq, 2);
+						d = o.report[t];
+						if (d && d.profit) {
+							d.profit.cop = {};
+							d = d.profit.cop;
+							if (r[i].cp) {
+								d.goods = [];
+								this.setCop(d.goods, r[i].cp);
+							}
+							if (r[i].qy) {
+								d.area = [];
+								this.setCop(d.area, r[i].qy);
+							}
+							if (r[i].hy) {
+								d.industry = [];
+								this.setCop(d.industry, r[i].hy);
+							}
+						}
+					}
 
-// console.log(this.getVal("106,202.43万", 3));
+					console.log (o.info.nam + " : 8. 已获取收入构成");
+					t = this.arrange (o);	// 数据整理
+					console.log (o.info.nam + " : 9. 数据整理完毕");
+
+					if (req.params.init) {
+						o.sid[0] = o.sid[0].toLocaleLowerCase();
+						o.sid[1] = 4799;
+						o.sid.push(t);
+						this.ajax.qry("sinaH", req, res, next, o.sid);
+					} else {
+						next();
+					}
+				} else {
+					req.qpobj.gu.ok = false;
+					req.qpobj.gu.msg = "收入构成 : ";
+					if (r && r.message) {
+						req.qpobj.gu.msg += r.message;
+					} else {
+						req.qpobj.gu.msg += "数据格式错误！";
+					}
+					next();
+				}
+			}));
 
 			// 错误处理
 			var exeHdErr = LZR.bind(this, this.hdErr);
@@ -329,6 +598,23 @@ var tools = {
 			this.ajax.err.eastPf.add(exeHdErr);
 			this.ajax.err.eastCash.add(exeHdErr);
 			this.ajax.err.eastCop.add(exeHdErr);
+
+			// console.log(this.getVal("-106,202.43万", 3));
+		},
+
+		// 收入构成赋值
+		setCop: function (o, d) {
+			for (var i = 0; i < d.length; i ++) {
+				o.push({
+					item: d[i].zygc,
+					inc: this.getVal(d[i].zysr, 3),
+					cost: this.getVal(d[i].zycb, 3),
+					scl: this.getVal(d[i].lrbl, 1),
+					incScl: this.getVal(d[i].srbl, 1),
+					costScl: this.getVal(d[i].cbbl, 1),
+					gpm: this.getVal(d[i].mll, 1)
+				});
+			}
 		},
 
 		// 循环查询
@@ -420,11 +706,35 @@ var tools = {
 			this.db = db;
 			// 获取模板
 			db.mdb.crtEvt({
-				getTmp: {
+				getTmp: {	// 获取模板
 					tnam: "gub",
 					funs: {
 						find: [{typ:"tmp", id:"eastmoney"}, {_id:0, id:0, typ:0}],
 						toArray: []
+					}
+				},
+				addGu: {	// 添加股票基本信息
+					tnam: "gub",
+					funs: {
+						insertMany: ["<0>"]
+					}
+				},
+				setGu: {	// 修改信息
+					tnam: "gub",
+					funs: {
+						update: ["<0>", "<1>"]
+					}
+				},
+				addK: {	// 添加日线数据
+					tnam: "guk",
+					funs: {
+						insertMany: ["<0>"]
+					}
+				},
+				delK: {		// 删除日线数据
+					tnam: "guk",
+					funs: {
+						deleteMany: ["<0>"]
 					}
 				}
 			});
@@ -449,7 +759,7 @@ var tools = {
 					break;
 				case 3:	// 转换为数字，需注意后边的单位（万、亿 等）
 					s = s.replace(/,/g, "");
-					r = s.search(/[^\d\.]/);
+					r = s.search(/[^\d\.-]/);
 					var b = s.substr(r);
 					r = parseFloat(s);
 					if (isNaN(r)) {
@@ -497,7 +807,6 @@ var tools = {
 					r[c] = {
 						typ: "info",
 						id: c,
-						ec: c[0] === "6" ? "sh" : "sz",
 						sim: b
 					};
 				}
@@ -558,11 +867,94 @@ var tools = {
 			}
 		},
 
+		// 保存更新
+		updateSav: function (o) {
+			var i, j, k, t, addo = [];
+			t = this.utTim.getDayTimestamp();	// 当日时间戳
+
+			// 记录错误信息
+			k = [];
+			for (i in o.err) {
+				for (j in o.err[i]) {
+					k.push(j + "." + j);
+				}
+			}
+			if (k.length) {
+				addo.push({
+					typ: "error",
+					id: o.id,
+					tim: t,
+					msg: k
+				});
+			}
+
+			// 股本
+			for (i = o.num.length - 1; i >= 0; i --) {
+				if (o.num[i].tim > o.info.numTim) {
+					addo.push(o.num[i]);
+				}
+			}
+			k = o.num[0];
+			if (o.info.numTim < k.tim) {
+				o.info.numTim = k.tim;
+				o.info.num = k.t;
+				o.info.numA = k.a;
+			}
+
+			// 分红
+			for (i = o.dvd.length - 1; i >= 0; i --) {
+				if (o.dvd[i].tim > o.info.dvdTim) {
+					addo.push(o.dvd[i]);
+				}
+			}
+			k = o.dvd[0];
+			if ((k.tim > o.info.dvdTim) && (k.regTim === 0 || k.regTim > t)) {
+				o.info.dvdTim = k.tim;
+				o.info.dvd = {
+					cn: k.cn
+				};
+				if (k.gift) {
+					o.info.dvd.gift = k.gift;
+				}
+				if (k.transfer) {
+					o.info.dvd.transfer = k.transfer;
+				}
+				if (k.dividend) {
+					o.info.dvd.dividend = k.dividend;
+				}
+				if (k.dt) {
+					o.info.dvd.dt = k.dt;
+				}
+			} else {
+				o.info.dvd = null;
+				o.info.dvdTim = 0;
+			}
+
+			// 年报
+			if (o.report) {
+				for (i in o.report) {
+					addo.push(o.report[i]);
+				}
+			}
+
+			if (addo.length) {
+				this.db.mdb.qry("addGu", null, null, null, [addo]);
+				this.db.mdb.qry("setGu", null, null, null, [{typ:"info", id:o.id}, {"$set": o.info}]);
+			}
+
+			// 日线
+			if (o.k) {
+				this.db.mdb.qry("addK", null, null, null, [o.k]);
+			}
+		},
+
 		// 结束更新
 		updateEnd: function (req, res, next) {
 			var o = LZR.fillPro(req, "qpobj.gu");
 			if (o.ok) {
-				// todo : 保存数据
+				// res.json(o);
+				// return;
+				this.updateSav(o.dat);
 			}
 			if (req.body.mt) {
 				if (o.ok) {
@@ -576,19 +968,24 @@ var tools = {
 			}
 		},
 
+		// 获取所属交易所
+		getEc: function (id) {
+			return id[0] === "6" ? "sh" : "sz";
+		},
+
 		// 更新获取基础数据
 		updateGetInfo: function (req, res, next) {
 			LZR.fillPro(req, "qpobj").gu = this.clsR.get({
-				id: req.params.id
+				id: req.params.id,
+				sid: [this.getEc(req.params.id) + req.params.id]
 			});
 			if (this.tmp) {
 				if (req.params.init) {
-					var s = req.params.id[0] === "6" ? "s_sh" : "s_sz";
-					this.ajax.qry("sinaK", req, res, next, [s + req.params.id]);
+					this.ajax.qry("sinaK", req, res, next, req.qpobj.gu.dat.sid);
 				} else {
 					this.db.get(req, res, next,
 						{typ: "info", id: req.params.id},
-						{_id:0, nam:1, num:1, numA:1, numTim:1, dvdTim:1, rpTim:1, days:1, daye:1},
+						{_id:0, nam:1, eps:1, num:1, numA:1, numTim:1, dvdTim:1, rpTim:1, days:1, daye:1},
 					true);
 				}
 			} else {
@@ -604,7 +1001,9 @@ var tools = {
 			if (o.ok) {
 				// 整理好基本信息
 				if (req.params.init) {
+					o.dat.info.ec = o.dat.sid[0].substr(0, 2);
 					o = o.dat.info;
+					o.eps = 0;
 					o.num = 0;
 					o.numA = 0;
 					o.numTim = 0;
@@ -623,10 +1022,10 @@ var tools = {
 					}
 				}
 
-				// res.json(req.qpobj.gu);
-				var s = req.params.id[0] === "6" ? "SH" : "SZ";
-				req.qpobj.gu.dat.sid = [s + req.params.id];
-				this.ajax.qry("eastNum", req, res, next, req.qpobj.gu.dat.sid);
+				o = req.qpobj.gu.dat;
+				console.log (o.info.nam + " : 1. 已获取基础数据");
+				o.sid[0] = o.sid[0].toLocaleUpperCase();
+				this.ajax.qry("eastNum", req, res, next, o.sid);
 			} else {
 				next();
 			}
@@ -641,14 +1040,22 @@ tools.tmpTools = {
 };
 
 // 股服务创建
-tools.utGu.init(r, tools.tmpRo, tools.qryRo, tools.tmpTools);
+tools.utGu.init(r, tools.tmpRo, tools.qryRo);
 
 /**************** 模板 **********************/
 
 r.get("/qry_mgInfo/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
-	o.k = "rpTim";
+	o.k = "id";
 	o.cond = "{\"typ\":\"info\"}";
+	next();
+});
+
+// 当删除股票信息时，同时删除相关的所有日线数据
+r.post("/qry_mgInfo/", function (req, res, next) {
+	if (req.body.mt === "clear") {
+		tools.utGu.db.mdb.qry("delK", null, null, null, [tools.utJson.toObj(req.body.cont)]);
+	}
 	next();
 });
 

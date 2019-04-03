@@ -85,6 +85,8 @@ var tools = {
 			this.tmpRo = tr;
 			this.qryRo = qr;
 
+			this.exeGetAllId = LZR.bind(this, this.getAllId);
+
 			this.initAjax();
 
 			this.ro.hdPost("*");
@@ -94,6 +96,8 @@ var tools = {
 			this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateGetInfo));	// 获取基础数据
 			this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateGetNum));	// 查询股本
 			this.ro.post("/qry_mgInfo/update/:id/:init?/", LZR.bind(this, this.updateEnd));	// 结束更新
+			this.ro.get("/closing/", this.exeGetAllId);
+			this.ro.get("/closing/", LZR.bind(this, this.closing));
 		},
 
 		// 数据整理
@@ -268,9 +272,9 @@ var tools = {
 		initAjax: function () {
 			// 新浪实时数据接口
 			this.ajax.evt.sinaK.add (LZR.bind(this, function (r, req, res, next) {
+				var i, j, a;
 				if (req.qpobj && req.qpobj.gu) {
 					// 更新数据初始化 —— 获取新加代码的名称
-					var i, j, a;
 					var o = LZR.fillPro(req, "qpobj.gu");
 					if (r.indexOf("var hq_str_")) {
 						o.ok = false;
@@ -289,8 +293,67 @@ var tools = {
 					}
 					next();
 				} else {
-					// todo : 用于收盘
-					res.send("ajax_sinaK : " + r);
+					// 收盘
+					var d, o, sr, k = [];
+					a = r.split(";");
+					a.pop();
+					sr = LZR.fillPro(req, "qpobj.comDbSrvReturn");
+					r = LZR.fillPro(req, "qpobj.closingDat.dat");
+					for (i = 0; i < a.length; i ++) {
+						d = a[i].split(",");
+						if (d.length < 10) {
+							// 错误代码
+							r.err.push(sr[i]);
+						} else {
+							// 名称检查
+							j = d[0].indexOf("\"") + 1;
+							j = d[0].substring(j, d[0].length);
+							if (sr[i].nam !== j) {
+								r.nam.push([
+									{typ: "info", id: sr[i].id},
+									{"$set": {nam: j}}
+								]);
+							}
+							if (this.getVal(d[1], 1)) {
+								j = sr[i].eps;
+								k.push({
+									id: sr[i].id,
+									tim: r.tim,
+									c: this.getVal(d[3], 1),
+									o: this.getVal(d[1], 1),
+									h: this.getVal(d[4], 1),
+									l: this.getVal(d[5], 1),
+									f: (d[3] - d[2]) / d[2] * 100,
+									v: this.getVal(d[8], 1),
+									t: this.getVal(d[9], 1),
+									cc: d[9] / d[8],
+									p: (j && j > 0.003) ? (d[9] / d[8] / j) : 0,
+								});
+								r.ok.push(sr[i].id);
+							} else {
+								// 停牌
+								r.stop.push(sr[i]);
+							}
+						}
+					}
+
+					// 数据保存
+					if (k.length) {
+						this.db.mdb.qry("addK", null, null, null, [k]);
+					}
+					if (r.ok.length) {
+						this.db.mdb.qry("setGu", null, null, null, [
+							{typ:"info", id: {"$in": r.ok}},
+							{"$set": {daye: r.tim}}
+						]);
+					}
+					if (r.nam.length) {
+						for (i = 0; i < r.nam.length; i ++) {
+							this.db.mdb.qry("setGu", null, null, null, r.nam[i]);
+						}
+					}
+
+					res.json(r);
 				}
 			}));
 
@@ -507,7 +570,6 @@ var tools = {
 			// 东方财富——资产负债表
 			this.ajax.evt.eastBlc.add (LZR.bind(this, function (r, req, res, next) {
 				if (this.qryRun(r, req, res, next, "balance", "eastBlc", "资产负债表")) {
-					// res.json(req.qpobj.gu);
 					req.qpobj.gu.dat.sid[1] = "&a=";
 					this.ajax.qry("eastPf", req, res, next, req.qpobj.gu.dat.sid);
 				} else {
@@ -518,7 +580,6 @@ var tools = {
 			// 东方财富——利润表
 			this.ajax.evt.eastPf.add (LZR.bind(this, function (r, req, res, next) {
 				if (this.qryRun(r, req, res, next, "profit", "eastPf", "利润表")) {
-					// res.json(req.qpobj.gu);
 					req.qpobj.gu.dat.sid[1] = "&a=";
 					this.ajax.qry("eastCash", req, res, next, req.qpobj.gu.dat.sid);
 				} else {
@@ -529,7 +590,6 @@ var tools = {
 			// 东方财富——现金流量表
 			this.ajax.evt.eastCash.add (LZR.bind(this, function (r, req, res, next) {
 				if (this.qryRun(r, req, res, next, "cash", "eastCash", "现金流量表")) {
-					// res.json(req.qpobj.gu);
 					req.qpobj.gu.dat.sid[1] = "";
 					this.ajax.qry("eastCop", req, res, next, req.qpobj.gu.dat.sid);
 				} else {
@@ -602,6 +662,7 @@ var tools = {
 			this.ajax.err.eastCop.add(exeHdErr);
 
 			// console.log(this.getVal("-106,202.43万", 3));
+			// console.log(this.utTim.getDayTimestamp());
 		},
 
 		// 收入构成赋值
@@ -698,9 +759,13 @@ var tools = {
 		// 错误处理
 		hdErr: function (e, req, res, next) {
 			var o = LZR.fillPro(req, "qpobj.gu");
-			o.ok = false;
-			o.msg = "连接错误 : " + e;
-			next();
+			if (o.dat) {
+				o.ok = false;
+				o.msg = "连接错误 : " + e;
+				next();
+			} else {
+				res.send("连接错误 : " + e);
+			}
 		},
 
 		// 数据库初始化
@@ -724,7 +789,7 @@ var tools = {
 				setGu: {	// 修改信息
 					tnam: "gub",
 					funs: {
-						update: ["<0>", "<1>"]
+						updateMany: ["<0>", "<1>"]
 					}
 				},
 				addK: {	// 添加日线数据
@@ -1032,6 +1097,48 @@ var tools = {
 				next();
 			}
 		},
+
+		// 获取全部代码
+		getAllId: function (req, res, next) {
+			this.db.get(req, res, next,
+				{typ: "info"},
+				{"_id": 0, "id": 1, "nam": 1, "ec": 1, "eps": 1, "rpTim": 1, "daye": 1}, true);
+		},
+
+		// 收盘
+		closing: function (req, res, next) {
+			var d = LZR.fillPro(req, "qpobj.comDbSrvReturn");
+			if (d.length) {
+				var i, t, r, s = "";
+				// todo : 错位了！
+				r = this.clsR.get({
+					ok: [],	// 需要更新的
+					nam: [],	// 需要变动名称的
+					stop: [],	// 停牌的
+					err: [],	// 错误的
+					miss: [],	// 已更新过无需再次提交的
+					tim: this.utTim.getDayTimestamp()
+				});
+				req.qpobj.closingDat = r;
+				for (i = 0; i < d.length; i ++) {
+					if (d[i].daye < r.dat.tim) {
+						s += d[i].ec;
+						s += d[i].id;
+						s += ",";
+					} else {
+						r.dat.miss.push(d[i].id);
+					}
+				}
+				if (s) {
+					this.ajax.qry("sinaK", req, res, next, [s]);
+				} else {
+					res.json(this.clsR.get(r, "无可操作的代码！", false));
+				}
+			} else {
+				res.json(this.clsR.get(null, "缺少代码！"));
+			}
+		}
+
 	}
 };
 
@@ -1046,10 +1153,20 @@ tools.utGu.init(r, tools.tmpRo, tools.qryRo);
 
 /**************** 模板 **********************/
 
+r.get("/qry_info/", function (req, res, next) {
+	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
+	o.mt = "mpag";
+	o.k = tools.utJson.toJson({rpTim:1, id:1});
+	o.size = 33;
+	o.cond = tools.utJson.toJson({typ: "info"});
+	next();
+});
+
 r.get("/qry_mgInfo/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
 	o.k = "id";
-	o.cond = "{\"typ\":\"info\"}";
+	o.size = 33;
+	o.cond = tools.utJson.toJson({typ: "info"});
 	next();
 });
 

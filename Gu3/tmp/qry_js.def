@@ -96,6 +96,13 @@
             qryFmDom.submit();
         },
 
+        /* 翻页 */
+        mpag: function (v) {
+            mtDom.value = "mpag";
+            vDom.value = v;
+            qryFmDom.submit();
+        },
+
 		/* 信息提示 */
 		memoTid: 0,
 		memoDoe: memoDom,

@@ -272,10 +272,10 @@ var tools = {
 		initAjax: function () {
 			// 新浪实时数据接口
 			this.ajax.evt.sinaK.add (LZR.bind(this, function (r, req, res, next) {
-				var i, j, a;
+				var i, j, a, o;
 				if (req.qpobj && req.qpobj.gu) {
 					// 更新数据初始化 —— 获取新加代码的名称
-					var o = LZR.fillPro(req, "qpobj.gu");
+					o = LZR.fillPro(req, "qpobj.gu");
 					if (r.indexOf("var hq_str_")) {
 						o.ok = false;
 						o.msg = "ajax_sinaK : 数据格式错误！";
@@ -294,15 +294,21 @@ var tools = {
 					next();
 				} else {
 					// 收盘
-					var d, o, sr, k = [];
+					var d, t, sr, k = [];
 					a = r.split(";");
 					a.pop();
 					sr = LZR.fillPro(req, "qpobj.comDbSrvReturn");
-					r = LZR.fillPro(req, "qpobj.closingDat.dat");
+					t = this.utTim.getDayTimestamp();
+					r = {
+						ok: [],	// 需要更新的
+						nam: [],	// 需要变动名称的
+						stop: [],	// 停牌的
+						err: [],	// 错误的
+						miss: []	// 已更新过无需再次提交的
+					};
 					for (i = 0; i < a.length; i ++) {
 						d = a[i].split(",");
 						if (d.length < 10) {
-							// 错误代码
 							r.err.push(sr[i]);
 						} else {
 							// 名称检查
@@ -314,25 +320,29 @@ var tools = {
 									{"$set": {nam: j}}
 								]);
 							}
-							if (this.getVal(d[1], 1)) {
-								j = sr[i].eps;
-								k.push({
-									id: sr[i].id,
-									tim: r.tim,
-									c: this.getVal(d[3], 1),
-									o: this.getVal(d[1], 1),
-									h: this.getVal(d[4], 1),
-									l: this.getVal(d[5], 1),
-									f: (d[3] - d[2]) / d[2] * 100,
-									v: this.getVal(d[8], 1),
-									t: this.getVal(d[9], 1),
-									cc: d[9] / d[8],
-									p: (j && j > 0.003) ? (d[9] / d[8] / j) : 0,
-								});
-								r.ok.push(sr[i].id);
+
+							if (sr[i].daye < t) {
+								if (this.getVal(d[1], 1)) {
+									j = sr[i].eps;
+									k.push({
+										id: sr[i].id,
+										tim: t,
+										c: this.getVal(d[3], 1),
+										o: this.getVal(d[1], 1),
+										h: this.getVal(d[4], 1),
+										l: this.getVal(d[5], 1),
+										f: (d[3] - d[2]) / d[2] * 100,
+										v: this.getVal(d[8], 1),
+										t: this.getVal(d[9], 1),
+										cc: d[9] / d[8],
+										p: (j && j > 0.003) ? (d[9] / d[8] / j) : 0,
+									});
+									r.ok.push(sr[i].id);
+								} else {
+									r.stop.push(sr[i]);
+								}
 							} else {
-								// 停牌
-								r.stop.push(sr[i]);
+								r.miss.push(sr[i].id);
 							}
 						}
 					}
@@ -344,7 +354,7 @@ var tools = {
 					if (r.ok.length) {
 						this.db.mdb.qry("setGu", null, null, null, [
 							{typ:"info", id: {"$in": r.ok}},
-							{"$set": {daye: r.tim}}
+							{"$set": {daye: t}}
 						]);
 					}
 					if (r.nam.length) {
@@ -353,7 +363,7 @@ var tools = {
 						}
 					}
 
-					res.json(r);
+					res.json(this.clsR.get(r));
 				}
 			}));
 
@@ -1110,30 +1120,12 @@ var tools = {
 			var d = LZR.fillPro(req, "qpobj.comDbSrvReturn");
 			if (d.length) {
 				var i, t, r, s = "";
-				// todo : 错位了！
-				r = this.clsR.get({
-					ok: [],	// 需要更新的
-					nam: [],	// 需要变动名称的
-					stop: [],	// 停牌的
-					err: [],	// 错误的
-					miss: [],	// 已更新过无需再次提交的
-					tim: this.utTim.getDayTimestamp()
-				});
-				req.qpobj.closingDat = r;
 				for (i = 0; i < d.length; i ++) {
-					if (d[i].daye < r.dat.tim) {
-						s += d[i].ec;
-						s += d[i].id;
-						s += ",";
-					} else {
-						r.dat.miss.push(d[i].id);
-					}
+					s += d[i].ec;
+					s += d[i].id;
+					s += ",";
 				}
-				if (s) {
-					this.ajax.qry("sinaK", req, res, next, [s]);
-				} else {
-					res.json(this.clsR.get(r, "无可操作的代码！", false));
-				}
+				this.ajax.qry("sinaK", req, res, next, [s]);
 			} else {
 				res.json(this.clsR.get(null, "缺少代码！"));
 			}

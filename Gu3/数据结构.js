@@ -6,11 +6,19 @@ var gub = [
 	ec: "所属的交易所",	// sh:上证,sz:深证
 	sim: ["分类1", "分类2", "..."],	// 分类
 	nam: "名称",
-	pe: "底部市盈率",	// 根据150综合市盈率分析出来的底部
-		// 第一种判断方法 （默认方案） ： 以历年参照市盈率的最低值
-		// 第二种判断方法 ： 在历史记录中有一定出现概率的最低值
-		// 第三种判断方法 ： 参考每历熊市行情时的最低值
-	eps: "扣非每股收益参照值",	// 1-3季报以上年度年报为准
+	p: "当前价",
+	pe: {
+		nt: "相对年化扣非净利润的市盈率",
+		nt5: "相对5年平均年化扣非净利润的市盈率",
+		safe: "底部市盈率"	// 根据150综合市盈率等分析出来的底部安全区域
+			// 第一种判断方法 （默认方案） ： 以历年参照市盈率的最低值
+			// 第二种判断方法 ： 在历史记录中有一定出现概率的最低值
+			// 第三种判断方法 ： 参考每历熊市行情时的最低值
+	},
+	nt: "年化扣非净利润参照值",	// 1-3季报以上年度年报为准
+	wc: {	// 孙氏指标
+		nt5: "近5年年化扣非净利润平均值",	// 不够5年的，也可计算最多年限的平均值 ， 1-3季报以上年度年报为准
+	},
 	num: "总股本",
 	numA: "流通A股",
 	numTim: "股本最新更新的变动日期",	// 日时间戳
@@ -30,7 +38,7 @@ var gub = [
 	nam: "名称",
 	num: "总股本",	// 最接近报告期的总股本
 	pe: {	// 报告期后未来150个自然日的市盈率分析
-		p: "扣非每股收益参照值", // 所有市盈率参照此值来计算。 main.per.kfmgsy ， 1-3季报以上年度年报为准
+		p: "扣非每股收益参照值", // 所有市盈率参照此值来计算。 main.per.kfmgsy ， 1-3季报以上年度年报为准 ， 当季/当年因股本变化会导致数据失准
 		o: "开盘市盈率",
 		c: "收盘市盈率",
 		h: "最高市盈率",
@@ -437,7 +445,7 @@ var gub = [
 		REPORTDATE: ["tim", 2, ""],
 		TOTALOPERATEREVE: ["profit.inc.t", 1, "营业总收入"],
 		OPERATEREVE: ["profit.inc.ot", 1, "营业收入"],
-		OPERATEREVE_YOY: ["profit.inc.otyoy", 0, "营业收入同比变化"],
+		OPERATEREVE_YOY: ["profit.inc.otyoy", 1, "营业收入同比变化"],
 		INTREVE: ["profit.inc.INTREVE", 1, "利息收入"],
 		PREMIUMEARNED: ["profit.inc.PREMIUMEARNED", 1, "已赚保费"],
 		COMMREVE: ["profit.inc.COMMREVE", 1, "手续费及佣金收入"],
@@ -729,3 +737,35 @@ var guk = [
 	m250:"年线"
 }
 ];
+
+/******************** 数据库操作 ************************/
+
+// 删除原基本信息里的 eps 属性
+db.gub.update({typ:"info"}, {"$unset": {eps:true}}, false, true);
+
+// 补全营业收入同比值
+var a = db.gub.find({typ:"report", "profit.inc.ot":{"$exists":true}}, {id:1,year:1,quarter:1,"profit.inc.ot":1,"profit.inc.otyoy":1});
+var i, o, b, d = {};
+for (i = 0; i < a.length(); i ++) {
+	o = d[a[i].id];
+	if (!o) {
+		o = [];
+		d[a[i].id] = o;
+	}
+	b = o[a[i].year];
+	if (!b) {
+		b = [];
+		o[a[i].year] = b;
+	}
+	b[a[i].quarter] = a[i].profit.inc.ot;
+	if (!a[i].profit.inc.otyoy) {
+		b = o[a[i].year - 1];
+		if (b) {
+			b = b[a[i].quarter];
+			if (b) {
+				a[i].profit.inc.otyoy = (a[i].profit.inc.ot - b) / b * 100;
+				db.gub.update({_id:a[i]._id}, {"$set":{"profit.inc.otyoy":a[i].profit.inc.otyoy}});
+			}
+		}
+	}
+}

@@ -23,7 +23,7 @@ var tools = {
 		Ant : "yjyg"	// 业绩预告
 	},
 };
-tools.utTim = tools.utPs.utTim
+tools.utTim = tools.utPs.utTim;
 
 // Ajax
 var ajax = new LZR.Node.Db.NodeAjax ({

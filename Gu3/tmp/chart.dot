@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>图表</title>
+		{{#def.meta}}
+
+		<script type="text/javascript" src="/comLib/echarts.js"></script>
+
+		<style type="text/css">
+			.logohome {
+				z-index: 10;
+				background-repeat: no-repeat;
+				background-position: right center;
+				background-size: contain;
+				background-image: url(/favicon.ico);
+			}
+			.boso {
+				width: 100%;
+				height: 100%;
+			}
+			.chartK {
+				width: 100%;
+				height: 60%;
+			}
+			.chartY {
+				width: 100%;
+				height: 40%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<a class="logohome" target="_self" href="{{=it.tmpo.url.rout}}chart/{{=it.chart.pro.id}}/{{?!it.chart.pro.y}}1/{{?}}"></a>
+			<div id="ckDom" class="chartK"></div>
+			<div id="cyoyDom" class="chartY"></div>
+			<div id="ctDom" class="chartY"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		var dco = {
+			init: function () {
+				{{?it.chart}}
+					var cko = {{=it.tmpo.tls.utJson.toJson(it.chart.op.k)}};
+					cko.tooltip.formatter = function (d) {
+						var i = d.dataIndex;
+						var k = cko.series[0].data[i];
+						return d.name + "：</br>开盘：" + k[0]
+							+ "</br>收盘：" + k[1]
+							+ "</br>最低：" + k[2]
+							+ "</br>最高：" + k[3]
+							+ "</br>均值：" + cko.series[1].data[i]
+							+ "</br>安全值：" + cko.series[2].data[i];
+					};
+					var ck = dco.crtChart("ckDom", cko);
+					var cyoy = dco.crtChart("cyoyDom", {{=it.tmpo.tls.utJson.toJson(it.chart.op.yoy)}});
+					var ct = dco.crtChart("ctDom", {{=it.tmpo.tls.utJson.toJson(it.chart.op.t)}});
+					echarts.connect([ck, cyoy, ct]);
+				{{??}}
+					ckDom.innerHTML = "暂无数据！";
+				{{?}}
+			},
+
+			crtChart: function (domId, o) {
+				var c = echarts.init(document.getElementById(domId));
+				c.setOption(o);
+				return c;
+			}
+		};
+
+		document.body.onload = dco.init;
+	</script>
+</html>

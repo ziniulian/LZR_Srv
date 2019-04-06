@@ -51,6 +51,12 @@ tools.utGu.qryRo = tools.qryRo;
 tools.utGu.tmpRo = tools.tmpRo;
 tools.utGu.init();
 
+/**************** 测试区-S **********************/
+
+
+
+/**************** 测试区-E **********************/
+
 /**************** 模板 **********************/
 
 r.get("/qry_info/", function (req, res, next) {

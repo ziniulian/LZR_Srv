@@ -71,7 +71,7 @@ r.get("/qry_info/", function (req, res, next) {
 r.get("/qry_mgInfo/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
 	o.k = "id";
-	o.size = 33;
+	o.size = 20;
 	o.cond = tools.utJson.toJson({typ: "info"});
 	next();
 });

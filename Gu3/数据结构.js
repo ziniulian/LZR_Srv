@@ -18,6 +18,10 @@ var gub = [
 	nt: "年化扣非净利润参照值",	// 1-3季报以上年度年报为准
 	wc: {	// 孙氏指标
 		nt5: "近5年年化扣非净利润平均值",	// 不够5年的，也可计算最多年限的平均值 ， 1-3季报以上年度年报为准
+		nt5yoy: "近5年年化扣非净利润同比变化平均值",
+		nt5yoyMin: "近5年年化扣非净利润同比变化最低值",
+		ot5yoy: "近5年营业收入同比变化平均值",
+		ot5yoyMin: "近5年营业收入同比变化最低值"
 	},
 	num: "总股本",
 	numA: "流通A股",
@@ -767,5 +771,20 @@ for (i = 0; i < a.length(); i ++) {
 				db.gub.update({_id:a[i]._id}, {"$set":{"profit.inc.otyoy":a[i].profit.inc.otyoy}});
 			}
 		}
+	}
+}
+
+// 修正dvdTim的错误
+var a = db.gub.find({typ:"info"}, {_id:0, id:1});
+for (var i = 0; i < a.length(); i ++) {
+	var b = db.gub.find({typ:"dvd", id:a[i].id}, {_id:0,id:1,tim:1});
+	if (b.length()) {
+		var t = b[0].tim;
+		for (var j = 1; j < b.length(); j ++) {
+			if (t < b[j].tim) {
+				t = b[j].tim;
+			}
+		}
+		db.gub.update({typ:"info", id:b[0].id}, {"$set":{dvdTim:t}});
 	}
 }

@@ -53,12 +53,18 @@ tools.utGu.init();
 
 /**************** 测试区-S **********************/
 
+// 量能抓取器
+r.get("/kCatcher/:days/", tools.utGu.exeGetAllId);
+r.get("/kCatcher/:days/", function (req, res, next) {
+	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
+	var t = tools.utTim.getDayTimestamp() - req.params.days;	// 当日时间戳
+	req.qpobj.days = req.params.days - 0;
+	req.qpobj.ids = req.qpobj.comDbSrvReturn;
+	o.tn = "guk";
+	tools.utGu.db.get(req, res, next, {id: {"$exists":true}, tim: {"$gt":t}}, {"_id":0}, true);
+});
 
-
-/**************** 测试区-E **********************/
-
-/**************** 模板 **********************/
-
+// 聚合排序的分页查询测试 （此排序方法在处理海量数据时会有性能的降低）
 r.get("/qry_info/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
 	o.mt = "mpag";
@@ -67,6 +73,10 @@ r.get("/qry_info/", function (req, res, next) {
 	o.cond = tools.utJson.toJson({typ: "info"});
 	next();
 });
+
+/**************** 测试区-E **********************/
+
+/**************** 模板 **********************/
 
 r.get("/qry_mgInfo/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");

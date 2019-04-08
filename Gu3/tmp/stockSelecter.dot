@@ -43,7 +43,8 @@
 					<option value="2">半年报</option>
 					<option value="3">三季报</option>
 					<option value="4">年报</option>
-				</select>
+				</select>&nbsp;&nbsp;&nbsp;
+				<a href="javascript: dco.find01();">挑选</a>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
 			<div>
@@ -236,7 +237,7 @@
 				dco.doe.appendChild(r);
 			},
 
-			sort: function (k, f) {
+			sort: function (k, f, noflush) {
 				var i, j;
 				if (k) {
 					dco.cs.unshift(dco.cs.splice(k, 1)[0]);	/* 字段排序 */
@@ -260,12 +261,14 @@
 				}
 				dco.add(i);
 
-				dco.firstPag();
+				if (!noflush) {
+					dco.firstPag();
+				}
 			},
 
 			add: function (i) {
 				var d;
-				dco.sr[i].i = i + 1;	/* 排名 */
+				dco.sr[i].i = i + 1;
 				if ((dco.vis === 1) || (dco.vis === 2 && dco.sr[i].scd) || (dco.vis === 3 && !dco.sr[i].scd)) {
 					dco.tmp.unshift(dco.sr[i]);
 					d = document.createElement("option");
@@ -312,6 +315,29 @@
 				if (p) {
 					dco.pag = p;
 					dco.flush();
+				}
+			},
+
+			find01: function () {
+				var i, o;
+				dco.vis = 2;
+
+				/* 找出近5年净利润同比保持在5以上的 */
+				for (i = 0; i < dco.sr.length; i ++) {
+					o = dco.sr[i];
+					o.scd = false;
+					if ((o.nt5yoyMin > 5) &&
+						(o.ot5yoyMin > 1) &&
+						(o.ntyoy > o.nt5yoyMin)
+					) {
+						o.scd = true;
+					}
+				}
+				for (i = 0; i < dco.cs.length; i ++) {
+					if (dco.cs[i][0] === "pe") {
+						dco.sort(i);
+						break;
+					}
 				}
 			}
 		};

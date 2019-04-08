@@ -6,6 +6,8 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="/base.css">
 
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+
 		<style type="text/css">
 			th {
 				padding: 0 0.5rem;
@@ -38,13 +40,14 @@
 				<input id="inDom" class="txt" type="text" placeholder="请输入代码" list="indtDom" onchange="dco.qry(this.value);"/>
 				<datalist id="indtDom"></datalist>
 				<select id="dayDom" onchange="dco.reset();">
-					<option value=1>近1天</option>
-					<option value=3>近3天</option>
-					<option value=5>近5天</option>
-					<option value=7>近7天</option>
-					<option value=14>近14天</option>
-					<option value=30>近30天</option>
-				</select>
+					<option value="1">近1天</option>
+					<option value="3">近3天</option>
+					<option value="5">近5天</option>
+					<option value="7">近7天</option>
+					<option value="14">近14天</option>
+					<option value="30">近30天</option>
+				</select>&nbsp;&nbsp;&nbsp;
+				<a href="javascript: location.reload();">刷新</a>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
 			<div>
@@ -60,18 +63,20 @@
 			sr: [],
 			size: 20,
 			pag: 0,
-			f: false,
+			f: true,
 			doe: null,
 			vis: 1,
 			tmp: [],
+			url: "http://hq.sinajs.cn/list=",
 			cs: [
-				["vMax", "最高量", false],
+				["vMax", "最高量", true],
 				["vMin", "最低量", false],
 				["vp", "平均量", false],
 				["vc", "当前量", false],
 				["vh", "高倍率", true],
-				["vl", "低倍率", true],
-				["c", "当前价", true],
+				["vl", "低倍率", false],
+				["vf", "换手率", true],
+				["c", "当前价", false],
 				["f", "涨幅", true],
 				["tc", "当前趋势", true],
 				["t", "总趋势", true]
@@ -80,6 +85,18 @@
 			init: function () {
 				var i , d, n;
 				dco.doe = document.getElementById("tDom");
+
+				for (i = 0; i < dayDom.length; i ++) {
+					if (dayDom[i].value == {{=it.days}}) {
+						dayDom[i].selected = true;
+					}
+				}
+
+				LZR.load([
+					"LZR.HTML.Base.Ajax"
+				]);
+				dco.ajx = new LZR.HTML.Base.Ajax ();
+
 				dco.sort(0);
 			},
 
@@ -294,12 +311,47 @@
 			},
 
 			initDat: function (d, a) {
-				console.console.log(d);
-				console.console.log(a);
+				var i, v, t;
+				dco.sro = d;
+				for (i = 0; i < a.length; i ++) {
+					v = a[i];
+					t = d[v.id];
+					if (!t.pMax) {
+						t.id = v.id;
+						t.pMax = v.h;
+						t.pMin = v.l;
+						t.vMax = v.v;
+						t.vMin = v.v;
+						t.vp = v.v;
+						dco.url += t.ec + t.id + ",";
+						dco.sr.push(t);
+					} else {
+						if (v.h > t.pMax) {
+							t.pMax = v.h;
+						}
+						if (v.l < t.pMin) {
+							t.pMin = v.l;
+						}
+						if (v.v > t.vMax) {
+							t.vMax = v.v;
+						} else if (v.v < t.vMin) {
+							t.vMin = v.v;
+						}
+						t.vp += v.v;
+					}
+					t.dat.push(v);
+				}
+				for (i = 0; i < dco.sr.length; i ++) {
+					t = dco.sr[i];
+					t.vp = (t.vp / t.dat.length).toFixed(0);
+				}
 			}
 		};
 
-		dco.initDat ({{=it.tmpo.tls.utJson.toJson(it.ids)}}, {{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}});
+		dco.initDat (
+			{{=it.tmpo.tls.utJson.toJson(it.ids)}},
+			{{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}}
+		);
 		document.body.onload = dco.init;
 	</script>
 </html>

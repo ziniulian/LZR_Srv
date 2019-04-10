@@ -53,27 +53,6 @@ tools.utGu.init();
 
 /**************** 测试区-S **********************/
 
-// 量能抓取器
-r.get("/kCatcher/:days/", tools.utGu.exeGetAllId);
-// 获取最新数据 TODO
-r.get("/kCatcher/:days/", function (req, res, next) {
-	var t = tools.utTim.getDayTimestamp() - req.params.days;	// 当日时间戳
-	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
-	var d = req.qpobj.comDbSrvReturn;
-	req.qpobj.days = req.params.days;
-	o.tn = "guk";
-	o = {};
-	for (var i = 0; i < d.length; i ++) {
-		o[d[i].id] = {
-			nam: d[i].nam,
-			num: d[i].num,
-			dat: []
-		};
-	}
-	req.qpobj.ids = o;
-	tools.utGu.db.get(req, res, next, {id: {"$exists":true}, tim: {"$gt":t}}, {"_id":0}, true);
-});
-
 // 聚合排序的分页查询测试 （此排序方法在处理海量数据时会有性能的降低）
 r.get("/qry_info/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");

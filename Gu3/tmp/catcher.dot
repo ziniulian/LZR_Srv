@@ -37,7 +37,7 @@
 	<body>
 		<div id="boso" class="boso">
 			<div class="logo">
-				<input id="inDom" class="txt" type="text" placeholder="请输入代码" list="indtDom" onchange="dco.qry(this.value);"/>
+				<input id="inDom" class="txt" type="text" placeholder="请输入代码" list="indtDom"/>
 				<datalist id="indtDom"></datalist>
 				<select id="dayDom" onchange="dco.reset();">
 					<option value="1">近1天</option>
@@ -47,7 +47,7 @@
 					<option value="14">近14天</option>
 					<option value="30">近30天</option>
 				</select>&nbsp;&nbsp;&nbsp;
-				<a href="javascript: location.reload();">刷新</a>
+				<a href="javascript: dco.reset();">刷新</a>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
 			<div>
@@ -59,299 +59,50 @@
 	</body>
 
 	<script type="text/javascript">
+		LZR.load([
+			"LZR.HTML.Srv.SortQry"
+		]);
+
 		var dco = {
-			sr: [],
-			size: 20,
-			pag: 0,
-			f: true,
-			doe: null,
-			vis: 1,
-			tmp: [],
-			url: "http://hq.sinajs.cn/list=",
-			cs: [
-				["vMax", "最高量", true],
-				["vMin", "最低量", false],
-				["vp", "平均量", false],
-				["vc", "当前量", false],
-				["vh", "高倍率", true],
-				["vl", "低倍率", false],
-				["vf", "换手率", true],
-				["c", "当前价", false],
-				["f", "涨幅", true],
-				["tc", "当前趋势", true],
-				["t", "总趋势", true]
-			],
+			qry: new LZR.HTML.Srv.SortQry ({
+				sr: {{=it.tmpo.tls.utJson.toJson(it.skCatcher)}},
+				cs: [
+					["vh", "高倍率", true],
+					["vl", "低倍率", false],
+					["vf", "换手率", true],
+					["tc", "当前趋势", false],
+					["t", "总趋势", false],
+					["c", "当前价", false],
+					["f", "涨幅", true],
+					["vc", "当前量", false],
+					["vp", "平均量", false],
+					["vMax", "最高量", true],
+					["vMin", "最低量", false]
+				],
+				f: true,
+				doe: document.getElementById("tDom"),
+				listDoe: document.getElementById("indtDom"),
+				qryDoe: document.getElementById("inDom"),
+				pagNumTopDoe: document.getElementById("topDom"),
+				pagNumBotDoe: document.getElementById("botDom"),
+				selfNam: "dco.qry"
+			}),
 
 			init: function () {
-				var i , d, n;
-				dco.doe = document.getElementById("tDom");
-
 				for (i = 0; i < dayDom.length; i ++) {
 					if (dayDom[i].value == {{=it.days}}) {
 						dayDom[i].selected = true;
 					}
 				}
 
-				LZR.load([
-					"LZR.HTML.Base.Ajax"
-				]);
-				dco.ajx = new LZR.HTML.Base.Ajax ();
-
-				dco.sort(0);
+				dco.qry.sort(0);
 			},
-
-			/********** 可通用部分 ***********/
-
-			crtHead: function () {
-				var i, r, d, a;
-				r = document.createElement("tr");
-				d = document.createElement("th");
-				d.innerHTML = "排名";
-				r.appendChild(d);
-
-				d = document.createElement("th");
-				d.innerHTML = "&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;";
-				r.appendChild(d);
-
-				d = document.createElement("th");
-				a = document.createElement("a");
-				a.href = "javascript: dco.setVis();";
-				switch (dco.vis) {
-					case 1:
-						a.innerHTML = "&nbsp&nbsp遮&nbsp罩&nbsp&nbsp";
-						break;
-					case 2:
-						a.innerHTML = "&nbsp&nbsp全&nbsp部&nbsp&nbsp";
-						break;
-				}
-				d.appendChild(a);
-				r.appendChild(d);
-
-				for (i = 0; i < dco.cs.length; i ++) {
-					d = document.createElement("th");
-					a = document.createElement("a");
-					a.innerHTML = dco.cs[i][1];
-					if (i === 0) {
-						a.className = "scd";
-						a.href = "javascript: dco.sort(" + i + ", 1);";
-					} else {
-						a.href = "javascript: dco.sort(" + i + ");";
-					}
-					d.appendChild(a);
-					r.appendChild(d);
-				}
-
-				dco.doe.appendChild(r);
-			},
-
-			crtRow: function (o) {
-				var i, r, d, a;
-				r = document.createElement("tr");
-				d = document.createElement("td");
-				d.innerHTML = o.i;
-				r.appendChild(d);
-
-				d = document.createElement("td");
-				d.innerHTML = o.id;
-				r.appendChild(d);
-
-				d = document.createElement("td");
-				a = document.createElement("a");
-				a.href = "javascript: dco.setScd(" + (o.i - 1) + ");";
-				a.innerHTML = o.nam;
-				a.className = o.scd ? "scd" : "";
-				d.appendChild(a);
-				r.appendChild(d);
-
-				for (i = 0; i < dco.cs.length; i ++) {
-					d = document.createElement("td");
-					d.innerHTML = o[dco.cs[i][0]];
-					r.appendChild(d);
-				}
-				dco.doe.appendChild(r);
-			},
-
-			flush: function () {
-				var i, j, n, p;
-				i = dco.size * dco.pag;
-				n = dco.size + i;
-				dco.doe.innerHTML = "";
-				dco.crtHead();		/* 创建表头 */
-
-				if (i < dco.tmp.length) {
-					p = i;
-					dco.crtPagNum(topDom, p, (n < dco.tmp.length));	/* 生成页码 */
-					for (; (i < n) && (i < dco.tmp.length); i ++) {
-						dco.crtRow(dco.tmp[i]);
-					}
-					dco.crtPagNum(botDom, p, (n < dco.tmp.length));	/* 生成页码 */
-				}
-			},
-
-			crtPagNum: function (doe, hasPre, hasNext) {
-				var r, d, a;
-				doe.innerHTML = "";
-				d = document.createElement("div");
-				d.className = "pag";
-				if (hasPre) {
-					a = document.createElement("a");
-					a.href = "javascript: dco.firstPag();";
-					a.innerHTML = "第一页";
-					d.appendChild(a);
-				}
-				doe.appendChild(d);
-
-				d = document.createElement("div");
-				d.className = "pag";
-				if (hasPre) {
-					a = document.createElement("a");
-					a.href = "javascript: dco.prePag();";
-					a.innerHTML = "上一页";
-					d.appendChild(a);
-				}
-				doe.appendChild(d);
-
-				d = document.createElement("div");
-				d.className = "pag";
-				d.innerHTML = (dco.pag + 1) + " / " + Math.ceil(dco.tmp.length / dco.size) + " (" + dco.tmp.length + ")";
-				doe.appendChild(d);
-
-				d = document.createElement("div");
-				d.className = "pag";
-				if (hasNext) {
-					a = document.createElement("a");
-					a.href = "javascript: dco.nextPag();";
-					a.innerHTML = "下一页";
-					d.appendChild(a);
-				}
-				doe.appendChild(d);
-			},
-
-			sort: function (k, f, noflush) {
-				var i, j;
-				if (k) {
-					dco.cs.unshift(dco.cs.splice(k, 1)[0]);
-					dco.f = dco.cs[0][2];
-				} else if (f) {
-					dco.f = !dco.f;
-				}
-				k = dco.cs[0][0];
-
-				dco.tmp.length = 0;
-				indtDom.innerHTML = "";
-				for (i = dco.sr.length - 1; i > 0; i --) {
-					for (j = i - 1; j >= 0; j --) {
-						if (dco.f === ((dco.sr[i][k] - dco.sr[j][k]) ? (dco.sr[i][k] - dco.sr[j][k] > 0) : (dco.sr[i][k] > dco.sr[j][k]))) {
-							t = dco.sr[i];
-							dco.sr[i] = dco.sr[j];
-							dco.sr[j] = t;
-						}
-					}
-					dco.add(i);
-				}
-				dco.add(i);
-
-				if (!noflush) {
-					dco.firstPag();
-				}
-			},
-
-			add: function (i) {
-				var d;
-				dco.sr[i].i = i + 1;
-				if ((dco.vis === 1) || (dco.vis === 2 && dco.sr[i].scd) || (dco.vis === 3 && !dco.sr[i].scd)) {
-					dco.tmp.unshift(dco.sr[i]);
-					d = document.createElement("option");
-					d.value = dco.sr[i].id + "," + dco.sr[i].nam + "," + (i + 1);
-					indtDom.appendChild(d);
-				}
-			},
-
-			setVis: function () {
-				dco.vis ++;
-				if (dco.vis > 2) {
-					dco.vis = 1;
-				}
-				dco.sort(0);
-			},
-
-			setScd: function (i) {
-				dco.sr[i].scd = !dco.sr[i].scd;
-				dco.flush();
-			},
-
-			firstPag: function () {
-				dco.pag = 0;
-				dco.flush();
-			},
-
-			nextPag: function () {
-				dco.pag ++;
-				dco.flush();
-			},
-
-			prePag: function () {
-				dco.pag --;
-				dco.flush();
-			},
-
-			qry: function (txt) {
-				var p = Math.ceil(txt.split(",")[2] / dco.size) - 1;
-				inDom.value = "";
-				if (p) {
-					dco.pag = p;
-					dco.flush();
-				}
-			},
-
-			/********** 可通用部分 ***********/
 
 			reset: function () {
-				window.location.href = "{{=it.tmpo.url.rout}}kCatcher/" + dayDom.value;
-			},
-
-			initDat: function (d, a) {
-				var i, v, t;
-				dco.sro = d;
-				for (i = 0; i < a.length; i ++) {
-					v = a[i];
-					t = d[v.id];
-					if (!t.pMax) {
-						t.id = v.id;
-						t.pMax = v.h;
-						t.pMin = v.l;
-						t.vMax = v.v;
-						t.vMin = v.v;
-						t.vp = v.v;
-						dco.url += t.ec + t.id + ",";
-						dco.sr.push(t);
-					} else {
-						if (v.h > t.pMax) {
-							t.pMax = v.h;
-						}
-						if (v.l < t.pMin) {
-							t.pMin = v.l;
-						}
-						if (v.v > t.vMax) {
-							t.vMax = v.v;
-						} else if (v.v < t.vMin) {
-							t.vMin = v.v;
-						}
-						t.vp += v.v;
-					}
-					t.dat.push(v);
-				}
-				for (i = 0; i < dco.sr.length; i ++) {
-					t = dco.sr[i];
-					t.vp = (t.vp / t.dat.length).toFixed(0);
-				}
+				window.location.href = "{{=it.tmpo.url.rout}}catcher/" + dayDom.value;
 			}
 		};
 
-		dco.initDat (
-			{{=it.tmpo.tls.utJson.toJson(it.ids)}},
-			{{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}}
-		);
 		document.body.onload = dco.init;
 	</script>
 </html>

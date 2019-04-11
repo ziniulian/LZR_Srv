@@ -6,6 +6,8 @@
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="/base.css">
 
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+
 		<style type="text/css">
 			th {
 				padding: 0 0.5rem;
@@ -35,7 +37,7 @@
 	<body>
 		<div id="boso" class="boso">
 			<div class="logo">
-				<input id="inDom" class="txt" type="text" placeholder="请输入代码" list="indtDom" onchange="dco.qry(this.value);"/>
+				<input id="inDom" class="txt" type="text" placeholder="请输入代码" list="indtDom"/>
 				<datalist id="indtDom"></datalist>
 				<select id="ysecDom" onchange="dco.reset();"></select>
 				<select id="qsecDom" onchange="dco.reset();">
@@ -56,43 +58,49 @@
 	</body>
 
 	<script type="text/javascript">
+		LZR.load([
+			"LZR.HTML.Srv.SortQry"
+		]);
+
 		var dco = {
-			size: 20,	/* 每页显示个数 */
-			pag: 0,		/* 页数 */
-			f: false,		/* 排序 （ false:从小到大; true:从大到小 ） */
-			doe: null,
-			vis: 1,	/* 1:显示全部, 2:显示已选中的 */
-			tmp: [],	/* 缓存 */
-			cs: [	/* 字段顺序 */
-				["pe5", "平均市盈率", false],
-				["pe", "市盈率", false],
-				["safe", "安全边际", false],
-				["p", "当前价", false],	/* 字段名、备注、默认排序 */
-				["eps", "扣非每股收益", true],
-				["nt5", "平均每股收益", true],
-				["epsb", "每股收益", true],
-				["etp", "每股净资产", true],
-				["rtp", "每股未分配利润", true],
-				["cap", "每股公积金", true],
-				["num", "总股本", true],
-				["sim", "所属行业", false],
-				["dvd", "分红预案", true],
-				["ntyoy", "扣非净利润同比%", true],
-				["npyoy", "归属净利润同比%", true],
-				["incyoy", "营业收入同比%", true],
-				["nt5yoy", "利润同比平均%", true],
-				["nt5yoyMin", "利润同比最小%", true],
-				["ot5yoy", "营收同比平均%", true],
-				["ot5yoyMin", "营收同比最小%", true],
-				["gpm", "毛利率%", true],
-				["dar", "资产负债率%", false],
-				["roe", "加权净资产收益率%", true],
-				["roet", "摊薄净资产收益率%", true]
-			],
+			qry: new LZR.HTML.Srv.SortQry ({
+				sr: {{=it.tmpo.tls.utJson.toJson(it.ssdat)}},
+				cs: [
+					["pe5", "平均市盈率", false],
+					["pe", "市盈率", false],
+					["safe", "安全边际", false],
+					["p", "当前价", false],
+					["eps", "扣非每股收益", true],
+					["nt5", "平均每股收益", true],
+					["epsb", "每股收益", true],
+					["etp", "每股净资产", true],
+					["rtp", "每股未分配利润", true],
+					["cap", "每股公积金", true],
+					["num", "总股本", true],
+					["sim", "所属行业", false],
+					["dvd", "分红预案", true],
+					["ntyoy", "扣非净利润同比%", true],
+					["npyoy", "归属净利润同比%", true],
+					["incyoy", "营业收入同比%", true],
+					["nt5yoy", "利润同比平均%", true],
+					["nt5yoyMin", "利润同比最小%", true],
+					["ot5yoy", "营收同比平均%", true],
+					["ot5yoyMin", "营收同比最小%", true],
+					["gpm", "毛利率%", true],
+					["dar", "资产负债率%", false],
+					["roe", "加权净资产收益率%", true],
+					["roet", "摊薄净资产收益率%", true]
+				],
+				doe: document.getElementById("tDom"),
+				listDoe: document.getElementById("indtDom"),
+				qryDoe: document.getElementById("inDom"),
+				pagNumTopDoe: document.getElementById("topDom"),
+				pagNumBotDoe: document.getElementById("botDom"),
+				selfNam: "dco.qry"
+			}),
 
 			init: function () {
 				var i , d, n;
-				dco.doe = document.getElementById("tDom");
 
 				n = new Date().getFullYear();
 				for (i = 1988; i <= n; i ++) {
@@ -106,225 +114,30 @@
 				}
 				qsecDom[{{=it.tim.m}} - 1].selected = true;
 
-				dco.sort(0);
+				dco.qry.addRow = dco.addRow;
+				dco.qry.sort(0);
 			},
 
-			flush: function () {
-				var i, j, n, p;
-				i = dco.size * dco.pag;
-				n = dco.size + i;
-				dco.doe.innerHTML = "";
-				dco.crtHead();		/* 创建表头 */
-
-				if (i < dco.tmp.length) {
-					p = i;
-					dco.crtPagNum(topDom, p, (n < dco.tmp.length));	/* 生成页码 */
-					for (; (i < n) && (i < dco.tmp.length); i ++) {
-						dco.crtRow(dco.tmp[i]);
-					}
-					dco.crtPagNum(botDom, p, (n < dco.tmp.length));	/* 生成页码 */
-				}
-			},
-
-			crtPagNum: function (doe, hasPre, hasNext) {	/* 生成页码 */
-				var r, d, a;
-				doe.innerHTML = "";
-				d = document.createElement("div");
-				d.className = "pag";
-				if (hasPre) {
-					a = document.createElement("a");
-					a.href = "javascript: dco.firstPag();";
-					a.innerHTML = "第一页";
-					d.appendChild(a);
-				}
-				doe.appendChild(d);
-
-				d = document.createElement("div");
-				d.className = "pag";
-				if (hasPre) {
-					a = document.createElement("a");
-					a.href = "javascript: dco.prePag();";
-					a.innerHTML = "上一页";
-					d.appendChild(a);
-				}
-				doe.appendChild(d);
-
-				d = document.createElement("div");
-				d.className = "pag";
-				d.innerHTML = (dco.pag + 1) + " / " + Math.ceil(dco.tmp.length / dco.size) + " (" + dco.tmp.length + ")";
-				doe.appendChild(d);
-
-				d = document.createElement("div");
-				d.className = "pag";
-				if (hasNext) {
-					a = document.createElement("a");
-					a.href = "javascript: dco.nextPag();";
-					a.innerHTML = "下一页";
-					d.appendChild(a);
-				}
-				doe.appendChild(d);
-			},
-
-			crtRow: function (o) {
-				var i, r, d, a;
-				r = document.createElement("tr");
-				d = document.createElement("td");
-				d.innerHTML = o.i;
-				r.appendChild(d);
-
-				d = document.createElement("td");
-				a = document.createElement("a");
+			addRow: function (o, r) {
+				var d = document.createElement("td");
+				var a = document.createElement("a");
 				a.href = "{{=it.tmpo.url.rout}}chart/" + o.id;
 				a.target = "_blank";
 				a.innerHTML = o.id;
 				d.appendChild(a);
 				r.appendChild(d);
-
-				d = document.createElement("td");
-				a = document.createElement("a");
-				a.href = "javascript: dco.setScd(" + (o.i - 1) + ");";
-				a.innerHTML = o.nam;
-				a.className = o.scd ? "scd" : "";
-				d.appendChild(a);
-				r.appendChild(d);
-
-				for (i = 0; i < dco.cs.length; i ++) {
-					d = document.createElement("td");
-					d.innerHTML = o[dco.cs[i][0]];
-					r.appendChild(d);
-				}
-				dco.doe.appendChild(r);
-			},
-
-			crtHead: function () {
-				var i, r, d, a;
-				r = document.createElement("tr");
-				d = document.createElement("th");
-				d.innerHTML = "排名";
-				r.appendChild(d);
-				d = document.createElement("th");
-				d.innerHTML = "&nbsp;&nbsp;代&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;";
-				r.appendChild(d);
-
-				d = document.createElement("th");
-				a = document.createElement("a");
-				a.href = "javascript: dco.setVis();";
-				switch (dco.vis) {
-					case 1:
-						a.innerHTML = "&nbsp&nbsp遮&nbsp罩&nbsp&nbsp";
-						break;
-					case 2:
-						a.innerHTML = "&nbsp&nbsp全&nbsp部&nbsp&nbsp";
-						break;
-				}
-				d.appendChild(a);
-				r.appendChild(d);
-
-				for (i = 0; i < dco.cs.length; i ++) {
-					d = document.createElement("th");
-					a = document.createElement("a");
-					a.innerHTML = dco.cs[i][1];
-					if (i === 0) {
-						a.className = "scd";
-						a.href = "javascript: dco.sort(" + i + ", 1);";
-					} else {
-						a.href = "javascript: dco.sort(" + i + ");";
-					}
-					d.appendChild(a);
-					r.appendChild(d);
-				}
-
-				dco.doe.appendChild(r);
-			},
-
-			sort: function (k, f, noflush) {
-				var i, j;
-				if (k) {
-					dco.cs.unshift(dco.cs.splice(k, 1)[0]);	/* 字段排序 */
-					dco.f = dco.cs[0][2];
-				} else if (f) {
-					dco.f = !dco.f;
-				}
-				k = dco.cs[0][0];
-
-				dco.tmp.length = 0;
-				indtDom.innerHTML = "";
-				for (i = dco.sr.length - 1; i > 0; i --) {
-					for (j = i - 1; j >= 0; j --) {
-						if (dco.f === ((dco.sr[i][k] - dco.sr[j][k]) ? (dco.sr[i][k] - dco.sr[j][k] > 0) : (dco.sr[i][k] > dco.sr[j][k]))) {
-							t = dco.sr[i];
-							dco.sr[i] = dco.sr[j];
-							dco.sr[j] = t;
-						}
-					}
-					dco.add(i);
-				}
-				dco.add(i);
-
-				if (!noflush) {
-					dco.firstPag();
-				}
-			},
-
-			add: function (i) {
-				var d;
-				dco.sr[i].i = i + 1;
-				if ((dco.vis === 1) || (dco.vis === 2 && dco.sr[i].scd) || (dco.vis === 3 && !dco.sr[i].scd)) {
-					dco.tmp.unshift(dco.sr[i]);
-					d = document.createElement("option");
-					d.value = dco.sr[i].id + "," + dco.sr[i].nam + "," + (i + 1);
-					indtDom.appendChild(d);
-				}
-			},
-
-			setVis: function () {
-				dco.vis ++;
-				if (dco.vis > 2) {
-					dco.vis = 1;
-				}
-				dco.sort(0);
-			},
-
-			setScd: function (i) {
-				dco.sr[i].scd = !dco.sr[i].scd;
-				dco.flush();
-			},
-
-			firstPag: function () {
-				dco.pag = 0;
-				dco.flush();
-			},
-
-			nextPag: function () {
-				dco.pag ++;
-				dco.flush();
-			},
-
-			prePag: function () {
-				dco.pag --;
-				dco.flush();
 			},
 
 			reset: function () {
 				window.location.href = "{{=it.tmpo.url.rout}}stockSelecter/" + ysecDom.value + "/" + qsecDom.value;
 			},
 
-			qry: function (txt) {
-				var p = Math.ceil(txt.split(",")[2] / dco.size) - 1;
-				inDom.value = "";
-				if (p) {
-					dco.pag = p;
-					dco.flush();
-				}
-			},
-
 			find01: function () {
 				var i, o;
-				dco.vis = 2;
+				dco.qry.vis = 2;
 
-				/* 找出近5年净利润同比保持在5以上的 */
-				for (i = 0; i < dco.sr.length; i ++) {
-					o = dco.sr[i];
+				for (i = 0; i < dco.qry.sr.length; i ++) {
+					o = dco.qry.sr[i];
 					o.scd = false;
 					if ((o.nt5yoyMin > 5) &&
 						(o.ot5yoyMin > 1) &&
@@ -333,9 +146,9 @@
 						o.scd = true;
 					}
 				}
-				for (i = 0; i < dco.cs.length; i ++) {
-					if (dco.cs[i][0] === "pe") {
-						dco.sort(i);
+				for (i = 0; i < dco.qry.cs.length; i ++) {
+					if (dco.qry.cs[i][0] === "pe") {
+						dco.qry.sort(i);
 						break;
 					}
 				}
@@ -343,7 +156,6 @@
 		};
 
 		{{?it.ssdat}}
-			dco.sr = {{=it.tmpo.tls.utJson.toJson(it.ssdat)}};
 			document.body.onload = dco.init;
 		{{?}}
 	</script>

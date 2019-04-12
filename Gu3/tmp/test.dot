@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>测试</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="/base.css">
+
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+
+		<style type="text/css">
+			.txt {
+				padding-left: 0.5rem;
+				width: 7rem;
+			}
+			.txtTim {
+				width: 9rem;
+			}
+			.txtS {
+				margin-left: 0.5rem;
+				width: 3.5rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<form id="qryFmDom" action="{{=it.tmpo.url.base}}/" method="post" target="_self">
+					<input id="inDom" name="id" class="txt" type="text" placeholder="请输入代码"
+						list="indtDom" value="{{=it.pop ? it.pop.id : ''}}"
+						onfocus="this.select();"
+						onchange="this.value = this.value.substr(0, 6);qryFmDom.submit();"/>
+					<datalist id="indtDom">
+						{{~it.ids:o:i}}
+							<option value="{{=o.id}},{{=o.nam}}{{=o.abb ? ',' + o.abb : ''}}"/>
+								{{? it.pop && o.id === it.pop.id}}
+									<script type="text/javascript">
+										inDom.value = "{{=o.nam}}";
+									</script>
+								{{?}}
+						{{~}}
+					</datalist>
+					<input name="days" type="date" class="txtTim" value="{{=it.pop ? it.pop.days : ''}}" onchange="qryFmDom.submit();"/>
+					<input name="daye" type="date" class="txtTim" value="{{=it.pop ? it.pop.daye : ''}}" onchange="qryFmDom.submit();"/>
+					<input id="pcDom" type="text" class="txtS" value="20" placeholder="价周期"/>
+					<input id="vcDom" type="text" class="txtS" value="10" placeholder="量周期"/>
+					<input id="syDom" type="text" class="txtS" value="10" placeholder="止盈"/>
+					<input id="ssDom" type="text" class="txtS" value="5" placeholder="止损"/>
+				</form>
+				<a class="logohome" target="_blank" href="/"></a>
+			</div>
+			<div>
+				<table>
+					<tbody id="tDom">
+						<tr>
+							<th>赢</th>
+							<th>输</th>
+							<th>总计</th>
+							<th>成功率</th>
+						</tr>
+					</tbody>
+					<tbody>
+						<tr>
+							<td id="ytimDom">0</td>
+							<td id="stimDom">0</td>
+							<td id="ztimDom">0</td>
+							<td id="ctDom">0</td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<table>
+					<tbody id="tDom">
+						<tr>
+							<th>时间</th>
+							<th>持有天数</th>
+							<th>结果</th>
+						</tr>
+					</tbody>
+					<tbody id="tDom"></tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+/*
+	代码
+	时间范围
+	价格周期（p,pc,pl,ph）
+	价格相对于均线的范围
+	价格相对于最低点的范围
+	量周期（v,vc,vl,vh）
+	量相对于最低点的范围
+	量相对于最高点的范围
+	量相对于均线的范围
+	止盈位
+	止损位
+*/
+		LZR.load([
+			"LZR.Base.Time"
+		]);
+
+		var dco = {
+			{{?it.pop}}
+				sr: {{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}},
+			{{?}}
+			utTim: LZR.getSingleton(LZR.Base.Time),
+
+			init: function () {
+				{{?it.pop}}
+					dco.hdDat();
+				{{?}}
+			},
+
+			hdDat: function () {
+				var i, j, o, t, p;
+				o = {
+					p: 0,
+					pc: 0,
+					ph: 0,
+					pl: 0,
+					v: 0,
+					vc: 0,
+					vh: 0,
+					vl: 0
+				};
+				p = dco.getPro();
+				for (i = p.p; i < dco.sr.length; i ++) {
+					// 价
+					o.p = 0;
+					for (j = i - p.p; j < i; j ++) {
+						t = dco.sr[j];
+						if (o.p) {
+							o.pc += t.t;
+							if (o.ph < t.h) {
+								o.ph = t.h;
+							}
+							if (o.pl > t.l) {
+								o.pl = t.l;
+							}
+						} else {
+							o.p = dco.sr[i].c;
+							o.pc = t.t;
+							o.ph = t.h;
+							o.pl = t.l;
+						}
+					}
+					// 量
+				}
+			},
+
+			getPro: function () {
+				var o = {
+					p: pcDom.value - 0,
+					v: vcDom.value - 0,
+					y: syDom.value / 100 + 1,
+					s: ssDom.value / -100 + 1
+				};
+				return o;
+			}
+		};
+
+		document.body.onload = dco.init;
+	</script>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>测试</title>
+		<title>模拟测试</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="/base.css">
@@ -19,9 +19,28 @@
 			.txtTim {
 				width: 9rem;
 			}
-			.txtS {
-				margin-left: 0.5rem;
-				width: 3rem;
+			.mmo {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 100;
+				color: #FFF;
+				font-size: 3rem;
+				line-height: 7;
+				text-align: center;
+				background-color: rgba(0, 0, 0, 0.7);
+			}
+			.bar {
+				position: absolute;
+				top: 2.7rem;
+				left: 1rem;
+				padding: 0.3rem;
+				border: solid 0.1rem #F00;
+				background-color: #FF0;
+				line-height: 2.3;
+				box-shadow: 0.2rem 0.2rem 0 #FF0, 0.5rem 0.5rem 0 #F00;
 			}
 		</style>
 	</head>
@@ -30,6 +49,23 @@
 		<div id="boso" class="boso">
 			<div class="logo">
 				<form id="qryFmDom" action="{{=it.tmpo.url.base}}/" method="post" target="_self">
+					&nbsp; <a class="bfs" href="javascript: dco.bar();">💰</a>
+					<div id="barDom" class="bar Lc_hid">
+						<select id="mDom" name="mod" onchange="dco.setMod(true);">
+							<option value="vmxR" {{=it.pop ? ("vmxR" === it.pop.mod ? "selected='true'" : "") : "selected='true'"}}>放量涨</option>
+							<option value="vmxF" {{=it.pop ? ("vmxF" === it.pop.mod ? "selected='true'" : "") : ""}}>放量跌</option>
+							<option value="vmnCp" {{=it.pop ? ("vmnCp" === it.pop.mod ? "selected='true'" : "") : ""}}>地量+均线附近</option>
+						</select>
+						<span><br />起始时间：<input id="days" name="days" type="date" class="txtTim" value="{{=it.pop ? it.pop.days : ''}}"/></span>
+						<span><br />结束时间：<input id="daye" name="daye" type="date" class="txtTim" value="{{=it.pop ? it.pop.daye : ''}}"/></span>
+						<span><br />价周期：<input id="dayp" name="dayp" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.dayp : ''}}"/></span>
+						<span><br />量周期：<input id="dayv" name="dayv" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.dayv : ''}}"/></span>
+						<span><br />幅度：<input id="sf" name="sf" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.sf : ''}}" placeholder="%"/></span>
+						<span><br />止盈：<input id="zsy" name="zsy" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.zsy : ''}}" placeholder="%"/></span>
+						<span><br />止损：<input id="zss" name="zss" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.zss : ''}}" placeholder="%"/></span>
+						<span><br />持仓上限：<input id="dayd" name="dayd" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.dayd : ''}}" placeholder="天"/></span>
+						<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="javascript: dco.flush();">开始计算</a>
+					</div>
 					<input id="inDom" name="id" class="txt" type="text" placeholder="请输入代码"
 						list="indtDom" value="{{=it.pop ? it.pop.id : ''}}"
 						onfocus="this.select();"
@@ -44,13 +80,6 @@
 								{{?}}
 						{{~}}
 					</datalist>
-					<input name="days" type="date" class="txtTim" value="{{=it.pop ? it.pop.days : ''}}" onchange="dco.reset();"/>
-					<input name="daye" type="date" class="txtTim" value="{{=it.pop ? it.pop.daye : ''}}" onchange="dco.reset();"/>
-					<input id="pcDom" type="text" class="txtS" value="20" placeholder="价周期" onchange="dco.hdDat();"/>
-					<input id="vcDom" type="text" class="txtS" value="10" placeholder="量周期" onchange="dco.hdDat();"/>
-					<input id="syDom" type="text" class="txtS" value="50" placeholder="止盈" onchange="dco.hdDat();"/>
-					<input id="ssDom" type="text" class="txtS" value="15" placeholder="止损" onchange="dco.hdDat();"/>
-					<input id="dayDom" type="text" class="txtS" value="200" placeholder="天数" onchange="dco.hdDat();"/>
 				</form>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
@@ -64,212 +93,98 @@
 							<th>成功率</th>
 						</tr>
 					</tbody>
-					<tbody>
-						<tr>
-							<td id="ytimDom">0</td>
-							<td id="stimDom">0</td>
-							<td id="ztimDom">0</td>
-							<td id="ctDom">0</td>
-						</tr>
-					</tbody>
+					<tbody id="rDom"></tbody>
 				</table>
 				<br/>
 				<table>
 					<tbody>
 						<tr>
 							<th>时间</th>
-							<th>持有天数</th>
+							<th>持仓天数</th>
 							<th>结果</th>
 						</tr>
 					</tbody>
 					<tbody id="tDom"></tbody>
 				</table>
 			</div>
+			<div id="memoDom" class="Lc_nosee"></div>
 		</div>
 	</body>
 
 	<script type="text/javascript">
-/*
-	代码
-	时间范围
-	价格周期（p,pc,pl,ph）
-	价格相对于均线的范围
-	价格相对于最低点的范围
-	量周期（v,vc,vl,vh）
-	量相对于最低点的范围
-	量相对于最高点的范围
-	量相对于均线的范围
-	止盈位
-	止损位
-*/
 		LZR.load([
-			"LZR.Base.Time"
+			"LZR.HTML.Base.Doe.Memo",
+			"LZR.Pro.Gu.TestVmaxRise",
+			"LZR.Pro.Gu.TestVmaxFall",
+			"LZR.Pro.Gu.TestMvCp"
 		]);
 
 		var dco = {
+			mods: null,
+			cm: null,
+			memo: new LZR.HTML.Base.Doe.Memo ({
+				doe: memoDom,
+				timout: 0,
+				css: "mmo"
+			}),
 			{{?it.pop}}
 				sr: {{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}},
 			{{?}}
-			utTim: LZR.getSingleton(LZR.Base.Time),
 
-			init: function () {
+			initMod: function () {
 				{{?it.pop}}
-					dco.hdDat();
+					var o = {
+						sr: dco.sr,
+						tabDoe: tDom,
+						resultDoe: rDom
+					};
+					dco.mods = {
+						vmxR: new LZR.Pro.Gu.TestVmaxRise(o),
+						vmxF: new LZR.Pro.Gu.TestVmaxFall(o),
+						vmnCp: new LZR.Pro.Gu.TestMvCp(o)
+					};
+					dco.setMod({{=!(it.pop.dayv || it.pop.zsy || it.pop.zss || it.pop.dayd)}});
 				{{?}}
 			},
 
-			hdDat: function () {
-				var i, j, o, t, p, r;
-				r = [];
-				p = dco.getPro();
-				tDom.innerHTML = "";
-
-				for (i = p.p; i < dco.sr.length; i ++) {
-					o = {
-						s: dco.sr[i],
-						h: 0,
-						l: 0,
-						r: 0,
-						p: 0,
-						pc: 0,
-						pvc: 0,
-						ph: 0,
-						pl: 0,
-						v: 0,
-						vc: 0,
-						vh: 0,
-						vl: 0
-					};
-					for (j = i - p.p; j < i; j ++) {
-						t = dco.sr[j];
-						if (o.p) {
-							o.pc += t.t;
-							o.pvc += t.v;
-							if (o.ph < t.h) {
-								o.ph = t.h;
-							}
-							if (o.pl > t.l) {
-								o.pl = t.l;
-							}
-						} else {
-							o.p = o.s.c;
-							o.pc = t.t;
-							o.pvc = t.v;
-							o.ph = t.h;
-							o.pl = t.l;
-						}
+			setMod: function (ip) {
+				dco.cm = dco.mods[mDom.value];
+				if (dco.cm) {
+					if (ip) {
+						dco.cm.initPro(barDom);
 					}
-
-					o.v = 0;
-					for (j = i - p.v; j < i; j ++) {
-						t = dco.sr[j];
-						if (o.v) {
-							o.vc += t.v;
-							if (o.vh < t.v) {
-								o.vh = t.v;
-							} else if (o.vl > t.v) {
-								o.vl = t.v;
-							}
-						} else {
-							o.v = o.s.v;
-							o.vc = t.v;
-							o.vh = t.v;
-							o.vl = t.v;
-						}
-					}
-
-					o.pc /= o.pvc;
-					o.vc /= p.v;
-					if (dco.match(o)) {
-						o.h = o.p * p.h;
-						o.l = o.p * p.l;
-						o.tim = this.utTim.formatUTC(o.s.tim, 1, "date2");
-						for (j = 1; j < p.d; j ++) {
-							t = dco.sr[i + j];
-							if (t) {
-								if (t.h > o.h) {
-									o.t = j;
-									o.r = 1;
-									break;
-								}
-								if (t.l < o.l) {
-									o.t = j;
-									o.r = 2;
-									break;
-								}
-							} else {
-								break;
-							}
-						}
-						if (!o.t) {
-							o.t = j;
-							o.r = 2;
-						}
-						r.push(o);
-					}
-				}
-
-				j = 0;
-				for (i = 0; i < r.length; i ++) {
-					dco.crtR(r[i]);
-					if (r[i].r === 1) {
-						j ++;
-					}
-				}
-				ytimDom.innerHTML = j;
-				stimDom.innerHTML = r.length - j;
-				ztimDom.innerHTML = r.length;
-				if (r.length) {
-					ctDom.innerHTML = (j / r.length * 100).toFixed(2);
-				} else {
-					ctDom.innerHTML = 0;
+					dco.flush();
 				}
 			},
 
-			match: function (o) {
-				if (
-					o.p < o.pc * 1.015 &&
-					o.p > o.pc * 0.985 &&
-					o.v < o.vl * 1.1 &&
-					(o.p - o.pl) / (o.ph - o.pl) < 0.35
-				) {
-					return true;
+			flush: function () {
+				barDom.className = "Lc_hid bar";
+				if (dco.sr) {
+					dco.memo.show("正在计算中，请稍候 ...");
+					setTimeout(dco.run, 1);
 				}
-				return false;
 			},
 
-			getPro: function () {
-				var o = {
-					p: pcDom.value - 0,
-					v: vcDom.value - 0,
-					d: dayDom.value - 0,
-					h: syDom.value / 100 + 1,
-					l: ssDom.value / -100 + 1
-				};
-				return o;
-			},
-
-			crtR: function (o) {
-				var r, d;
-				r = document.createElement("tr");
-				d = document.createElement("td");
-				d.innerHTML = o.tim;
-				r.appendChild(d);
-				d = document.createElement("td");
-				d.innerHTML = o.t;
-				r.appendChild(d);
-				d = document.createElement("td");
-				d.innerHTML = (o.r === 1) ? "赢" : "输";
-				r.appendChild(d);
-				tDom.appendChild(r);
+			run: function () {
+				var a = dco.cm.hdDat();
+				dco.cm.flush(a);
+				dco.memo.hid();
 			},
 
 			reset: function () {
 				inDom.value = inDom.value.substr(0, 6);
 				qryFmDom.submit();
+			},
+
+			bar: function () {
+				if (barDom.className === "bar") {
+					barDom.className = "bar Lc_hid";
+				} else {
+					barDom.className = "bar";
+				}
 			}
 		};
 
-		document.body.onload = dco.init;
+		document.body.onload = dco.initMod;
 	</script>
 </html>

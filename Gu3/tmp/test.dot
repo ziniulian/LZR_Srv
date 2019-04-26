@@ -19,6 +19,9 @@
 			.txtTim {
 				width: 9rem;
 			}
+			.loss {
+				color: #F00;
+			}
 			.mmo {
 				position: fixed;
 				top: 0;
@@ -54,15 +57,16 @@
 						<select id="mDom" name="mod" onchange="dco.setMod(true);">
 							<option value="vmxR" {{=it.pop ? ("vmxR" === it.pop.mod ? "selected='true'" : "") : "selected='true'"}}>放量涨</option>
 							<option value="vmxF" {{=it.pop ? ("vmxF" === it.pop.mod ? "selected='true'" : "") : ""}}>放量跌</option>
+							<option value="R3" {{=it.pop ? ("R3" === it.pop.mod ? "selected='true'" : "") : ""}}>三阳</option>
 							<option value="vmnCp" {{=it.pop ? ("vmnCp" === it.pop.mod ? "selected='true'" : "") : ""}}>地量+均线附近</option>
 						</select>
 						<span><br />起始时间：<input id="days" name="days" type="date" class="txtTim" value="{{=it.pop ? it.pop.days : ''}}"/></span>
 						<span><br />结束时间：<input id="daye" name="daye" type="date" class="txtTim" value="{{=it.pop ? it.pop.daye : ''}}"/></span>
 						<span><br />价周期：<input id="dayp" name="dayp" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.dayp : ''}}"/></span>
 						<span><br />量周期：<input id="dayv" name="dayv" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.dayv : ''}}"/></span>
-						<span><br />幅度：<input id="sf" name="sf" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.sf : ''}}" placeholder="%"/></span>
 						<span><br />止盈：<input id="zsy" name="zsy" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.zsy : ''}}" placeholder="%"/></span>
 						<span><br />止损：<input id="zss" name="zss" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.zss : ''}}" placeholder="%"/></span>
+						<span><br />幅度：<input id="sf" name="sf" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.sf : ''}}" placeholder="%"/></span>
 						<span><br />持仓上限：<input id="dayd" name="dayd" type="text" class="txtTim" onfocus="this.select();" value="{{=it.pop ? it.pop.dayd : ''}}" placeholder="天"/></span>
 						<br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="javascript: dco.flush();">开始计算</a>
 					</div>
@@ -89,8 +93,8 @@
 						<tr>
 							<th>赢</th>
 							<th>输</th>
+							<th>超</th>
 							<th>总计</th>
-							<th>成功率</th>
 						</tr>
 					</tbody>
 					<tbody id="rDom"></tbody>
@@ -116,6 +120,7 @@
 			"LZR.HTML.Base.Doe.Memo",
 			"LZR.Pro.Gu.TestVmaxRise",
 			"LZR.Pro.Gu.TestVmaxFall",
+			"LZR.Pro.Gu.Test3R",
 			"LZR.Pro.Gu.TestMvCp"
 		]);
 
@@ -141,6 +146,7 @@
 					dco.mods = {
 						vmxR: new LZR.Pro.Gu.TestVmaxRise(o),
 						vmxF: new LZR.Pro.Gu.TestVmaxFall(o),
+						R3: new LZR.Pro.Gu.Test3R(o),
 						vmnCp: new LZR.Pro.Gu.TestMvCp(o)
 					};
 					dco.setMod({{=!(it.pop.dayv || it.pop.zsy || it.pop.zss || it.pop.dayd)}});
@@ -150,9 +156,7 @@
 			setMod: function (ip) {
 				dco.cm = dco.mods[mDom.value];
 				if (dco.cm) {
-					if (ip) {
-						dco.cm.initPro(barDom);
-					}
+					dco.cm.initPro(barDom, ip);
 					dco.flush();
 				}
 			},
@@ -167,6 +171,7 @@
 
 			run: function () {
 				var a = dco.cm.hdDat();
+console.log(a);
 				dco.cm.flush(a);
 				dco.memo.hid();
 			},

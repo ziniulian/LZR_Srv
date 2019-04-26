@@ -53,6 +53,8 @@ tools.utGu.init();
 
 /**************** 测试区-S **********************/
 
+// console.log(tools.utTim.getDayTimestamp());
+
 // 聚合排序的分页查询测试 （此排序方法在处理海量数据时会有性能的降低）
 r.get("/qry_info/", function (req, res, next) {
 	var o = LZR.fillPro(req, "qpobj.tmpo.qry");

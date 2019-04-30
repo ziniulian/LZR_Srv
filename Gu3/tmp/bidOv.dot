@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>集合竞价</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0" />
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="/base.css">
+
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+
+		<style type="text/css">
+			th {
+				padding: 0 0.5rem;
+				word-break: keep-all;
+				text-align: center;
+			}
+			td {
+				padding-left: 1rem;
+				word-break: keep-all;
+			}
+			.scd {
+				color: red;
+			}
+			.pag {
+				display: inline-block;
+				width: 23%;
+				line-height: 3;
+				text-align: center;
+			}
+			.txt {
+				width: 10rem;
+				margin: 0 1rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<input id="inDom" class="txt" type="text" placeholder="请输入代码" list="indtDom"/>
+				<datalist id="indtDom"></datalist>
+				<a class="logohome" target="_blank" href="/"></a>
+			</div>
+			<div>
+				<div id="topDom"></div>
+				<table><tbody id="tDom"></tbody></table>
+				<div id="botDom"></div>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		LZR.load([
+			"LZR.HTML.Srv.SortQry"
+		]);
+
+		var dco = {
+			qry: new LZR.HTML.Srv.SortQry ({
+				sr: {{=it.tmpo.tls.utJson.toJson(it.bids)}},
+				cs: [
+					["sp", "撤卖率", true],
+					["bp", "撤买率", false],
+					["l", "最低价", true],
+					["h", "最高价", true],
+					["p", "开盘价", true],
+					["v", "开盘量", true],
+					["f", "幅度", true]
+				],
+				f: true,
+				doe: document.getElementById("tDom"),
+				listDoe: document.getElementById("indtDom"),
+				qryDoe: document.getElementById("inDom"),
+				pagNumTopDoe: document.getElementById("topDom"),
+				pagNumBotDoe: document.getElementById("botDom"),
+				selfNam: "dco.qry"
+			}),
+
+			init: function () {
+				dco.qry.sort(0);
+			}
+		};
+
+		document.body.onload = dco.init;
+	</script>
+</html>

@@ -808,8 +808,15 @@ var bid = [
 
 /******************** 数据库操作 ************************/
 
-// 数据库备份
+/*
+数据库备份
 mongodump -h 127.0.0.1:27017 -d lzr -o L:\Doc\dbc
+mongodump -h 127.0.0.1:27017 -d lzr -o C:\old\tmp\dbc
+
+数据库恢复
+mongorestore -h 127.0.0.1:27017 -d lzr L:\Doc\dbc\lzr
+mongorestore -h 127.0.0.1:27017 -d lzr C:\old\tmp\dbc\lzr
+*/
 
 // 删除原基本信息里的 eps 属性
 db.gub.update({typ:"info"}, {"$unset": {eps:true}}, false, true);

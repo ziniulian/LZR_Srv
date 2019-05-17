@@ -18,12 +18,18 @@ var utTim = LZR.getSingleton(LZR.Base.Time);
 var utMath = LZR.getSingleton(LZR.Base.Math);
 var clsR = LZR.Node.Srv.Result;
 
+// 创建路由
+var r = new LZR.Node.Router ({
+	path: curPath,
+	hd_web: "web"
+});
+
 // 常用数据库
 var cmdb = new LZR.Node.Srv.ComDbSrv ({
 	logAble: 5
 });
 cmdb.initDb(
-	(process.env.OPENSHIFT_MONGODB_DB_URL || "mongodb://localhost:27017/lzr"),
+	(r.getO3dbUrl() || "mongodb://localhost:27017/lzr"),
 	"diary"
 );
 
@@ -61,12 +67,6 @@ cmdb.mdb.evt.rjLimit.add(function (r, req, res, next) {
 		req.qpobj.max = r[0].tim;
 		res.json(clsR.get(req.qpobj));
 	}
-});
-
-// 创建路由
-var r = new LZR.Node.Router ({
-	path: curPath,
-	hd_web: "web"
 });
 
 // 解析 post 参数

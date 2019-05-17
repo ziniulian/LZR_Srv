@@ -338,7 +338,7 @@ ajax.evt.fundPrice.add(function (r, req, res, next) {
 
 // 数据库
 var mdb = new LZR.Node.Db.Mongo ({
-	conf: process.env.OPENSHIFT_MONGODB_DB_URL || "mongodb://localhost:27017/lzr",
+	conf: r.getO3dbUrl() || "mongodb://localhost:27017/lzr",
 	autoErr: true,
 	hd_sqls: {
 		get: {

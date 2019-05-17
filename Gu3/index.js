@@ -24,7 +24,7 @@ var tools = {
 	utJson: LZR.getSingleton(LZR.Base.Json),
 	qryRo: new LZR.Node.Router.QryTmp({
 		ro: r,
-		conf: (process.env.OPENSHIFT_MONGODB_DB_URL || "mongodb://localhost:27017/lzr"),	// 数据库连接字
+		conf: (r.getO3dbUrl() || "mongodb://localhost:27017/lzr"),	// 数据库连接字
 		defTnam: "gub",	// 表名
 		pvs: {
 			_id: 2,	// id
@@ -71,7 +71,7 @@ r.get("/hdBid/", function (req, res, next) {
 	tools.utGu.db.mdb.qry("getBidCache");
 	res.send("OK!");
 });
-
+/*
 // 集合竞价概览（测试）
 r.get("/bidOv/", function (req, res, next) {
 	tools.utGu.db.setPro (req, "getBid", true);
@@ -95,9 +95,9 @@ r.get("/bidOv/", function (req, res, next) {
 			LZR.del(a[s], "f20");
 			LZR.del(a[s], "b");
 			LZR.del(a[s], "s");
-			a[s].f = (a[s].h / a[s].l * 100 -100).toFixed(2);	// 幅度
-			a[s].id = s;
-			a[s].nam = "☯☯☯";
+			a[s].hf = a[s].hf.toFixed(2);
+			a[s].lf = a[s].lf.toFixed(2);
+			a[s].of = a[s].of.toFixed(2);
 			if (a[s].sp === undefined) {
 				a[s].sp = 0;
 				a[s].bp = 0;
@@ -113,7 +113,7 @@ r.get("/bidOv/", function (req, res, next) {
 	req.qpobj.bids = r;
 	next();
 });
-
+*/
 /**************** 测试区-E **********************/
 
 /**************** 模板 **********************/

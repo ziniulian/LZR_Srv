@@ -60,11 +60,10 @@
 				cs: [
 					["sp", "撤卖率", true],
 					["bp", "撤买率", false],
-					["l", "最低价", true],
-					["h", "最高价", true],
-					["p", "开盘价", true],
-					["v", "开盘量", true],
-					["f", "幅度", true]
+					["lf", "最低幅度", true],
+					["hf", "最高幅度", true],
+					["of", "开盘幅度", true],
+					["v", "开盘量", true]
 				],
 				f: true,
 				doe: document.getElementById("tDom"),

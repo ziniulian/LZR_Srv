@@ -54,15 +54,15 @@ srv.use("/Pic/", require("./Pic"));
 srv.use("/Show/", require("./Show"));
 
 // 股服务
-srv.use("/Gu/", require("./Gu"));
-
-// 股服务
-srv.use("/G/", require("./Gu3"));
+srv.use("/Gu/", require("./Gu3"));
 
 // 日记服务
 srv.use("/Riji/", require("./Riji"));
 
 // 数据库管理服务
+srv.use("/Dbc/", require("./Dbc"));
+
+// 访问服务
 srv.use("/Vs/", tools.vs);
 
 // 静态主页设置

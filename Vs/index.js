@@ -24,7 +24,7 @@ var tools = {
 	utNode: LZR.getSingleton(LZR.Node.Util),
 	qryRo: new LZR.Node.Router.QryTmp({
 		ro: r,
-		conf: (process.env.OPENSHIFT_MONGODB_DB_URL || "mongodb://localhost:27017/lzr"),	// 数据库连接字
+		conf: (r.getO3dbUrl() || "mongodb://localhost:27017/lzr"),	// 数据库连接字
 		defTnam: "vs",	// 表名
 		pvs: {
 			"tim": 1,	// 数值型

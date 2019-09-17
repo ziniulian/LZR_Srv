@@ -735,6 +735,7 @@ var guk = [
 {	// 日线数据
 	id:"代码",	// 个股日线数据 : http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol=sh600519&scale=240&ma=no&datalen=2000
 	tim:"日时间戳",
+	y:"昨收价",	// （当有除权时，此值会与上一交易日的实际收盘价不相等）
 	c:"收盘价",
 	o:"开盘价",
 	h:"最高价",
@@ -742,6 +743,7 @@ var guk = [
 	f:"涨幅",
 	v:"成交量",
 	t:"成交额",
+	hr:"换手率",
 	cc:"均价",	// 当有成交额时，可计算出均价。用此均价处理均线比用收盘价更合理。
 	p:"扣非市盈率",
 	m5:"周线",

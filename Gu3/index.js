@@ -134,6 +134,14 @@ r.post("/qry_mgInfo/", function (req, res, next) {
 	next();
 });
 
+r.get("/qry_mgOp/", function (req, res, next) {
+	var o = LZR.fillPro(req, "qpobj.tmpo.qry");
+	o.k = "ord";
+	o.size = 20;
+	o.cond = tools.utJson.toJson({typ: "op"});
+	next();
+});
+
 tools.qryRo.init("/");
 tools.utGu.initDb();
 

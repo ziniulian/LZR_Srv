@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>操作</title>
+		{{#def.meta}}
+
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+
+		<style type="text/css">
+			.clrR {
+				color: red;
+			}
+			.clrB {
+				color: blue;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<a href="javascript: dco.flush();">刷新</a>
+				<a class="logohome" target="_blank" href="/"></a>
+			</div>
+			{{? it.comDbSrvReturn.length > 0}}
+				<div>
+					<table>
+						<tbody>
+							<tr>
+								<th width="5%"></th>
+								<th width="10%">nam</th>
+								<th width="15%">P</th>
+								<th width="10%">F</th>
+								<th width="15%">C</th>
+								<th width="15%">Z</th>
+								<th width="15%">S</th>
+								<th width="15%">B</th>
+							</tr>
+						</tbody>
+						<tbody>
+							{{~it.comDbSrvReturn:o:i}}
+								<tr>
+									<td>{{=o.ord}}</td>
+									<td title="{{=o.id}}">{{=o.alias || o.nam}}</td>
+									<td id="p{{=o.id}}" title="{{=o.v}}"></td>	<!-- 现价 -->
+									<td id="f{{=o.id}}"></td>	<!-- 幅度 -->
+									<td id="c{{=o.id}}"></td>	<!-- 斩 -->
+									<td id="z{{=o.id}}"></td>	<!-- 追 -->
+									<td id="s{{=o.id}}"></td>	<!-- 卖 -->
+									<td id="b{{=o.id}}"></td>	<!-- 买 -->
+								</tr>
+							{{~}}
+							<tr>
+								<td></td>
+								<td>399</td>
+								<td id="p399"></td>
+								<td id="f399"></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>000</td>
+								<td id="p000"></td>
+								<td id="f000"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			{{?}}
+			<div id="mark" class="Lc_nosee">
+				<br /><br />请稍候 ...
+				<br /><a href="javascript: dco.hidMark();">取消</a>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		LZR.load([
+			"LZR.Base.Json",
+			"LZR.HTML.Base.Ajax"
+		]);
+
+		var dco = {
+			url: "{{=it.tmpo.url.rout}}/qrySinaK/",
+			odat: {{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}},	/* 原始数据 */
+			dat: undefined,	/* 整理后的数据 */
+			busy: false,
+			ajx: new LZR.HTML.Base.Ajax (),
+
+			utJson: LZR.getSingleton(LZR.Base.Json),
+			init: function () {
+				dco.ajx.evt.rsp.add(dco.hdflush);
+				dco.dat = dco.hdDat(dco.odat);
+
+				/* 键盘控制 */
+				document.onkeyup = function (e) {
+					if (e.keyCode === 32) {
+						/* 空格 */
+						dco.flush();
+					} else if (e.keyCode === 13) {
+						/* 回车键 */
+						dco.hidMark();
+						dco.flush();
+					}
+				};
+			},
+
+			hdDat: function (od) {
+				var r = [], u = "", i, j, k, a, b, o;
+				for (i = 0; i < od.length; i ++) {
+					o = od[i];
+					u += o.id;
+					u += ",";
+					r.push({
+						id: o.id,
+						b: [],
+						s: [],
+						c: 0,	/* 当前价 */
+						f: 0,	/* 涨幅 */
+						p: o.p,	/* 成本价 */
+						v: o.v	/* 持有数量 */
+					});
+
+					/* 买 */
+					for (j = 0; j < o.buy.length; j ++) {
+						b = true;
+						for (k = 0; k < r[i].b.length; k ++) {
+							if (r[i].b[k] < o.buy[j]) {
+								r[i].b.splice(k, 0, o.buy[j]);
+								b = false;
+								break;
+							}
+						}
+						if (b) {
+							r[i].b.push(o.buy[j]);
+						}
+					}
+
+					/* 卖 */
+					for (j = 0; j < o.m.length; j ++) {
+						for (k = 0; k < o.m[j].s.length; k ++) {
+							b = true;
+							for (a = 0; a < r[i].s.length; a ++) {
+								if (r[i].s[a].p === o.m[j].s[k].p) {
+									r[i].s[a].v += o.m[j].s[k].v;
+									b = false;
+									break;
+								} else if (r[i].s[a].p > o.m[j].s[k].p) {
+									r[i].s.splice(a, 0, o.m[j].s[k]);
+									b = false;
+									break;
+								}
+							}
+							if (b) {
+								r[i].s.push(o.m[j].s[k]);	/* 直接 push 会导致原始数据被修改，但修改了也无所谓 */
+							}
+						}
+					}
+				}
+				r.push({id:"399"});
+				r.push({id:"000"});
+				dco.url += u + "/s/";
+				return r;
+			},
+
+			flush: function () {
+				if (!dco.busy) {
+					dco.showMark();
+					dco.ajx.asynPost(dco.url);
+				}
+			},
+
+			/* 回调处理 */
+			hdflush: function (txt) {
+				var o, i, j, a, d, p;
+				try {
+					o = dco.utJson.toObj(txt);
+				} catch (e) {
+					o = false;
+				}
+				if (o && o.ok) {
+					o = o.dat.split(";");
+					for (i = 0; i < o.length; i ++) {
+						a = o[i].split(",");
+						if (a.length > 1) {
+							p = dco.dat[i];
+							p.c = a[1] - 0;
+							p.f = a[3] - 0;
+							d = document.getElementById("p" + p.id);
+							d.innerHTML = p.c.toFixed(2);
+							d = document.getElementById("f" + p.id);
+							d.innerHTML = p.f.toFixed(2);
+							if (p.b) {
+								/* 买 */
+								for (j = 0; j < p.b.length; j ++) {
+									if (p.b[j] < p.c) {
+										dco.setV(document.getElementById("b" + p.id), p.c, p.b[j]);
+										break;
+									}
+								}
+								j --;
+								if (j >= 0) {
+									dco.setV(document.getElementById("z" + p.id), p.c, p.b[j]);
+								}
+
+								/* 卖 */
+								for (j = 0; j < p.s.length; j ++) {
+									if (p.s[j].p > p.c) {
+										dco.setV(document.getElementById("s" + p.id), p.c, p.s[j].p, p.s[j].v);
+										break;
+									}
+								}
+								j --;
+								if (j >= 0) {
+									dco.setV(document.getElementById("c" + p.id), p.c, p.s[j].p, p.s[j].v);
+								}
+							}
+						}
+					}
+				}
+				dco.hidMark();
+			},
+
+			/* 修改值 */
+			setV: function (d, c, p, v) {
+				var f = p / c * 100 - 100;
+				d.innerHTML = p.toFixed(2);
+				d.title = v ? f.toFixed(2) + "_" + v : f.toFixed(2);
+
+				/* 接近预定范围 */
+				if (f < 0) {
+					f *= -1;
+				}
+				if (f < 1) {
+					d.className = "clrR";
+				} else if (f < 3) {
+					d.className = "clrB";
+				}
+			},
+
+			/* 显示等候页面 */
+			showMark: function () {
+				dco.busy = true;
+				mark.className = "mark";
+			},
+
+			/* 隐藏等候页面 */
+			hidMark: function () {
+				dco.ajx.abort();
+				dco.busy = false;
+				mark.className = "Lc_nosee";
+			}
+		};
+
+		document.body.onload = dco.init;
+	</script>
+</html>

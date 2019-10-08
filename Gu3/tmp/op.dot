@@ -189,6 +189,20 @@
 							d.innerHTML = p.c.toFixed(2);
 							d = document.getElementById("f" + p.id);
 							d.innerHTML = p.f.toFixed(2);
+							d = document.getElementById("c" + p.id);
+							if (d) {
+								d.className = "";
+								d.innerHTML = "";
+								d = document.getElementById("z" + p.id);
+								d.className = "";
+								d.innerHTML = "";
+								d = document.getElementById("s" + p.id);
+								d.className = "";
+								d.innerHTML = "";
+								d = document.getElementById("b" + p.id);
+								d.className = "";
+								d.innerHTML = "";
+							}
 							if (p.b) {
 								/* 买 */
 								for (j = 0; j < p.b.length; j ++) {

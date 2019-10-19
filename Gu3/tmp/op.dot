@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>操作</title>
+		<title>自选股操作</title>
 		{{#def.meta}}
 
 		<script type="text/javascript" src="/myLib/LZR.js"></script>

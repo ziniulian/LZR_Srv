@@ -336,6 +336,12 @@ ajax.evt.fundPrice.add(function (r, req, res, next) {
 	res.json(tools.clsR.get(a));
 });
 
+// 创建路由
+var r = new LZR.Node.Router ({
+	path: curPath,
+	hd_web: "web"
+});
+
 // 数据库
 var mdb = new LZR.Node.Db.Mongo ({
 	conf: r.getO3dbUrl() || "mongodb://localhost:27017/lzr",
@@ -452,12 +458,6 @@ mdb.evt.count.add(function (r, req, res, next) {
 	} else {
 		res.json(tools.clsR.get(r));
 	}
-});
-
-// 创建路由
-var r = new LZR.Node.Router ({
-	path: curPath,
-	hd_web: "web"
 });
 
 // 新浪接口

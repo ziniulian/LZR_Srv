@@ -292,5 +292,5 @@ function init() {
 
 	dat.flush();
 
-	lzr_tools.trace();
+	// lzr_tools.trace();
 }

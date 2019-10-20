@@ -14,7 +14,7 @@ var srv = new LZR.Node.Srv ({
 
 // 需要用到的工具
 var tools = {
-	vs: require("./Vs")		// 访问记录数据库管理模块
+	// vs: require("./Vs")		// 访问记录数据库管理模块
 };
 
 // LOGO图片
@@ -45,25 +45,26 @@ srv.ro.setStaticDir("/myLib/", LZR.curPath);
 srv.ro.setStaticDir("/comLib/", "./common/Lib/");
 
 // 记录访问信息
-srv.ro.all(/^\/((Show)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
+// srv.ro.all(/^\/((Show)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
 
 // 临时图床
-srv.use("/Pic/", require("./Pic"));
+// srv.use("/Pic/", require("./Pic"));
 
 // 作品展示
-srv.use("/Show/", require("./Show"));
+// srv.use("/Show/", require("./Show"));
 
 // 股服务
-srv.use("/Gu/", require("./Gu3"));
+// srv.use("/Gu/", require("./Gu3"));
+srv.use("/Gu/", require("./Gu"));
 
 // 日记服务
-srv.use("/Riji/", require("./Riji"));
+// srv.use("/Riji/", require("./Riji"));
 
 // 数据库管理服务
-srv.use("/Dbc/", require("./Dbc"));
+// srv.use("/Dbc/", require("./Dbc"));
 
 // 访问服务
-srv.use("/Vs/", tools.vs);
+// srv.use("/Vs/", tools.vs);
 
 // 静态主页设置
 srv.ro.setStaticDir("/", "./web");

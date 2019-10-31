@@ -180,7 +180,7 @@
 								d.className = "";
 								d.innerHTML = "";
 								if (p.o) {
-									dco.setV(d, p.c, p.o, p.v);
+									dco.setV(d, p.c, p.o, ("总价：" + p.p + "\n总量：" + p.v + "\n盈亏：" + Math.floor((p.c - p.o) * p.v)));
 								}
 
 								/* 斩 */
@@ -235,7 +235,7 @@
 			setV: function (d, c, p, v) {
 				var f = c / p * 100 - 100;
 				d.innerHTML = p.toFixed(2);
-				d.title = v ? f.toFixed(2) + "_" + v : f.toFixed(2);
+				d.title = v ? f.toFixed(2) + "\n" + v : f.toFixed(2);
 
 				/* 接近预定范围 */
 				if (f < 0) {

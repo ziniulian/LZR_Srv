@@ -38,8 +38,8 @@
 							<tr>
 								<th width="10%">序号</th>
 								<th width="20%">名称</th>
-								<th width="20%">单价</th>
-								<th width="20%">数量</th>
+								<th width="20%">总价</th>
+								<th width="20%">总量</th>
 								<th width="15%">修改</th>
 								<th width="15%" />
 							</tr>
@@ -87,33 +87,5 @@
 	{{#def.qry_js}}
 	<script type="text/javascript">
 		document.body.onload = dco.init;
-		console.log('{
-			"typ": "op",
-			"ec": "",
-			"id": "",
-			"nam": "",
-			"alias": "",
-			"ord": 1,
-			"p": 0,
-			"v": 0,
-			"exp": 0,
-			"top": 0,
-			"buy": [
-				1
-			],
-			"m": [
-				{
-					"p": 0,
-					"v": 0,
-					"d": 0,
-					"s": [
-						{
-							"p": 0,
-							"v": 0
-						}
-					]
-				}
-			]
-		}');
 	</script>
 </html>

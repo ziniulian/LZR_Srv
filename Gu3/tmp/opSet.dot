@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>自选股修改</title>
+		{{#def.meta}}
+
+		<style type="text/css">
+			input {
+				width: 90%;
+				border-bottom: 0.1rem solid red;
+				text-align: right;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				<a href="javascript: dco.sav();">保存</a>
+				<a class="logohome" href="{{=it.tmpo.url.rout}}op/"></a>
+			</div>
+
+			<form id="fomDoe" action="" method="post">
+				<input id="datDoe" name="dat" type="hidden"/>
+				<table>
+					<tbody>
+						<tr>
+							<td width="15%"><input id="ordDoe" type="text" placeholder="序号" onfocus="dco.scdAll(this);"/></td>
+							<td width="20%"><input id="namDoe" type="text" placeholder="名称"/></td>
+							<td width="15%"><input id="ecDoe" type="text" placeholder="交易所"/></td>
+							<td width="35%"><input id="idDoe" type="text" placeholder="代码"/></td>
+							<td width="15%"><input id="aliDoe" type="text" placeholder="别名" onfocus="dco.scdAll(this);"/></td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td id="pDoe"></td>
+							<td id="vDoe"></td>
+							<td><input id="safDoe" type="text" placeholder="安全位"/></td>
+							<td><input id="buyDoe" type="text" placeholder="买点" onfocus="dco.scdAll(this);"/></td>
+							<td><input id="topDoe" type="text" placeholder="阶段顶" onfocus="dco.scdAll(this);"/></td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr><td/><td/><td/><td><a href="javascript: dco.add();">添加</a></td></tr>
+						<tr><td>&nbsp;</td></tr>
+					</tbody>
+					<tbody id="listDoe"></tbody>
+				</table>
+			</form>
+
+			<div id="memoDom" class="memo"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		var dco = {
+			url: "{{=it.tmpo.url.base}}",
+			md: [],
+
+			init: function () {
+				var d = {{=it.comDbSrvReturn ? it.tmpo.tls.utJson.toJson(it.comDbSrvReturn) : "[]"}};
+				if (d.length) {
+					d = d[0];
+					/*数据填充*/
+					ordDoe.value = d.ord;
+					namDoe.value = d.nam;
+					ecDoe.value = d.ec;
+					idDoe.value = d.id;
+					aliDoe.value = d.alias ? d.alias : "";
+					pDoe.innerHTML = d.p.toFixed(2);
+					vDoe.innerHTML = d.v;
+					safDoe.value = d.saf ? d.saf.toFixed(2) : "";
+					buyDoe.value = d.buy;
+					topDoe.value = d.top ? d.top.toFixed(2) : "";
+					namDoe.disabled = true;
+					ecDoe.disabled = true;
+					idDoe.disabled = true;
+					for (var i = 0; i < d.m.length; i ++) {
+						dco.add(d.m[i]);
+					}
+				}
+				dco.memo("{{=it.msg?it.msg:''}}");
+			},
+
+			/*添加项目*/
+			add: function (dt) {
+				var a, o = {
+					id: dco.md.length,
+					able: true,
+					doe: {
+						r: document.createElement("tr"),
+						p: document.createElement("input"),
+						v: document.createElement("input"),
+						s: document.createElement("input"),
+						c: document.createElement("input")
+					}
+				};
+				dco.md.push(o);
+
+				if (!dt) {
+					dt = {};
+				}
+
+				o.doe.p.placeholder="价格";
+				o.doe.p.type="text";
+				o.doe.p.value = dt.p ? dt.p.toFixed(2) : "";
+				o.doe.p.onfocus = dco.scdAll;
+				d = document.createElement("td");
+				d.appendChild(o.doe.p);
+				o.doe.r.appendChild(d);
+
+				o.doe.v.placeholder="数量";
+				o.doe.v.type="text";
+				o.doe.v.value = dt.v ? dt.v : "";
+				o.doe.v.onfocus = dco.scdAll;
+				d = document.createElement("td");
+				d.appendChild(o.doe.v);
+				o.doe.r.appendChild(d);
+
+				o.doe.s.placeholder="止盈";
+				o.doe.s.type="text";
+				o.doe.s.value = dt.s ? dt.s.toFixed(2) : "";
+				o.doe.s.onfocus = dco.scdAll;
+				d = document.createElement("td");
+				d.appendChild(o.doe.s);
+				o.doe.r.appendChild(d);
+
+				o.doe.c.placeholder="止损";
+				o.doe.c.type="text";
+				o.doe.c.value = dt.c ? dt.c : "";
+				o.doe.c.onfocus = dco.scdAll;
+				d = document.createElement("td");
+				d.appendChild(o.doe.c);
+				o.doe.r.appendChild(d);
+
+				d = document.createElement("td");
+				a = document.createElement("a");
+				a.innerHTML = "2";
+				a.href = "javascript: dco.hd(" + o.id + ", 2);";
+				d.appendChild(a);
+				d.innerHTML += "&nbsp; ";
+
+				a = document.createElement("a");
+				a.innerHTML = "5";
+				a.href = "javascript: dco.hd(" + o.id + ", 5);";
+				d.appendChild(a);
+				d.innerHTML += "&nbsp; ";
+
+				a = document.createElement("a");
+				a.innerHTML = "A";
+				a.href = "javascript: dco.hd(" + o.id + ", 10);";
+				d.appendChild(a);
+				d.innerHTML += "&nbsp; ";
+
+				a = document.createElement("a");
+				a.innerHTML = "D";
+				a.href = "javascript: dco.hd(" + o.id + ", 0);";
+				d.appendChild(a);
+				d.innerHTML += "&nbsp; ";
+
+				a = document.createElement("a");
+				a.innerHTML = "删除";
+				a.href = "javascript: dco.hd(" + o.id + ", -1);";
+				d.appendChild(a);
+
+				o.doe.r.appendChild(d);
+				listDoe.appendChild(o.doe.r);
+			},
+
+			/*操作处理*/
+			hd: function (id, m) {
+				var o = dco.md[id];
+				if (m === -1) {
+					o.able = false;
+					listDoe.removeChild(o.doe.r);
+				} else {
+					var p = o.doe.p.value - 0;
+					if (p) {
+						o.doe.s.value = "";
+						o.doe.c.value = Math.ceil(p * 95) / 100;	/*止损位*/
+						switch (m) {
+							case 0:
+								o.doe.c.value = "";
+								break;
+							case 2:
+							case 5:
+								o.doe.s.value = Math.ceil(p * (100 + m)) / 100;	/*止盈位*/
+								break;
+							case 10:
+								o.doe.c.value += "," + Math.ceil(p * (100 + m)) / 100;
+						}
+					}
+				}
+			},
+
+			/*保存*/
+			sav: function () {
+				if (ordDoe.value) {
+					if (namDoe.value) {
+						if (ecDoe.value) {
+							if (idDoe.value) {
+								fomDoe.action = dco.url + "/" + idDoe.value;
+								var o = {
+									ec: ecDoe.value,
+									nam: namDoe.value,
+									alias: aliDoe.value,
+									ord: ordDoe.value - 0 ? ordDoe.value - 0 : 0,
+									p: 0,
+									v: 0,
+									top: topDoe.value - 0 ? topDoe.value - 0 : 0,
+									saf: safDoe.value - 0 ? safDoe.value - 0 : 0,
+									buy: [],
+									m: []
+								};
+
+								/*买点列表 , 从小到大排序*/
+								var i, j, v, a = buyDoe.value.split(",");
+								for (i = 0; i < a.length; i ++) {
+									v = a[i] - 0;
+									if (v) {
+										for (j = 0; j < o.buy.length; j ++) {
+											if (v < o.buy[j]) {
+												break;
+											}
+										}
+										o.buy.splice(j, 0, v);
+									}
+								}
+
+								/*交易明细*/
+								var k, r;
+								for (i = 0; i < dco.md.length; i ++) {
+									k = dco.md[i];
+									if (k.able) {
+										j = k.doe.p.value - 0;
+										v = k.doe.v.value - 0;
+										if (j && v) {
+											r = {
+												p: j,
+												v: v,
+												s: k.doe.s.value - 0 ? k.doe.s.value - 0 : 0,
+												c: []
+											};
+
+											/*止损列表 , 从小到大排序*/
+											a = k.doe.c.value.split(",");
+											for (k = 0; k < a.length; k ++) {
+												v = a[k] - 0;
+												if (v) {
+													for (j = 0; j < r.c.length; j ++) {
+														if (v < r.c[j]) {
+															break;
+														}
+													}
+													r.c.splice(j, 0, v);
+												}
+											}
+
+											/*按止盈位从大到小的顺序存放交易明细*/
+											for (j = 0; j < o.m.length; j ++) {
+												if (r.s > o.m[j].s) {
+													break;
+												}
+											}
+											o.m.splice(j, 0, r);
+											o.v += r.v;
+											o.p += r.p * r.v;
+										}
+									}
+								}
+
+								/*提交表单*/
+								datDoe.value = JSON.stringify(o);
+								fomDoe.submit();
+							} else {
+								dco.memo("代码不能为空！");
+							}
+						} else {
+							dco.memo("交易所不能为空！");
+						}
+					} else {
+						dco.memo("名称不能为空！");
+					}
+				} else {
+					dco.memo("序号不能为空！");
+				}
+			},
+
+			/*全选*/
+			scdAll: function (d) {
+				if (d.target) {
+					d = d.target;
+				}
+				d.select();
+			},
+
+			/* 信息提示 */
+			memoTid: 0,
+			memoDoe: memoDom,
+			memo: function (msg, tim) {
+				clearTimeout(dco.memoTid);
+				if (msg) {
+					dco.memoDoe.innerHTML = msg;
+					dco.memoTid = setTimeout(dco.memoHid, (tim || 3000));
+				}
+			},
+			memoHid: function () {
+				dco.memoDoe.innerHTML = "";
+			}
+		};
+
+		document.body.onload = dco.init;
+	</script>
+</html>

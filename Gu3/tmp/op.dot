@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head id="hDoe">
 		<title>自选股操作</title>
 		{{#def.meta}}
-
-		<script type="text/javascript" src="/myLib/LZR.js"></script>
 
 		<style type="text/css">
 			.clrR {
@@ -20,6 +18,7 @@
 		<div id="boso" class="boso">
 			<div class="logo">
 				<a href="javascript: dco.flush();">刷新</a>
+				&nbsp; &nbsp; &nbsp; <a href="{{=it.tmpo.url.rout}}opSet/">添加</a>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
 			{{? it.comDbSrvReturn.length > 0}}
@@ -41,24 +40,24 @@
 							{{~it.comDbSrvReturn:o:i}}
 								<tr>
 									<td>{{=o.ord}}</td>
-									<td title="{{=o.id}}">{{=o.alias || o.nam}}</td>
+									<td ><a href="{{=it.tmpo.url.rout}}opSet/{{=o.id}}">{{=o.alias || o.nam}}</a></td>
 									<td id="p{{=o.id}}" title="{{=o.v}}"></td>	<!-- 现价 -->
 									<td id="f{{=o.id}}"></td>	<!-- 幅度 -->
-									<td id="c{{=o.id}}"></td>	<!-- 斩 -->
-									<td id="z{{=o.id}}"></td>	<!-- 追 -->
+									<td id="c{{=o.id}}"></td>	<!-- 成本 -->
+									<td id="z{{=o.id}}"></td>	<!-- 斩 -->
 									<td id="s{{=o.id}}"></td>	<!-- 卖 -->
 									<td id="b{{=o.id}}"></td>	<!-- 买 -->
 								</tr>
 							{{~}}
 							<tr>
 								<td></td>
-								<td>399</td>
+								<td>SZ</td>
 								<td id="p399"></td>
 								<td id="f399"></td>
 							</tr>
 							<tr>
 								<td></td>
-								<td>000</td>
+								<td>SH</td>
 								<td id="p000"></td>
 								<td id="f000"></td>
 							</tr>
@@ -74,21 +73,14 @@
 	</body>
 
 	<script type="text/javascript">
-		LZR.load([
-			"LZR.Base.Json",
-			"LZR.HTML.Base.Ajax"
-		]);
-
 		var dco = {
-			url: "{{=it.tmpo.url.rout}}/qrySinaK/",
+			url: "http://hq.sinajs.cn/list=",
 			odat: {{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}},	/* 原始数据 */
 			dat: undefined,	/* 整理后的数据 */
 			busy: false,
-			ajx: new LZR.HTML.Base.Ajax (),
+			jDoe: null,
 
-			utJson: LZR.getSingleton(LZR.Base.Json),
 			init: function () {
-				dco.ajx.evt.rsp.add(dco.hdflush);
 				dco.dat = dco.hdDat(dco.odat);
 
 				/* 键盘控制 */
@@ -105,84 +97,79 @@
 			},
 
 			hdDat: function (od) {
-				var r = [], u = "", i, j, k, a, b, o;
+				var r = [], u = "", i, j, k, u, v, b, o;
 				for (i = 0; i < od.length; i ++) {
 					o = od[i];
-					u += o.id;
-					u += ",";
 					r.push({
 						id: o.id,
-						b: [],
-						s: [],
+						ec: o.ec + o.id,
+						b: o.buy,	/* 买点 */
+						s: [],	/* 止盈 */
+						z: [],	/* 止损 */
 						c: 0,	/* 当前价 */
 						f: 0,	/* 涨幅 */
-						p: o.p,	/* 成本价 */
-						v: o.v	/* 持有数量 */
+						v: o.v,	/* 总量 */
+						p: o.p	/* 总价 */
 					});
+					dco.url += "s_" + r[i].ec + ",";
 
-					/* 买 */
-					for (j = 0; j < o.buy.length; j ++) {
-						b = true;
-						for (k = 0; k < r[i].b.length; k ++) {
-							if (r[i].b[k] < o.buy[j]) {
-								r[i].b.splice(k, 0, o.buy[j]);
-								b = false;
-								break;
-							}
-						}
-						if (b) {
-							r[i].b.push(o.buy[j]);
-						}
+					if (o.v) {
+						/* 计算成本价 */
+						b = document.getElementById("c" + o.id);
+						b.innerHTML = Math.ceil(o.p*100.4/o.v) / 100;
+						b.title = o.v + " 股,\n" + o.p;
 					}
-
-					/* 卖 */
-					for (j = 0; j < o.m.length; j ++) {
-						for (k = 0; k < o.m[j].s.length; k ++) {
+					for (j = o.m.length - 1; j >= 0; j --) {
+						/* 止盈：从最小的找起，小于最小的显示 */
+						if (o.m[j].s) {
+							r[i].s.push([o.m[j].s*1.01, o.m[j].s, o.m[j].v]);
+						}
+						/* 止损：从最大的找起，大于最大的显示 */
+						for (k = 0; k < o.m[j].c.length; k ++) {
+							v = o.m[j].c[k];
 							b = true;
-							for (a = 0; a < r[i].s.length; a ++) {
-								if (r[i].s[a].p === o.m[j].s[k].p) {
-									r[i].s[a].v += o.m[j].s[k].v;
+							for (u = 0; u < r[i].z.length; u ++) {
+								if (r[i].z[u][0] === v) {
+									r[i].z[u][1] += o.m[j].v;
 									b = false;
 									break;
-								} else if (r[i].s[a].p > o.m[j].s[k].p) {
-									r[i].s.splice(a, 0, o.m[j].s[k]);
-									b = false;
+								} else if (v > r[i].z[u][0]) {
 									break;
 								}
 							}
 							if (b) {
-								r[i].s.push(o.m[j].s[k]);	/* 直接 push 会导致原始数据被修改，但修改了也无所谓 */
+								r[i].z.splice(u, 0, [v, o.m[j].v]);
 							}
 						}
 					}
 				}
-				r.push({id:"399"});
-				r.push({id:"000"});
-				dco.url += u + "/s/";
+				r.push({id:"399", ec:"sz399001"});
+				r.push({id:"000", ec:"sh000001"});
+				dco.url += "s_sz399001,s_sh000001";
 				return r;
 			},
 
 			flush: function () {
 				if (!dco.busy) {
 					dco.showMark();
-					dco.ajx.asynPost(dco.url);
+					dco.jDoe = document.createElement("script");
+					dco.jDoe.src = dco.url; 
+					dco.jDoe.onload = dco.hdflush;
+					hDoe.appendChild(dco.jDoe);
 				}
 			},
 
 			/* 回调处理 */
-			hdflush: function (txt) {
-				var o, i, j, a, d, p;
-				try {
-					o = dco.utJson.toObj(txt);
-				} catch (e) {
-					o = false;
-				}
-				if (o && o.ok) {
-					o = o.dat.split(";");
-					for (i = 0; i < o.length; i ++) {
-						a = o[i].split(",");
+			hdflush: function () {
+				var i, j, a, d, p;
+				hDoe.removeChild(dco.jDoe);
+				dco.jDoe = null;
+				for (i = 0; i < dco.dat.length; i ++) {
+					p = dco.dat[i];
+					a = window["hq_str_s_" + p.ec];
+					if (a) {
+						a = a.split(",");
 						if (a.length > 1) {
-							p = dco.dat[i];
 							p.c = a[1] - 0;
 							p.f = a[3] - 0;
 							d = document.getElementById("p" + p.id);
@@ -191,41 +178,46 @@
 							d.innerHTML = p.f.toFixed(2);
 							d = document.getElementById("c" + p.id);
 							if (d) {
-								d.className = "";
-								d.innerHTML = "";
+								/* 斩 */
 								d = document.getElementById("z" + p.id);
 								d.className = "";
 								d.innerHTML = "";
-								d = document.getElementById("s" + p.id);
-								d.className = "";
-								d.innerHTML = "";
-								d = document.getElementById("b" + p.id);
-								d.className = "";
-								d.innerHTML = "";
-							}
-							if (p.b) {
-								/* 买 */
-								for (j = 0; j < p.b.length; j ++) {
-									if (p.b[j] < p.c) {
-										dco.setV(document.getElementById("b" + p.id), p.c, p.b[j]);
-										break;
+								if (p.z.length) {
+									for (j = 0; j < p.z.length; j ++) {
+										if (p.c > p.z[j][0]) {
+											dco.setV(d, p.c, p.z[j][0], p.z[j][1]);
+											break;
+										}
 									}
-								}
-								j --;
-								if (j >= 0) {
-									dco.setV(document.getElementById("z" + p.id), p.c, p.b[j]);
 								}
 
 								/* 卖 */
-								for (j = 0; j < p.s.length; j ++) {
-									if (p.s[j].p > p.c) {
-										dco.setV(document.getElementById("s" + p.id), p.c, p.s[j].p, p.s[j].v);
-										break;
+								d = document.getElementById("s" + p.id);
+								d.className = "";
+								d.innerHTML = "";
+								if (p.s.length) {
+									for (j = 0; j < p.s.length; j ++) {
+										if (p.c < p.s[j][0]) {
+											dco.setV(d, p.c, p.s[j][1], p.s[j][2]);
+											break;
+										}
 									}
 								}
-								j --;
-								if (j >= 0) {
-									dco.setV(document.getElementById("c" + p.id), p.c, p.s[j].p, p.s[j].v);
+
+								/* 买，找最接近的一个位置*/
+								d = document.getElementById("b" + p.id);
+								d.className = "";
+								d.innerHTML = "";
+								if (p.b.length) {
+									for (j = p.b.length - 0; j >= 0; j --) {
+										if (p.c > p.b[j]) {
+											dco.setV(d, p.c, p.b[j]);
+											break;
+										}
+									}
+									if (j < 0) {
+										dco.setV(d, p.c, p.b[0]);
+									}
 								}
 							}
 						}
@@ -259,7 +251,6 @@
 
 			/* 隐藏等候页面 */
 			hidMark: function () {
-				dco.ajx.abort();
 				dco.busy = false;
 				mark.className = "Lc_nosee";
 			}

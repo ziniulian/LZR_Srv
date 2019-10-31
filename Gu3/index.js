@@ -65,55 +65,6 @@ r.get("/qry_info/", function (req, res, next) {
 	next();
 });
 
-// 处理集合竞价
-r.get("/hdBid/", function (req, res, next) {
-	tools.utGu.bidc.state = 5;
-	tools.utGu.db.mdb.qry("getBidCache");
-	res.send("OK!");
-});
-/*
-// 集合竞价概览（测试）
-r.get("/bidOv/", function (req, res, next) {
-	tools.utGu.db.setPro (req, "getBid", true);
-	tools.utGu.db.mdb.qry("getBid", req, res, next, [
-		{tim : tools.utTim.getDayTimestamp()}, {"_id" : 0, tim: 0, length: 0}
-	]);
-});
-r.get("/bidOv/", function (req, res, next) {
-	var s, r = [], a = req.qpobj.comDbSrvReturn;
-	if (a.length) {
-		a = a[0];
-		for (s in a) {
-			if (a[s].t && !a[s].p) {
-				// 修正不完整的数据
-				a[s].p = a[s].t.p;
-				a[s].v = a[s].t.v;
-				LZR.del(a[s], "t");
-				// r.push(a[s]);
-			}
-			LZR.del(a[s], "dat");
-			LZR.del(a[s], "f20");
-			LZR.del(a[s], "b");
-			LZR.del(a[s], "s");
-			a[s].hf = a[s].hf.toFixed(2);
-			a[s].lf = a[s].lf.toFixed(2);
-			a[s].of = a[s].of.toFixed(2);
-			if (a[s].sp === undefined) {
-				a[s].sp = 0;
-				a[s].bp = 0;
-			} else {
-				a[s].sp = a[s].sp.toFixed(0);
-				a[s].bp = a[s].bp.toFixed(0);
-			}
-
-			r.push(a[s]);
-		}
-	}
-
-	req.qpobj.bids = r;
-	next();
-});
-*/
 /**************** 测试区-E **********************/
 
 /**************** 模板 **********************/

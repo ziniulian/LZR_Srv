@@ -176,11 +176,8 @@
 					var p = o.doe.p.value - 0;
 					if (p) {
 						o.doe.s.value = "";
-						o.doe.c.value = Math.ceil(p * 95) / 100;	/*止损位*/
+						o.doe.c.value = Math.ceil(p * 96) / 100;	/*止损位*/
 						switch (m) {
-							case 0:
-								o.doe.c.value = "";
-								break;
 							case 2:
 							case 5:
 								o.doe.s.value = Math.ceil(p * (100 + m)) / 100;	/*止盈位*/

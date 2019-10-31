@@ -109,15 +109,14 @@
 						c: 0,	/* 当前价 */
 						f: 0,	/* 涨幅 */
 						v: o.v,	/* 总量 */
-						p: o.p	/* 总价 */
+						p: o.p,	/* 总价 */
+						o: 0	/* 成本价 */
 					});
 					dco.url += "s_" + r[i].ec + ",";
 
 					if (o.v) {
 						/* 计算成本价 */
-						b = document.getElementById("c" + o.id);
-						b.innerHTML = Math.ceil(o.p*100.4/o.v) / 100;
-						b.title = o.v + " 股,\n" + o.p;
+						r[i].o = Math.ceil(o.p*100.4/o.v) / 100;
 					}
 					for (j = o.m.length - 1; j >= 0; j --) {
 						/* 止盈：从最小的找起，小于最小的显示 */
@@ -178,6 +177,12 @@
 							d.innerHTML = p.f.toFixed(2);
 							d = document.getElementById("c" + p.id);
 							if (d) {
+								d.className = "";
+								d.innerHTML = "";
+								if (p.o) {
+									dco.setV(d, p.c, p.o, p.v);
+								}
+
 								/* 斩 */
 								d = document.getElementById("z" + p.id);
 								d.className = "";
@@ -228,7 +233,7 @@
 
 			/* 修改值 */
 			setV: function (d, c, p, v) {
-				var f = p / c * 100 - 100;
+				var f = c / p * 100 - 100;
 				d.innerHTML = p.toFixed(2);
 				d.title = v ? f.toFixed(2) + "_" + v : f.toFixed(2);
 

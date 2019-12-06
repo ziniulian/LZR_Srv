@@ -30,10 +30,10 @@
 								<th width="10%">nam</th>
 								<th width="15%">P</th>
 								<th width="10%">F</th>
-								<th width="15%">C</th>
 								<th width="15%">Z</th>
 								<th width="15%">S</th>
 								<th width="15%">B</th>
+								<th width="15%">C</th>
 							</tr>
 						</tbody>
 						<tbody>
@@ -41,12 +41,12 @@
 								<tr>
 									<td>{{=o.ord}}</td>
 									<td ><a href="{{=it.tmpo.url.rout}}opSet/{{=o.id}}">{{=o.alias || o.nam}}</a></td>
-									<td id="p{{=o.id}}" title="{{=o.v}}"></td>	<!-- 现价 -->
-									<td id="f{{=o.id}}"></td>	<!-- 幅度 -->
-									<td id="c{{=o.id}}"></td>	<!-- 成本 -->
-									<td id="z{{=o.id}}"></td>	<!-- 斩 -->
-									<td id="s{{=o.id}}"></td>	<!-- 卖 -->
-									<td id="b{{=o.id}}"></td>	<!-- 买 -->
+									<td id="p{{=o.id}}"></td>
+									<td id="f{{=o.id}}"></td>
+									<td id="z{{=o.id}}"></td>
+									<td id="s{{=o.id}}"></td>
+									<td id="b{{=o.id}}"></td>
+									<td id="c{{=o.id}}"></td>
 								</tr>
 							{{~}}
 							<tr>
@@ -61,10 +61,18 @@
 								<td id="p000"></td>
 								<td id="f000"></td>
 							</tr>
+							<tr>
+								<td></td>
+								<td>R1</td>
+								<td id="p001"></td>
+								<td id="f001"></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
 			{{?}}
+			<hr/>
+			<div id="tcDoe">TC：</div>
 			<div id="mark" class="Lc_nosee">
 				<br /><br />请稍候 ...
 				<br /><a href="javascript: dco.hidMark();">取消</a>
@@ -79,6 +87,7 @@
 			dat: undefined,	/* 整理后的数据 */
 			busy: false,
 			jDoe: null,
+			tc: 0,
 
 			init: function () {
 				dco.dat = dco.hdDat(dco.odat);
@@ -117,34 +126,48 @@
 					if (o.v) {
 						/* 计算成本价 */
 						r[i].o = Math.ceil(o.p*100.4/o.v) / 100;
+						dco.tc += o.p;
 					}
 					for (j = o.m.length - 1; j >= 0; j --) {
 						/* 止盈：从最小的找起，小于最小的显示 */
 						if (o.m[j].s) {
-							r[i].s.push([o.m[j].s*1.01, o.m[j].s, o.m[j].v]);
+							b = true;
+							for (u = 0; u < r[i].s.length; u ++) {
+								if (r[i].s[u][0] === o.m[j].s) {
+									r[i].s[u][1] += o.m[j].v;
+									b = false;
+									break;
+								}
+							}
+							if (b) {
+								r[i].s.push([o.m[j].s, o.m[j].v]);
+							}
 						}
 						/* 止损：从最大的找起，大于最大的显示 */
 						for (k = 0; k < o.m[j].c.length; k ++) {
 							v = o.m[j].c[k];
 							b = true;
 							for (u = 0; u < r[i].z.length; u ++) {
-								if (r[i].z[u][0] === v) {
-									r[i].z[u][1] += o.m[j].v;
+								if (r[i].z[u][1] === v) {
+									r[i].z[u][2] += o.m[j].v;
 									b = false;
 									break;
-								} else if (v > r[i].z[u][0]) {
+								} else if (v > r[i].z[u][1]) {
 									break;
 								}
 							}
 							if (b) {
-								r[i].z.splice(u, 0, [v, o.m[j].v]);
+								r[i].z.splice(u, 0, [v * 0.99, v, o.m[j].v]);
 							}
 						}
 					}
 				}
 				r.push({id:"399", ec:"sz399001"});
 				r.push({id:"000", ec:"sh000001"});
-				dco.url += "s_sz399001,s_sh000001";
+				r.push({id:"001", ec:"sz131810"});
+				dco.url += "s_sz399001,s_sh000001,s_sz131810";
+
+				document.getElementById("tcDoe").innerHTML += dco.tc;
 				return r;
 			},
 
@@ -173,6 +196,9 @@
 							p.f = a[3] - 0;
 							d = document.getElementById("p" + p.id);
 							d.innerHTML = p.c.toFixed(2);
+							if (!d.title) {
+								d.title = (a[1] - a[2]).toFixed(2);
+							}
 							d = document.getElementById("f" + p.id);
 							d.innerHTML = p.f.toFixed(2);
 							d = document.getElementById("c" + p.id);
@@ -183,27 +209,27 @@
 									dco.setV(d, p.c, p.o, ("总价：" + p.p + "\n总量：" + p.v + "\n盈亏：" + Math.floor((p.c - p.o) * p.v)));
 								}
 
-								/* 斩 */
+								/* 止损 */
 								d = document.getElementById("z" + p.id);
 								d.className = "";
 								d.innerHTML = "";
 								if (p.z.length) {
 									for (j = 0; j < p.z.length; j ++) {
 										if (p.c > p.z[j][0]) {
-											dco.setV(d, p.c, p.z[j][0], p.z[j][1]);
+											dco.setV(d, p.c, p.z[j][1], p.z[j][2]);
 											break;
 										}
 									}
 								}
 
-								/* 卖 */
+								/* 止盈 */
 								d = document.getElementById("s" + p.id);
 								d.className = "";
 								d.innerHTML = "";
 								if (p.s.length) {
 									for (j = 0; j < p.s.length; j ++) {
 										if (p.c < p.s[j][0]) {
-											dco.setV(d, p.c, p.s[j][1], p.s[j][2]);
+											dco.setV(d, p.c, p.s[j][0], p.s[j][1]);
 											break;
 										}
 									}
@@ -241,9 +267,9 @@
 				if (f < 0) {
 					f *= -1;
 				}
-				if (f < 1) {
+				if (f < 0.5) {
 					d.className = "clrR";
-				} else if (f < 3) {
+				} else if (f < 1.2) {
 					d.className = "clrB";
 				}
 			},

@@ -36,7 +36,7 @@
 							<td id="pDoe"></td>
 							<td id="vDoe"></td>
 							<td><input id="safDoe" type="text" placeholder="安全位"/></td>
-							<td><input id="buyDoe" type="text" placeholder="买点" onfocus="dco.scdAll(this);"/></td>
+							<td><input id="buyDoe" type="text" placeholder="买点"/></td>
 							<td><input id="topDoe" type="text" placeholder="阶段顶" onfocus="dco.scdAll(this);"/></td>
 						</tr>
 						<tr><td>&nbsp;</td></tr>
@@ -230,10 +230,10 @@
 									if (k.able) {
 										j = k.doe.p.value - 0;
 										v = k.doe.v.value - 0;
-										if (j && v) {
+										if (j) {
 											r = {
 												p: j,
-												v: v,
+												v: v ? v : 0,
 												s: k.doe.s.value - 0 ? k.doe.s.value - 0 : 0,
 												c: []
 											};

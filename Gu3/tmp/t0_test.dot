@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>T+0测试</title>
+		<title>分时图表</title>
 		{{#def.meta}}
 
 		<script type="text/javascript" src="/comLib/echarts.js"></script>
 		<script type="text/javascript" src="/myLib/LZR.js"></script>
 
 		<style type="text/css">
+			.boso {
+				width: 100%;
+				height: 100%;
+			}
+			.chart {
+				width: 100%;
+				height: 70%;
+			}
 		</style>
 	</head>
 
@@ -17,8 +25,17 @@
 				<a id="barDom" href="javascript: dco.run();">停止</a>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
+			<div id="chartDom" class="chart"></div>
 			<table>
 				<tbody id="tDom">
+					<tr>
+						<td id="cpDom"></td>
+						<td id="cfDom"></td>
+						<td id="cbDom"></td>
+						<td id="cwbDom"></td>
+						<td id="czbDom"></td>
+						<td width="10%"></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -26,6 +43,7 @@
 
 	<script type="text/javascript">
 		LZR.load([
+			"LZR.Base.Time",
 			"LZR.HTML.Base.Ajax"
 		]);
 
@@ -34,16 +52,79 @@
 			t: {	/*临时变量*/
 				f: 0
 			},
+			chart: null,
+			ctim: 0,	/*起始时间*/
+			cop: {	/*图表属性*/
+				tooltip: {
+					trigger: "axis"
+				},
+				xAxis: {
+					boundaryGap : true,
+					data: []
+				},
+				yAxis: {
+					splitArea: {
+						show: true
+					}
+				},
+				legend: {
+					data: ["价格", "量比", "盘口", "主力"]
+				},
+				series: [
+					{
+						name: "价格",
+						type: "line",
+						smooth: true,
+						data: []
+					},
+					{
+						name: "量比",
+						type: "line",
+						smooth: true,
+						data: []
+					},
+					{
+						name: "盘口",
+						type: "line",
+						smooth: true,
+						data: []
+					},
+					{
+						name: "主力",
+						type: "line",
+						smooth: true,
+						data: []
+					}
+				]
+			},
 			size: 0,
 			bar: false,
 			ajx: new LZR.HTML.Base.Ajax().ajax,
 			utJson: LZR.getSingleton(LZR.Base.Json),
+			utTim: LZR.getSingleton(LZR.Base.Time),
 			url: "http://95.push2.eastmoney.com/api/qt/stock/sse?fltt=2&fields=f43,f170,f47,f48,f49,f50,f137&secid=0.000333",
 
 			init: function () {
-				var n, t = {};	/*临时变量*/
 				dco.ajx.onreadystatechange = dco.hdDat;
 				dco.start();
+
+				/*图表 ， X轴数据*/
+				dco.chart = echarts.init(chartDom);
+				var i, t, d = dco.utTim.normalize(null, 9);
+				d.setMinutes(15);
+				dco.ctim = d.valueOf();
+				t = dco.ctim;
+				for (i = 0; i < 8101; i ++) {
+					d.setTime(t);
+					dco.cop.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
+					t += 1000;
+				}
+				t += 5399000;
+				for (i = 0; i < 7201; i ++) {
+					d.setTime(t);
+					dco.cop.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
+					t += 1000;
+				}
 			},
 
 			hdDat: function (e) {
@@ -98,7 +179,7 @@
 								t.vb = -10;
 							}
 						}
-						if (t.e && (o.f137 || o.f48)) {
+						if (t.z && (o.f137 || o.f48)) {
 							/*主力净额*/
 							t.zb = t.z / t.e * 10;
 						}
@@ -133,6 +214,7 @@
 			},
 
 			flush: function (t) {
+				/*
 				var r = document.createElement("tr");
 				var d = document.createElement("td");
 				d.innerHTML = t.f.toFixed(2);
@@ -150,6 +232,47 @@
 				d.innerHTML = t.zb.toFixed(2);
 				r.appendChild(d);
 				tDom.appendChild(r);
+				*/
+
+				var v, d, j, i = Math.floor((dco.utTim.getTim() - dco.ctim) / 1000);
+				if (i >= 0) {
+					/*计算时间id*/
+					if (i > 8100) {
+						if (i < 13500) {
+							i = 8100;
+						} else if (i > 20700) {
+							i = 15301;
+						} else {
+							i -= 5399;
+						}
+					}
+
+					cpDom.innerHTML = t.p.toFixed(2);
+					cfDom.innerHTML = t.f.toFixed(2);
+					cbDom.innerHTML = t.b.toFixed(2);
+					cwbDom.innerHTML = t.wb.toFixed(2);
+					czbDom.innerHTML = t.zb.toFixed(2);
+
+					dco.fillCop(i, dco.cop.series[0].data, t.f);
+					dco.fillCop(i, dco.cop.series[1].data, t.vb);
+					dco.fillCop(i, dco.cop.series[2].data, t.wb);
+					dco.fillCop(i, dco.cop.series[3].data, t.zb);
+					dco.chart.setOption(dco.cop);
+				}
+			},
+
+			/*填充数据*/
+			fillCop: function (i, d, v) {
+				if (v) {
+					d[i] = v;
+					for (j = i - 1; j >= 0; j --) {
+						if (d[j]) {
+							break;
+						} else {
+							d[j] = v;
+						}
+					}
+				}
 			}
 		};
 

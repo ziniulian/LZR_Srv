@@ -58,6 +58,8 @@
 			},
 			sid: "",
 			dbd: [],
+			av: 0,	/*量比平均日成交量*/
+			ave: 0,	/*量比平均日成交额*/
 			chart: null,
 			ctim: 0,	/*起始时间*/
 			cop: {	/*图表属性*/
@@ -182,24 +184,6 @@
 						if (o.f58) {
 							document.title = o.f58;
 						}
-						if (o.f49 || o.f47) {
-							/*内外盘比例*/
-							n = t.v - t.w;
-							if (n > t.w) {
-								if (t.w) {
-									t.wb = (t.w - n) / t.w;
-								} else {
-									t.wb = -1;
-								}
-							} else {
-								if (n) {
-									t.wb = (t.w - n) / n;
-								} else {
-									t.wb = 1;
-								}
-							}
-							t.wb *= 10;
-						}
 						if (o.f50) {
 							/*量比*/
 							if (t.b < 1) {
@@ -207,17 +191,25 @@
 							} else {
 								t.vb = t.b - 1;
 							}
-						}
-						if (t.z && (o.f137 || o.f48)) {
-							/*主力净额*/
-							if (t.z < 0) {
-								t.zb = 2 * t.z / (t.e + t.z);
-							} else {
-								t.zb = 2 * t.z / (t.e - t.z);
+							if (!dco.av && t.v) {
+								n = t.tim - dco.ctim - 900000;
+								if (n > 60000) {
+									if (n > 14400000) {
+										n = 14400000;
+									}
+									dco.av = Math.floor (t.v / n / t.b * 14400000);
+									dco.ave = dco.av * t.p * 100;
+								}
 							}
-							t.zb *= 10;
 						}
-/*console.log(t);*/
+						if ((o.f49 || o.f47) && dco.av) {
+							/*外盘净额*/
+							t.wb = (2 * t.w - t.v) / dco.av * 100;
+						}
+						if (o.f137 && dco.ave) {
+							/*主力净额*/
+							t.zb = t.z / dco.ave * 100;
+						}
 						dco.t = t;
 						dco.dat.push(t);
 						dco.flush(t);
@@ -268,6 +260,8 @@
 			clearDat: function () {
 				dco.dat = [];
 				dco.dbd = [];
+				dco.av = 0;
+				dco.ave = 0;
 				dco.t = {p: 0,f: 0,b: 0};
 				for (var i = 0; i < 4; i ++) {
 					dco.cop.series[i].data = [];

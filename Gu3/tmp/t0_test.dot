@@ -71,6 +71,7 @@
 					data: []
 				},
 				yAxis: {
+					scale: true,	/*脱离零轴*/
 					splitArea: {
 						show: true
 					}
@@ -269,26 +270,6 @@
 			},
 
 			flush: function (t) {
-				/*
-				var r = document.createElement("tr");
-				var d = document.createElement("td");
-				d.innerHTML = t.f.toFixed(2);
-				r.appendChild(d);
-
-				d = document.createElement("td");
-				d.innerHTML = t.vb.toFixed(2);
-				r.appendChild(d);
-
-				d = document.createElement("td");
-				d.innerHTML = t.wb.toFixed(2);
-				r.appendChild(d);
-
-				d = document.createElement("td");
-				d.innerHTML = t.zb.toFixed(2);
-				r.appendChild(d);
-				tDom.appendChild(r);
-				*/
-
 				var v, d, j, i = Math.floor((t.tim - dco.ctim) / 1000);
 				if (i >= 0) {
 					/*计算时间id*/

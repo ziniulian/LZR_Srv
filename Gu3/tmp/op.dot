@@ -125,7 +125,7 @@
 
 					if (o.v) {
 						/* 计算成本价 */
-						r[i].o = Math.ceil(o.p*100.4/o.v) / 100;
+						r[i].o = Math.ceil(o.p*100.15/o.v) / 100;
 						dco.tc += o.p;
 					}
 					for (j = o.m.length - 1; j >= 0; j --) {

@@ -78,6 +78,9 @@
 				},
 				dataZoom: [
 					{
+						type: "inside",	/*鼠标数据区缩放拖拽功能*/
+					},
+					{
 						show: true,
 						type: "slider"
 					}

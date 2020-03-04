@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>回放</title>
+		{{#def.meta}}
+
+		<script type="text/javascript" src="/comLib/echarts.js"></script>
+		<script type="text/javascript" src="/myLib/LZR.js"></script>
+
+		<style type="text/css">
+			.boso {
+				width: 100%;
+				height: 100%;
+			}
+			.chart {
+				width: 100%;
+				height: 74%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="boso" class="boso">
+			<div class="logo">
+				&nbsp; &nbsp; <input id="idDom" type="text" value="{{=it.id}}" onfocus="this.select();" onchange="dco.reset();"></input>
+				&nbsp; &nbsp; <input id="timDom" type="date" value="{{=it.tim}}" onchange="dco.reset();"></input>
+				<a class="logohome" target="_blank" href="/"></a>
+			</div>
+			<div id="chartDom" class="chart"></div>
+			<div><table>
+				<tbody><tr>
+					<td id="tcopDom">--</td>
+					<td id="tvDom">--</td>
+					<td id="tlhDom">--</td>
+				</tr></tbody>
+			</table></div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		LZR.load(["LZR.Base.Time"]);
+
+		var dco = {
+			url: "{{=it.tmpo.url.base}}/",
+			bdb: {{=it.tmpo.tls.utJson.toJson(it.comDbSrvReturn)}},
+			utTim: LZR.getSingleton(LZR.Base.Time),
+			db: undefined,
+			chart: undefined,
+			op: {
+				tooltip: {
+					trigger: "axis"
+				},
+				grid: {
+					left: "5%",
+					right: "2%"
+				},
+				xAxis: {
+					boundaryGap : true,
+					data: []
+				},
+				yAxis: {
+					scale: true,	/*脱离零轴*/
+					splitArea: {
+						show: true
+					}
+				},
+				dataZoom: [
+					{
+						type: "inside",	/*鼠标数据区缩放拖拽功能*/
+					},
+					{
+						show: true,
+						type: "slider"
+					}
+				],
+				legend: {
+					data: ["价格", "盘口", "量比"]
+				},
+				series: [
+					{
+						name: "价格",
+						type: "line",
+						data: []
+					},
+					{
+						name: "盘口",
+						type: "line",
+						data: []
+					},
+					{
+						name: "量比",
+						type: "line",
+						data: []
+					}
+				]
+			},
+
+			init: function () {
+				if (dco.bdb.length) {
+					dco.bdb = dco.bdb[0];
+					dco.chart = echarts.init(chartDom);
+
+					dco.initTimlin(dco.op, dco.bdb.tim);
+					var r = dco.fillDat(dco.bdb.d, dco.bdb.v5, dco.op);
+					tcopDom.innerHTML = r[0] + "/" + dco.bdb.c + "," + dco.bdb.o + "," + dco.bdb.p;
+					tvDom.innerHTML = r[1] + "/" + dco.bdb.v;
+					tlhDom.innerHTML = dco.bdb.l + "," + dco.bdb.h;
+
+					dco.chart.setOption(dco.op);
+				}
+			},
+
+			/*初始化时间轴*/
+			initTimlin: function (op, day) {
+				var i, d = new Date();
+				var t = dco.utTim.parseDayTimestamp(day) + 33300000;
+				for (i = 0; i < 601; i ++) {
+					d.setTime(t);
+					op.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
+					t += 1000;
+				}
+				t += 300000;
+				for (i = 0; i < 7200; i ++) {
+					d.setTime(t);
+					op.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
+					t += 1000;
+				}
+				t += 5400000;
+				for (i = 0; i < 7200; i ++) {
+					d.setTime(t);
+					op.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
+					t += 1000;
+				}
+			},
+
+			/*数据填充*/
+			fillDat: function (dat, v, op) {
+				var i, r, w = 0;
+				v /= 100000;
+				for (i = 0; i < dat.length; i ++) {
+					if (dat[i]) {
+						r = dat[i];
+						w += (dat[i][2] || 0);
+						dco.fillOp(i, op.series[0].data, dat[i][0]);
+						dco.fillOp(i, op.series[1].data, Math.round(w / v) / 1000);
+						if (i > 600) {
+							dco.fillOp(i, op.series[2].data, dat[i][1]);
+						}
+					}
+				}
+				return r;
+			},
+
+			/*补充图表数据*/
+			fillOp: function (i, d, v) {
+				if (v) {
+					d[i] = v;
+					for (j = i - 1; j >= 0; j --) {
+						if (!isNaN(d[j])) {
+							v = d[j];
+							for (j++; j < i; j ++) {
+								d[j] = v;
+							}
+							break;
+						}
+					}
+				}
+			},
+
+			reset: function () {
+				var d = idDom.value;
+				if (d.match(/^\d{6}$/)) {
+					window.location.href = dco.url + d + "/" + dco.utTim.getDayTimestamp(timDom.value) + "/";
+				}
+			}
+		};
+
+		dco.init();
+	</script>
+</html>

@@ -51,6 +51,8 @@
 				<tbody><tr>
 					<td id="tpDom">--</td>
 					<td id="tvDom">--</td>
+					<td id="thDom">--</td>
+					<td id="tzDom">--</td>
 					<td id="trDom">--</td>
 				</tr></tbody>
 			</table></div>
@@ -70,10 +72,15 @@
 			utTim: LZR.getSingleton(LZR.Base.Time),
 			urlH: "/Gu/qrySinaK/",
 			urlK: "/Gu/qrySinaK/s_sh000001,s_sz399001,s_sz131810,",
+			urlS: "/Gu/savT0/",
 			url: "",
+			hr: document.createElement("hr"),
+			tp: 0,	/*滚动条位置*/
+			tim: 0,	/*当日时间戳*/
 			today: "",	/*当天日期*/
 			tmoHd: 0,	/*循环句柄*/
-			tp: 0,	/*滚动条位置*/
+			id: "",
+			sid: "",
 			bdb: {
 				p: 0,	/*当前价*/
 				c: 0,	/*收盘价*/
@@ -165,6 +172,7 @@
 				dco.today = dco.utTim.format(new Date(), "date2");
 				dco.ajx.evt.rsp.add(dco.hd);
 				dco.tp = Math.floor(listDom.clientHeight / 2);
+				dco.tim = dco.utTim.getDayTimestamp();
 
 				/*图表 ， X轴数据*/
 				dco.chart = echarts.init(chartDom);
@@ -178,13 +186,13 @@
 					t += 1000;
 				}
 				t += 300000;
-				for (i = 0; i < 7201; i ++) {
+				for (i = 0; i < 7200; i ++) {
 					d.setTime(t);
 					dco.op.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
 					t += 1000;
 				}
 				t += 5400000;
-				for (i = 0; i < 7202; i ++) {
+				for (i = 0; i < 7200; i ++) {
 					d.setTime(t);
 					dco.op.xAxis.data.push(dco.utTim.format(d, "hh:mm:ss"));
 					t += 1000;
@@ -200,6 +208,7 @@
 					dco.tmoHd = 0;
 				}
 				dco.ajx.abort();
+				barDom.innerHTML = "开始";
 
 				if (s === 0) {
 					/*清空数据*/
@@ -215,8 +224,9 @@
 					tDom.innerHTML = "";
 					tpDom.innerHTML = "--";
 					tvDom.innerHTML = "--";
+					thDom.innerHTML = "--";
+					tzDom.innerHTML = "--";
 					trDom.innerHTML = "--";
-					barDom.innerHTML = "开始";
 					document.title = "T+0";
 				}
 			},
@@ -230,7 +240,6 @@
 						break;
 					case 4:
 						dco.stop(3);
-						barDom.innerHTML = "开始";
 						break;
 				}
 			},
@@ -246,6 +255,7 @@
 					}
 
 					dco.stu = 1;
+					dco.id = id;
 					dco.url = dco.urlK + dco.sid + "/";
 					dco.ajx.asynPost(dco.urlH + dco.sid + "/5/");
 				}
@@ -253,7 +263,14 @@
 			},
 
 			hd: function (txt, status) {
-				var i, d, o = dco.utJson.toObj(txt);
+				var i, d, o;
+				if (txt.length && txt[0] === "{") {
+					o = dco.utJson.toObj(txt);
+				} else {
+					/*dco.stop(3);*/	/*断网纠错*/
+					return;
+				}
+
 				if (o.ok) {
 					switch (dco.stu) {
 						case 1:
@@ -341,6 +358,10 @@
 						[s[19] - 0, s[18] - 0]
 					]
 				};
+				if (dco.t && dco.t.p) {
+					dco.pt[dco.t.p].doe.className = "";
+				}
+
 				if (t.g[4][0] !== t.g[5][0]) {
 					if (!dco.bdb.o) {
 						dco.bdb.o = s[1] - 0;
@@ -350,10 +371,10 @@
 					dco.bdb.l = s[5] - 0;
 					dco.bdb.v = t.v;
 					v = t.v / i;
-					dco.db[i] = {
-						f: Math.round(t.p / dco.bdb.c * 10000 - 10000) / 100,
-						v: Math.round(((v < dco.bdb.vps) ? (1 - dco.bdb.vps / v) : (v / dco.bdb.vps - 1)) * 100) / 100	/*量比*/
-					};
+					dco.db[i] = [
+						Math.round(t.p / dco.bdb.c * 10000 - 10000) / 100,
+						Math.round(((v < dco.bdb.vps) ? (1 - dco.bdb.vps / v) : (v / dco.bdb.vps - 1)) * 1000) / 1000	/*量比*/
+					];
 
 					/*挂单列表*/
 					n = 0;
@@ -491,11 +512,11 @@
 										j = -j;
 									}
 								}
-								dco.db[i].w = w;
+								dco.db[i][2] = w;
 							} else {
-								dco.db[i].w = j;
+								dco.db[i][2] = j;
 							}
-							dco.bdb.w += dco.db[i].w;	/*盘口数据汇总*/
+							dco.bdb.w += dco.db[i][2];	/*盘口数据汇总*/
 						}
 
 						/*清空上次更新的旧数据信息*/
@@ -515,63 +536,64 @@
 								dco.pt[j].m.innerHTML = "";
 							}
 						}
-						dco.pt[dco.t.p].doe.className = "";
 					}
 
 					/*更新图标数据*/
-					dco.fillOp(i, dco.op.series[0].data, dco.db[i].f);
-					dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 100000) / 1000);
-					dco.fillOp(i, dco.op.series[2].data, dco.db[i].v);
+					dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
+					dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 10000) / 100);
+					dco.fillOp(i, dco.op.series[2].data, dco.db[i][1]);
 					dco.fillOp(i, dco.op.series[3].data, sh[3] - 0);
 					dco.fillOp(i, dco.op.series[4].data, sz[3] - 0);
 
 					/*更新页面数据*/
-					tpDom.innerHTML = dco.db[i].f;
-					tvDom.innerHTML = Math.floor(t.v / 100);
+					tpDom.innerHTML = dco.db[i][0];
+					tvDom.innerHTML = dco.db[i][1] + "/" + Math.floor(t.v / 100);
+					thDom.innerHTML = sh[3] + "/" + Math.round(sh[1]);
+					tzDom.innerHTML = sz[3] + "/" + Math.round(sz[1]);
 					trDom.innerHTML = r[1];
 
-					/*挂单列表滚动条定位*/
-					k = dco.pt[t.p].doe;
-					k.className = "scd";
-					if (k.offsetTop > dco.tp) {
-						listDom.scrollTo(0, k.offsetTop - dco.tp);
+					/*分隔线 + 挂单列表滚动条定位*/
+					tDom.insertBefore(dco.hr, dco.pt[t.g[5][0]].doe);
+					dco.pt[t.p].doe.className = "scd";
+					if (dco.hr.offsetTop > dco.tp) {
+						listDom.scrollTo(0, dco.hr.offsetTop - dco.tp);
 					} else {
 						listDom.scrollTo(0, 0);
 					}
 				} else if (t.g[5][1]) {
 					/*集合竞价*/
 					if (i < 300) {
-						dco.db[i] = {
-							f: Math.round(t.g[5][0] / dco.bdb.c * 10000 - 10000) / 100,
-							v0: t.g[5][1]
-						};
-						dco.fillOp(i, dco.op.series[0].data, dco.db[i].f);
+						dco.db[i] = [
+							Math.round(t.g[5][0] / dco.bdb.c * 10000 - 10000) / 100,
+							t.g[5][1]
+						];
+						dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
 					} else {
 						v = (t.g[5][1] + t.v) / i;
-						dco.db[i] = {
-							f: Math.round(t.g[5][0] / dco.bdb.c * 10000 - 10000) / 100,
-							v: Math.round(((v < dco.bdb.vps) ? (1 - dco.bdb.vps / v) : (v / dco.bdb.vps - 1)) * 100) / 100
-						};
+						dco.db[i] = [
+							Math.round(t.g[5][0] / dco.bdb.c * 10000 - 10000) / 100,
+							Math.round(((v < dco.bdb.vps) ? (1 - dco.bdb.vps / v) : (v / dco.bdb.vps - 1)) * 1000) / 1000
+						];
 
 						/*盘口计算*/
 						if (dco.t) {
 							if (t.g[5][0] > dco.t.g[5][0]) {
-								dco.db[i].w = t.g[5][1] - dco.t.g[5][1];
+								dco.db[i][2] = t.g[5][1] - dco.t.g[5][1];
 							} else if (t.g[5][0] < dco.t.g[5][0]) {
-								dco.db[i].w = dco.t.g[5][1] - t.g[5][1];
+								dco.db[i][2] = dco.t.g[5][1] - t.g[5][1];
 							} else {
-								dco.db[i].w = t.g[6][1] - t.g[3][1] - dco.t.g[6][1] + dco.t.g[3][1];
+								dco.db[i][2] = t.g[6][1] - t.g[3][1] - dco.t.g[6][1] + dco.t.g[3][1];
 							}
-							dco.bdb.w += dco.db[i].w;
+							dco.bdb.w += dco.db[i][2];
 						}
 
-						dco.fillOp(i, dco.op.series[0].data, dco.db[i].f);
-						dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 100000) / 1000);
-						dco.fillOp(i, dco.op.series[2].data, dco.db[i].v);
+						dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
+						dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 10000) / 100);
+						/*dco.fillOp(i, dco.op.series[2].data, dco.db[i][1]);*/
 					}
 
-					tpDom.innerHTML = t.g[5][0];
-					tvDom.innerHTML = t.g[5][1];
+					tpDom.innerHTML = dco.db[i][0] + "/" + t.g[5][0];
+					tvDom.innerHTML = dco.db[i][1] + "/" + Math.floor(t.g[5][1] / 100);
 				}
 
 				dco.chart.setOption(dco.op);
@@ -580,7 +602,7 @@
 
 			/*填充图表数据*/
 			fillOp: function (i, d, v) {
-				if (v) {
+				if (!isNaN(v)) {
 					d[i] = v;
 					for (j = i - 1; j >= 0; j --) {
 						if (!isNaN(d[j])) {
@@ -628,9 +650,13 @@
 
 			/*数据保存*/
 			sav: function () {
-				console.log(dco.bdb);
-				console.log(dco.db);
-				console.log(dco.pt);
+				if (dco.stu && dco.id) {
+					dco.stop(3);
+					if (!dco.bdb.d) {
+						dco.bdb.d = dco.db;
+					}
+					dco.ajx.asynPost(dco.urlS + dco.id + "/" + dco.tim + "/", dco.bdb);
+				}
 			}
 		};
 

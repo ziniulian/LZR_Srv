@@ -92,7 +92,8 @@
 				m: 0,	/*最大卖五*/
 				n: 0,	/*最小买五*/
 				v5: 0,	/*近5日平均每日成交量*/
-				vps: 0	/*近5日平均每秒成交量*/
+				vps: 0,	/*近5日平均每秒成交量*/
+				vv: 0	/*量比值*/
 			},
 			db: [],	/*图表数据*/
 			pt: {},	/*挂单列表*/
@@ -116,6 +117,16 @@
 						show: true
 					}
 				},
+				visualMap: {
+					type: "piecewise",
+					show: false,
+					dimension: 0,	/*0:X轴分段 , 1:y轴分段*/
+					seriesIndex: 1,
+					pieces: [],
+					outOfRange: {
+						color: "#AAA"
+					}
+				},
 				dataZoom: [
 					{
 						type: "inside",	/*鼠标数据区缩放拖拽功能*/
@@ -125,6 +136,7 @@
 						type: "slider"
 					}
 				],
+				color: ["#F0F","#333","#0FF","#00F","#0A0"],
 				legend: {
 					data: ["价格", "盘口", "量比", "上证", "深证"]
 				},
@@ -278,8 +290,8 @@
 							for (i = 0; i < o.dat.length; i ++) {
 								dco.bdb.v5 += o.dat[i].volume - 0;
 							}
-							dco.bdb.v5 /= 5;
-							dco.bdb.vps = Math.round(dco.bdb.v5 / 15000);
+							dco.bdb.vps = Math.round(dco.bdb.v5 / 75000);
+							dco.bdb.v5 = dco.bdb.vps * 15000;
 
 							dco.stu = 2;
 							dco.get();
@@ -291,6 +303,7 @@
 								dco.stu = 3;
 								dco.bdb.c = d[2] - 0;
 								dco.bdb.w = 0;
+								dco.bdb.vv = 0;
 								document.title = d[0].substr(d[0].lastIndexOf("\"") + 1);
 								dco.run();
 							} else {
@@ -343,6 +356,7 @@
 
 			flush: function (i, s, sh, sz, r) {
 				var v, j, k, m, n, t = {
+					id: i,
 					p: s[3] - 0,
 					v: s[8] - 0,
 					g: [
@@ -370,10 +384,9 @@
 					dco.bdb.h = s[4] - 0;
 					dco.bdb.l = s[5] - 0;
 					dco.bdb.v = t.v;
-					v = t.v / i;
 					dco.db[i] = [
 						Math.round(t.p / dco.bdb.c * 10000 - 10000) / 100,
-						Math.round(((v < dco.bdb.vps) ? (1 - dco.bdb.vps / v) : (v / dco.bdb.vps - 1)) * 1000) / 1000	/*量比*/
+						t.v - (dco.t ? dco.t.v : 0)
 					];
 
 					/*挂单列表*/
@@ -541,13 +554,11 @@
 					/*更新图标数据*/
 					dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
 					dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 10000) / 100);
-					dco.fillOp(i, dco.op.series[2].data, dco.db[i][1]);
 					dco.fillOp(i, dco.op.series[3].data, sh[3] - 0);
 					dco.fillOp(i, dco.op.series[4].data, sz[3] - 0);
 
 					/*更新页面数据*/
 					tpDom.innerHTML = dco.db[i][0];
-					tvDom.innerHTML = dco.db[i][1] + "/" + Math.floor(t.v / 100);
 					thDom.innerHTML = sh[3] + "/" + Math.round(sh[1]);
 					tzDom.innerHTML = sz[3] + "/" + Math.round(sz[1]);
 					trDom.innerHTML = r[1];
@@ -568,11 +579,16 @@
 							t.g[5][1]
 						];
 						dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
+						v = 0;
 					} else {
-						v = (t.g[5][1] + t.v) / i;
+						if (dco.t && (dco.t.g[4][0] === dco.t.g[5][0])) {
+							v = t.g[5][1] - dco.t.g[5][1];
+						} else {
+							v = t.g[5][1];
+						}
 						dco.db[i] = [
 							Math.round(t.g[5][0] / dco.bdb.c * 10000 - 10000) / 100,
-							Math.round(((v < dco.bdb.vps) ? (1 - dco.bdb.vps / v) : (v / dco.bdb.vps - 1)) * 1000) / 1000
+							v
 						];
 
 						/*盘口计算*/
@@ -589,11 +605,30 @@
 
 						dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
 						dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 10000) / 100);
-						/*dco.fillOp(i, dco.op.series[2].data, dco.db[i][1]);*/
 					}
 
 					tpDom.innerHTML = dco.db[i][0] + "/" + t.g[5][0];
-					tvDom.innerHTML = dco.db[i][1] + "/" + Math.floor(t.g[5][1] / 100);
+				}
+
+				if (i > 300) {
+					/*数据渲染*/
+					v = dco.t ? i - dco.t.id : (i + 1);
+					dco.bdb.vv += dco.db[i][1] - dco.bdb.vps * v;
+					if (dco.t && (dco.db[i][1] / v / dco.bdb.vps) > 2.8) {	/*放量*/
+						v = dco.db[i][2] / dco.db[i][1];
+						if (v > 0.7) {
+							v = "#0F0";
+						} else if (v < 0.3) {
+							v = "#F00";
+						} else {
+							v = "#333";
+						}
+						dco.op.visualMap.pieces.push({gte: i - 1, lte: i + 1, color: v});
+					}
+					/*v = Math.round(dco.bdb.vv / i / dco.bdb.vps * 1000) / 1000;*/
+					v = Math.round(dco.bdb.vv / dco.bdb.v5 * 1000) / 1000;
+					dco.fillOp(i, dco.op.series[2].data, v);
+					tvDom.innerHTML = v + "/" + Math.floor(t.v / 100);
 				}
 
 				dco.chart.setOption(dco.op);

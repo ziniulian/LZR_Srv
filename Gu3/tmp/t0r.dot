@@ -103,7 +103,7 @@
 					dco.initTimlin(dco.op, dco.bdb.tim);
 					var r = dco.fillDat(dco.bdb.d, dco.bdb.v5, dco.op);
 					tcopDom.innerHTML = r[0] + "/" + dco.bdb.c + "," + dco.bdb.o + "," + dco.bdb.p;
-					tvDom.innerHTML = r[1] + "/" + dco.bdb.v;
+					tvDom.innerHTML = r[1] + "/" + dco.bdb.v + "_G";
 					tlhDom.innerHTML = dco.bdb.l + "," + dco.bdb.h;
 
 					dco.chart.setOption(dco.op);

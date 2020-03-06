@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>回放</title>
+		<title>T+0-R</title>
 		{{#def.meta}}
 
 		<script type="text/javascript" src="/comLib/echarts.js"></script>
@@ -73,8 +73,13 @@
 						type: "slider"
 					}
 				],
+				color: ["#F0F", "#00F", "#F00", "#000", "#F91"],
 				legend: {
-					data: ["价格", "盘口", "量比"]
+					data: ["价格", "盘口", "盘比", "量差", "量比"],
+					selected: {
+						"盘比": false,
+						"量差": false
+					}
 				},
 				series: [
 					{
@@ -85,6 +90,18 @@
 					{
 						name: "盘口",
 						type: "line",
+						data: []
+					},
+					{
+						name: "盘比",
+						type: "bar",
+						stack: "总量差",
+						data: []
+					},
+					{
+						name: "量差",
+						type: "bar",
+						stack: "总量差",
 						data: []
 					},
 					{
@@ -101,7 +118,7 @@
 					dco.chart = echarts.init(chartDom);
 
 					dco.initTimlin(dco.op, dco.bdb.tim);
-					var r = dco.fillDat(dco.bdb.d, dco.bdb.v5, dco.op);
+					var r = dco.fillDat(dco.bdb.d, dco.bdb.v5, dco.bdb.vps, dco.op);
 					tcopDom.innerHTML = r[0] + "/" + dco.bdb.c + "," + dco.bdb.o + "," + dco.bdb.p;
 					tvDom.innerHTML = r[1] + "/" + dco.bdb.v + "_G";
 					tlhDom.innerHTML = dco.bdb.l + "," + dco.bdb.h;
@@ -134,18 +151,39 @@
 			},
 
 			/*数据填充*/
-			fillDat: function (dat, v, op) {
-				var i, r, w = 0;
-				v /= 100000;
+			fillDat: function (dat, v5, vps, op) {
+				var i, j, k, r = [], w = 0, v = 0;
+				v5 /= 100000;
 				for (i = 0; i < dat.length; i ++) {
 					if (dat[i]) {
-						r = dat[i];
+						v += (dat[i][1] || 0);
 						w += (dat[i][2] || 0);
 						dco.fillOp(i, op.series[0].data, dat[i][0]);
-						dco.fillOp(i, op.series[1].data, Math.round(w / v) / 1000);
-						if (i > 600) {
-							dco.fillOp(i, op.series[2].data, dat[i][1]);
+
+						if (i > 300) {
+							dco.fillOp(i, op.series[1].data, Math.round(w / v5) / 1000);
+							n = Math.round(v / i / vps * 1000 - 1000) / 1000;
+							dco.fillOp(i, op.series[4].data, n);
+							r[0] = dat[i][0];
+							r[1] = n;
+
+							k = i - j;
+							n = dat[i][1] / k / vps;
+							if (n > 2.8) {
+								m = dat[i][2] / k / vps;
+								if (m < 0) {
+									n = - n - m;
+								} else {
+									n -= m;
+								}
+								dco.fillOp(i, op.series[2].data, Math.round(m * 100) / 100);
+								dco.fillOp(i, op.series[3].data, Math.round(n * 100) / 100);
+							} else {
+								dco.fillOp(i, op.series[2].data, 0);
+								dco.fillOp(i, op.series[3].data, 0);
+							}
 						}
+						j = i;
 					}
 				}
 				return r;
@@ -153,7 +191,7 @@
 
 			/*补充图表数据*/
 			fillOp: function (i, d, v) {
-				if (v) {
+				if (!isNaN(v)) {
 					d[i] = v;
 					for (j = i - 1; j >= 0; j --) {
 						if (!isNaN(d[j])) {

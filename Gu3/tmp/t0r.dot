@@ -78,7 +78,8 @@
 					data: ["价格", "盘口", "盘比", "量差", "量比"],
 					selected: {
 						"盘比": false,
-						"量差": false
+						"量差": false,
+						"量比": false
 					}
 				},
 				series: [
@@ -116,6 +117,7 @@
 				if (dco.bdb.length) {
 					dco.bdb = dco.bdb[0];
 					dco.chart = echarts.init(chartDom);
+					document.onkeyup = dco.key;
 
 					dco.initTimlin(dco.op, dco.bdb.tim);
 					var r = dco.fillDat(dco.bdb.d, dco.bdb.v5, dco.bdb.vps, dco.op);
@@ -124,6 +126,17 @@
 					tlhDom.innerHTML = dco.bdb.l + "," + dco.bdb.h;
 
 					dco.chart.setOption(dco.op);
+				}
+			},
+
+			/*键盘事件*/
+			key: function (e) {
+				switch (e.keyCode) {
+					case 86:	/*V，显示或隐藏柱状图*/
+						dco.op.legend.selected["盘比"] = !dco.op.legend.selected["盘比"];
+						dco.op.legend.selected["量差"] = !dco.op.legend.selected["量差"];
+						dco.chart.setOption(dco.op);
+						break;
 				}
 			},
 
@@ -156,11 +169,11 @@
 				v5 /= 100000;
 				for (i = 0; i < dat.length; i ++) {
 					if (dat[i]) {
-						v += (dat[i][1] || 0);
-						w += (dat[i][2] || 0);
 						dco.fillOp(i, op.series[0].data, dat[i][0]);
 
-						if (i > 300) {
+						if (i >= 300) {
+							v += (dat[i][1] || 0);
+							w += (dat[i][2] || 0);
 							dco.fillOp(i, op.series[1].data, Math.round(w / v5) / 1000);
 							n = Math.round(v / i / vps * 1000 - 1000) / 1000;
 							dco.fillOp(i, op.series[4].data, n);

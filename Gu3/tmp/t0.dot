@@ -28,8 +28,44 @@
 			.scd {
 				background-color: #0FF;
 			}
+			.flash {
+				right: 10rem;
+				bottom: 3rem;
+				width: 2.2rem;
+				height: 1.2rem;
+				border-radius: 3rem 0;
+				opacity: 0;
+				position: absolute;
+				background-color: #0A0;
+				animation: flashNam 2s 1;
+			}
+			@keyframes flashNam {
+				100% {
+					right: 0;
+					bottom: 0;
+					width: 0;
+					height: 0;
+					opacity: 1;
+					transform: rotate(720deg);
+				}
+			}
 			.out {
-				height: 74%;
+				position: relative;
+				height: calc(100% - 5rem);
+			}
+			.logo {
+				margin-bottom: 0.2rem;
+			}
+			.sfs {
+				font-size: 0.6rem;
+			}
+			.frm {
+				position: absolute;
+				top: 0;
+				right: 20%;
+				width: 30%;
+				height: 100%;
+				border: none;
 			}
 		</style>
 	</head>
@@ -46,9 +82,10 @@
 			<div class="out">
 				<div id="chartDom" class="chart"></div>
 				<div id="listDom" class="list"><table><tbody id="tDom"></tbody></table></div>
+				<iframe id="frmDom" class="Lc_nosee" src="https://jy.xzsec.com/Login"></iframe>
 			</div>
 			<div><table>
-				<tbody><tr>
+				<tbody class="sfs"><tr>
 					<td id="tpDom">--</td>
 					<td id="tvDom">--</td>
 					<td id="thDom">--</td>
@@ -56,6 +93,7 @@
 					<td id="trDom">--</td>
 				</tr></tbody>
 			</table></div>
+			<div id="flashDom" class="Lc_nosee"></div>
 		</div>
 	</body>
 
@@ -81,6 +119,8 @@
 			tmoHd: 0,	/*循环句柄*/
 			id: "",
 			sid: "",
+			cv: [0,0,0,0,0,0,0],	/*图表补偿量*/
+			cvd: 0.2,	/*补偿距离*/
 			bdb: {
 				p: 0,	/*当前价*/
 				c: 0,	/*收盘价*/
@@ -104,7 +144,8 @@
 				},
 				grid: {
 					left: "5%",
-					right: "2%"
+					right: "2%",
+					top: "4%"
 				},
 				xAxis: {
 					boundaryGap : true,
@@ -127,7 +168,13 @@
 				],
 				color: ["#F0F", "#00F", "#F00", "#000", "#0FF", "#0F0", "#F91", "#AAA"],
 				legend: {
-					data: ["价格", "盘口", "盘比", "量差", "上证", "深证", "量比"]
+					x: "right",
+					data: ["价格", "盘口", "盘比", "量差", "上证", "深证", "量比"],
+					selected: {
+						"量比": false,
+						"盘比": false,
+						"量差": false,
+					}
 				},
 				series: [
 					{
@@ -186,6 +233,7 @@
 				dco.ajx.evt.rsp.add(dco.hd);
 				dco.tp = Math.floor(listDom.clientHeight / 2);
 				dco.tim = dco.utTim.getDayTimestamp();
+				document.onkeyup = dco.key;
 
 				/*图表 ， X轴数据*/
 				dco.chart = echarts.init(chartDom);
@@ -211,7 +259,90 @@
 					t += 1000;
 				}
 				dco.op.series[7].data[15000] = 0;
+
+				/*图例事件*/
+				dco.chart.on("legendselectchanged", function (p) {
+					dco.op.legend.selected = p.selected;
+				});
+
+				/*防止不小心关闭页面*/
+				window.onbeforeunload = function (e) {
+					if (dco.db.length) {
+						return true;
+					}
+				};
+
 				dco.chart.setOption(dco.op);
+			},
+
+			/*键盘事件*/
+			key: function (e) {
+				switch (e.keyCode) {
+					case 81:	/*Q，价格线上移*/
+						dco.chgCv(0, dco.cvd, true);
+						break;
+					case 65:	/*A，价格线下移*/
+						dco.chgCv(0, -dco.cvd, true);
+						break;
+					case 87:	/*W，盘口线上移*/
+						dco.chgCv(1, dco.cvd, true);
+						break;
+					case 83:	/*S，盘口线下移*/
+						dco.chgCv(1, -dco.cvd, true);
+						break;
+					case 69:	/*E，上证线上移*/
+						dco.chgCv(4, dco.cvd, true);
+						break;
+					case 68:	/*D，上证线下移*/
+						dco.chgCv(4, -dco.cvd, true);
+						break;
+					case 82:	/*R，深证线上移*/
+						dco.chgCv(5, dco.cvd, true);
+						break;
+					case 70:	/*F，深证线下移*/
+						dco.chgCv(5, -dco.cvd, true);
+						break;
+					case 86:	/*V，显示或隐藏柱状图*/
+						dco.op.legend.selected["盘比"] = !dco.op.legend.selected["盘比"];
+						dco.op.legend.selected["量差"] = !dco.op.legend.selected["量差"];
+						dco.chart.setOption(dco.op);
+						break;
+					case 32:	/*空格，显示或隐藏交易页面*/
+						if (frmDom.className === "frm") {
+							frmDom.className = "Lc_nosee";
+						} else {
+							frmDom.className = "frm";
+						}
+						break;
+					case 88:	/*X，清空所有补偿*/
+						for (var i = 0; i < dco.cv.length; i ++) {
+							if (dco.cv[i]) {
+								dco.chgCv(i, -dco.cv[i]);
+							}
+						}
+						dco.chart.setOption(dco.op);
+						break;
+					case 90:	/*Z，显示或隐藏盘口线*/
+						dco.op.legend.selected["盘口"] = !dco.op.legend.selected["盘口"];
+						dco.chart.setOption(dco.op);
+						break;
+					case 67:	/*C，量比切换*/
+						if (dco.op.legend.selected["量比"]) {
+							dco.op.legend.selected["量比"] = false;
+							dco.op.legend.selected["价格"] = true;
+							dco.op.legend.selected["盘口"] = true;
+							dco.op.legend.selected["上证"] = true;
+							dco.op.legend.selected["深证"] = true;
+						} else {
+							dco.op.legend.selected["量比"] = true;
+							dco.op.legend.selected["价格"] = false;
+							dco.op.legend.selected["盘口"] = false;
+							dco.op.legend.selected["上证"] = false;
+							dco.op.legend.selected["深证"] = false;
+						}
+						dco.chart.setOption(dco.op);
+						break;
+				}
 			},
 
 			stop: function (s) {
@@ -271,6 +402,7 @@
 					dco.id = id;
 					dco.url = dco.urlK + dco.sid + "/";
 					dco.ajx.asynPost(dco.urlH + dco.sid + "/5/");
+					sidDom.blur();
 				}
 				sidDom.value = "";
 			},
@@ -315,19 +447,31 @@
 							o = o.dat.split(";");
 							d = o[3].split(",");
 							i = dco.cid(d[31]);
-							if (!dco.db[i] && (i > -1)) {
+							if (!dco.db[i] && (i > 0)) {
 								dco.flush(i, d);
 							}
 							/*指数更新*/
 							if (i > 599) {
 								d = o[0].split(",");
-								dco.fillOp(i, dco.op.series[4].data, d[3] - 0);
+								dco.fillOp(i, dco.op.series[4].data, dco.cv[4] ? Math.round((d[3] - 0 + dco.cv[4]) * 100) / 100 : d[3] - 0);
 								thDom.innerHTML = d[3] + "/" + Math.round(d[1]);
+								if (dco.cv[4]) {
+									thDom.innerHTML += "," + dco.cv[4];
+								}
 								d = o[1].split(",");
-								dco.fillOp(i, dco.op.series[5].data, d[3] - 0);
+								dco.fillOp(i, dco.op.series[5].data, dco.cv[5] ? Math.round((d[3] - 0 + dco.cv[5]) * 100) / 100 : d[3] - 0);
 								tzDom.innerHTML = d[3] + "/" + Math.round(d[1]);
+								if (dco.cv[5]) {
+									tzDom.innerHTML += "," + dco.cv[5];
+								}
 								d = o[2].split(",");
 								trDom.innerHTML = d[1];
+								if (((d[1] - 0) > 2.9) && (flashDom.className !== "flash")) {
+									flashDom.className = "flash";
+									setTimeout(function () {
+										flashDom.className = "Lc_nosee";
+									}, 1200);
+								}
 							}
 							break;
 					}
@@ -547,22 +691,21 @@
 						if (t.m < dco.t.m) {
 							for (j = dco.t.m; j > t.m; j -= 0.01) {
 								j = Math.round(j * 100) / 100;
-								dco.pt[j][2] = 0;
-								dco.pt[j][3] = 0;
-								dco.pt[j].m.innerHTML = "";
+								dco.clTd(j, t.g[4][0]);
 							}
 						}
 						if (t.n > dco.t.n) {
 							for (j = dco.t.n; j < t.n; j += 0.01) {
 								j = Math.round(j * 100) / 100;
-								dco.pt[j][2] = 0;
-								dco.pt[j][3] = 0;
-								dco.pt[j].m.innerHTML = "";
+								dco.clTd(j, t.g[4][0]);
 							}
 						}
 					}
 
 					tpDom.innerHTML = dco.db[i][0];
+					if (dco.cv[0]) {
+						tpDom.innerHTML += "," + dco.cv[0];
+					}
 					/*分隔线 + 挂单列表滚动条定位*/
 					tDom.insertBefore(dco.hr, dco.pt[t.g[5][0]].doe);
 					dco.pt[t.p].doe.className = "scd";
@@ -599,6 +742,8 @@
 						}
 					}
 					tpDom.innerHTML = dco.db[i][0] + "/" + t.g[5][0];
+				} else {
+					return;
 				}
 
 				if (dco.t && i > 300) {
@@ -608,22 +753,30 @@
 						j = dco.db[i][2] / k / dco.bdb.vps;
 						if (j < 0) {
 							v = - v - j;
+							if (v > 0) {
+								v = 0;
+							}
 						} else {
 							v -= j;
 						}
-						dco.fillOp(i, dco.op.series[2].data, Math.round(j * 100) / 100);
-						dco.fillOp(i, dco.op.series[3].data, Math.round(v * 100) / 100);
+						dco.fillOp(i, dco.op.series[2].data, Math.round((j + dco.cv[2]) * 100) / 100);
+						dco.fillOp(i, dco.op.series[3].data, Math.round((v + dco.cv[3]) * 100) / 100);
 					} else {
 						dco.fillOp(i, dco.op.series[2].data, 0);
 						dco.fillOp(i, dco.op.series[3].data, 0);
 					}
-					dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 100000) / 1000);
+					dco.fillOp(i, dco.op.series[1].data, Math.round(dco.bdb.w / dco.bdb.v5 * 100000 + dco.cv[1] * 1000) / 1000);
 				}
 
-				dco.fillOp(i, dco.op.series[0].data, dco.db[i][0]);
-				v = Math.round(t.v / i / dco.bdb.vps * 1000 - 1000) / 1000;
-				dco.fillOp(i, dco.op.series[6].data, v);
-				tvDom.innerHTML = v + "/" + Math.floor(t.v / 100);
+				dco.fillOp(i, dco.op.series[0].data, dco.cv[0] ? Math.round((dco.db[i][0] + dco.cv[0]) * 100) / 100 : dco.db[i][0]);
+				if (t.v) {
+					v = Math.round(t.v / i / dco.bdb.vps * 1000 - 1000) / 1000;
+					dco.fillOp(i, dco.op.series[6].data, dco.cv[6] ? Math.round((v + dco.cv[6]) * 100) / 100 : v);
+					tvDom.innerHTML = v + "/" + Math.floor(t.v / 100);
+					if (dco.cv[1]) {
+						tvDom.innerHTML += "," + dco.cv[1];
+					}
+				}
 				dco.chart.setOption(dco.op);
 				dco.t = t;
 			},
@@ -676,6 +829,17 @@
 				}
 			},
 
+			/*挂单数据清零*/
+			clTd: function (i, c) {
+				if (dco.pt[i]) {
+					dco.pt[i][2] = 0;
+					dco.pt[i][3] = 0;
+					dco.pt[i].m.innerHTML = "";
+				} else {
+					dco.addTd(i, [0, (i < c ? 1 : -1), 0, 0, 0]);
+				}
+			},
+
 			/*数据保存*/
 			sav: function () {
 				if (dco.stu && dco.id) {
@@ -683,7 +847,21 @@
 					if (!dco.bdb.d) {
 						dco.bdb.d = dco.db;
 					}
-					dco.ajx.asynPost(dco.urlS + dco.id + "/" + dco.tim + "/", dco.bdb);
+					dco.ajx.asynPost(dco.urlS + dco.id + "/" + dco.tim + "/", "dat=" + dco.utJson.toJson(dco.bdb));
+				}
+			},
+
+			/*变动补偿量*/
+			chgCv: function (i, c, flush) {
+				var a, n;
+				dco.cv[i] = Math.round((dco.cv[i] + c) * 10) / 10;
+				a = dco.op.series[i].data;
+				n = a.length;
+				for (i = 0; i < n; i ++) {
+					a[i] = Math.round((a[i] + c) * 1000) / 1000;
+				}
+				if (flush) {
+					dco.chart.setOption(dco.op);
 				}
 			}
 		};

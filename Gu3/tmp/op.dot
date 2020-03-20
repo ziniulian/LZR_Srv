@@ -157,7 +157,8 @@
 								}
 							}
 							if (b) {
-								r[i].z.splice(u, 0, [v * 0.99, v, o.m[j].v]);
+								/*r[i].z.splice(u, 0, [v * 0.99, v, o.m[j].v]);*/
+								r[i].z.splice(u, 0, [v, v, o.m[j].v]);	/*不再对止损做超载*/
 							}
 						}
 					}
@@ -215,7 +216,7 @@
 								d.innerHTML = "";
 								if (p.z.length) {
 									for (j = 0; j < p.z.length; j ++) {
-										if (p.c > p.z[j][0]) {
+										if (p.c >= p.z[j][0]) {
 											dco.setV(d, p.c, p.z[j][1], p.z[j][2]);
 											break;
 										}
@@ -228,7 +229,7 @@
 								d.innerHTML = "";
 								if (p.s.length) {
 									for (j = 0; j < p.s.length; j ++) {
-										if (p.c < p.s[j][0]) {
+										if (p.c <= p.s[j][0]) {
 											dco.setV(d, p.c, p.s[j][0], p.s[j][1]);
 											break;
 										}

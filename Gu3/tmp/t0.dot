@@ -63,7 +63,7 @@
 				position: absolute;
 				top: 0;
 				right: 20%;
-				width: 30%;
+				width: 35%;
 				height: 100%;
 				border: none;
 			}
@@ -140,7 +140,15 @@
 			chart: undefined,	/*图表*/
 			op: {	/*图表属性*/
 				tooltip: {
-					trigger: "axis"
+					trigger: "axis",
+					axisPointer: {
+						type: "cross",
+						crossStyle: {
+							textStyle: {
+								fontSize: 25
+							}
+						}
+					}
 				},
 				grid: {
 					left: "5%",
@@ -314,7 +322,11 @@
 							frmDom.className = "frm";
 						}
 						break;
-					case 88:	/*X，清空所有补偿*/
+					case 88:	/*X，显示或隐藏盘口线*/
+						dco.op.legend.selected["盘口"] = !dco.op.legend.selected["盘口"];
+						dco.chart.setOption(dco.op);
+						break;
+					case 77:	/*M，清空所有补偿*/
 						for (var i = 0; i < dco.cv.length; i ++) {
 							if (dco.cv[i]) {
 								dco.chgCv(i, -dco.cv[i]);
@@ -322,8 +334,8 @@
 						}
 						dco.chart.setOption(dco.op);
 						break;
-					case 90:	/*Z，显示或隐藏盘口线*/
-						dco.op.legend.selected["盘口"] = !dco.op.legend.selected["盘口"];
+					case 90:	/*Z，显示或隐藏价格线*/
+						dco.op.legend.selected["价格"] = !dco.op.legend.selected["价格"];
 						dco.chart.setOption(dco.op);
 						break;
 					case 67:	/*C，量比切换*/
@@ -445,11 +457,8 @@
 							break;
 						case 4:
 							o = o.dat.split(";");
-							d = o[3].split(",");
-							i = dco.cid(d[31]);
-							if (!dco.db[i] && (i > 0)) {
-								dco.flush(i, d);
-							}
+							var t = o[3].split(",");
+							i = dco.cid(t[31]);
 							/*指数更新*/
 							if (i > 599) {
 								d = o[0].split(",");
@@ -466,12 +475,15 @@
 								}
 								d = o[2].split(",");
 								trDom.innerHTML = d[1];
-								if (((d[1] - 0) > 2.9) && (flashDom.className !== "flash")) {
+								if (((d[1] - 0) > 2.6) && (flashDom.className !== "flash")) {
 									flashDom.className = "flash";
 									setTimeout(function () {
 										flashDom.className = "Lc_nosee";
 									}, 1200);
 								}
+							}
+							if (!dco.db[i] && (i > 0)) {
+								dco.flush(i, t);
 							}
 							break;
 					}

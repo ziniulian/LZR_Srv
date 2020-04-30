@@ -13,7 +13,8 @@
 				height: 100%;
 			}
 			.chart {
-				width: 100%;
+				width: 99%;
+				margin: 0 auto;
 				height: 74%;
 			}
 		</style>
@@ -24,6 +25,8 @@
 			<div class="logo">
 				&nbsp; &nbsp; <input id="idDom" type="text" value="{{=it.id}}" onfocus="this.select();" onchange="dco.reset();"></input>
 				&nbsp; &nbsp; <input id="timDom" type="date" value="{{=it.tim}}" onchange="dco.reset();"></input>
+				&nbsp; &nbsp; <a href="javascript: dco.jump(-1);"><-</a>
+				&nbsp; &nbsp; <a href="javascript: dco.jump(1);">-></a>
 				<a class="logohome" target="_blank" href="/"></a>
 			</div>
 			<div id="chartDom" class="chart"></div>
@@ -48,7 +51,15 @@
 			chart: undefined,
 			op: {
 				tooltip: {
-					trigger: "axis"
+					trigger: "axis",
+					axisPointer: {
+						type: "cross",
+						crossStyle: {
+							textStyle: {
+								fontSize: 25
+							}
+						}
+					}
 				},
 				grid: {
 					left: "5%",
@@ -137,6 +148,22 @@
 						dco.op.legend.selected["量差"] = !dco.op.legend.selected["量差"];
 						dco.chart.setOption(dco.op);
 						break;
+					case 67:	/*C，量比切换*/
+						if (dco.op.legend.selected["量比"]) {
+							dco.op.legend.selected["量比"] = false;
+							dco.op.legend.selected["价格"] = true;
+							dco.op.legend.selected["盘口"] = true;
+							dco.op.legend.selected["盘比"] = false;
+							dco.op.legend.selected["量差"] = false;
+						} else {
+							dco.op.legend.selected["量比"] = true;
+							dco.op.legend.selected["价格"] = false;
+							dco.op.legend.selected["盘口"] = false;
+							dco.op.legend.selected["盘比"] = false;
+							dco.op.legend.selected["量差"] = false;
+						}
+						dco.chart.setOption(dco.op);
+						break;
 				}
 			},
 
@@ -222,6 +249,14 @@
 				var d = idDom.value;
 				if (d.match(/^\d{6}$/)) {
 					window.location.href = dco.url + d + "/" + dco.utTim.getDayTimestamp(timDom.value) + "/";
+				}
+			},
+
+			jump: function (n) {
+				if (timDom.value) {
+					var t = dco.utTim.getDayTimestamp(timDom.value);
+					t += n;
+					window.location.href = dco.url + idDom.value + "/" + t + "/";
 				}
 			}
 		};

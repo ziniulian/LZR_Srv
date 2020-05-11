@@ -38,29 +38,4 @@ r.get("/windSrv/", function (req, res, next) {
 // 测温演示
 r.use("/TmpMg/", require("./TmpTagMgmt"));
 
-// 长征网作品展示
-if (process.env.OPENSHIFT_NODEJS_PORT) {
-	r.get("/ShowLongMarch/", function (req, res) {
-		res.redirect("https://www.ziniulian.tk/LongMarch/");
-	});
-} else {
-	r.use("/ShowLongMarch/", new LZR.Node.Router ({
-		path: "L:\\Doc\\Git\\",
-		hd_web: "LongMarch"
-	}));
-}
-
-// 虚拟实验作品展示
-if (process.env.OPENSHIFT_NODEJS_PORT) {
-	r.get("/ShowVr/", function (req, res) {
-		// res.redirect("https://www.ziniulian.tk/ProVr/web/");
-		res.send("机密！不公开");
-	});
-} else {
-	r.use("/ShowVr/", new LZR.Node.Router ({
-		path: "L:\\Doc\\Git\\ProVr\\",
-		hd_web: "web"
-	}));
-}
-
 module.exports = r;

@@ -475,7 +475,7 @@
 								}
 								d = o[2].split(",");
 								trDom.innerHTML = d[1];
-								if (((d[1] - 0) > 2.6) && (flashDom.className !== "flash")) {
+								if (((d[1] - 0) > 2.7) && (flashDom.className !== "flash")) {
 									flashDom.className = "flash";
 									setTimeout(function () {
 										flashDom.className = "Lc_nosee";
@@ -539,7 +539,7 @@
 						[s[19] - 0, s[18] - 0]
 					]
 				};
-				if (dco.t && dco.t.p) {
+				if (dco.t && dco.t.p && dco.pt[dco.t.p]) {
 					dco.pt[dco.t.p].doe.className = "";
 				}
 

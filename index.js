@@ -5,6 +5,7 @@ require("lzr");
 LZR.load([
 	"LZR.Node.Srv"
 ]);
+LZR.sabotage = null;
 
 // 服务的实例化
 var srv = new LZR.Node.Srv ({

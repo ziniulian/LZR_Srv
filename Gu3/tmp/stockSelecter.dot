@@ -68,6 +68,7 @@
 				cs: [
 					["pe5", "平均市盈率", false],
 					["pe", "市盈率", false],
+					["ped", "动态市盈率", false],
 					["safe", "安全边际", false],
 					["p", "当前价", false],
 					["eps", "扣非每股收益", true],

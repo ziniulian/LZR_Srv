@@ -14,9 +14,9 @@ var srv = new LZR.Node.Srv ({
 });
 
 // 需要用到的工具
-var tools = {
-	vs: require("./Vs")		// 访问记录数据库管理模块
-};
+// var tools = {
+// 	vs: require("./Vs")		// 访问记录数据库管理模块
+// };
 
 // LOGO图片
 srv.ro.get("/favicon.ico", function (req, res) {
@@ -46,7 +46,7 @@ srv.ro.setStaticDir("/myLib/", LZR.curPath);
 srv.ro.setStaticDir("/comLib/", "./common/Lib/");
 
 // 记录访问信息
-srv.ro.all(/^\/((Show)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
+// srv.ro.all(/^\/((Show)|(Vs))?(\/)?$/i, tools.vs.getTls().savVs);
 
 // 临时图床
 srv.use("/Pic/", require("./Pic"));
@@ -62,10 +62,10 @@ srv.use("/Gu/", require("./Gu3"));
 srv.use("/Riji/", require("./Riji"));
 
 // 数据库管理服务
-srv.use("/Dbc/", require("./Dbc"));
+// srv.use("/Dbc/", require("./Dbc"));
 
 // 访问服务
-srv.use("/Vs/", tools.vs);
+// srv.use("/Vs/", tools.vs);
 
 // 静态主页设置
 srv.ro.setStaticDir("/", "./web");

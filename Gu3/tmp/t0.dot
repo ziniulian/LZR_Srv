@@ -82,7 +82,7 @@
 			<div class="out">
 				<div id="chartDom" class="chart"></div>
 				<div id="listDom" class="list"><table><tbody id="tDom"></tbody></table></div>
-				<iframe id="frmDom" class="Lc_nosee" src="https://jy.xzsec.com/Login"></iframe>
+				<!-- <iframe id="frmDom" class="Lc_nosee" src="https://jy.xzsec.com/Login"></iframe> -->
 			</div>
 			<div><table>
 				<tbody class="sfs"><tr>
@@ -316,11 +316,11 @@
 						dco.chart.setOption(dco.op);
 						break;
 					case 32:	/*空格，显示或隐藏交易页面*/
-						if (frmDom.className === "frm") {
+						/*if (frmDom.className === "frm") {
 							frmDom.className = "Lc_nosee";
 						} else {
 							frmDom.className = "frm";
-						}
+						}*/
 						break;
 					case 88:	/*X，显示或隐藏盘口线*/
 						dco.op.legend.selected["盘口"] = !dco.op.legend.selected["盘口"];

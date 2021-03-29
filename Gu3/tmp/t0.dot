@@ -109,7 +109,7 @@
 			utJson: LZR.getSingleton(LZR.Base.Json),
 			utTim: LZR.getSingleton(LZR.Base.Time),
 			urlH: "/Gu/qrySinaK/",
-			urlK: "/Gu/qrySinaK/s_sh000001,s_sz399001,s_sz131810,",
+			urlK: "/Gu/qrySinaK/s_sh000300,nf_IF0,s_sz131810,",
 			urlS: "/Gu/savT0/",
 			url: "",
 			hr: document.createElement("hr"),
@@ -177,7 +177,7 @@
 				color: ["#F0F", "#00F", "#F00", "#000", "#0FF", "#0F0", "#F91", "#AAA"],
 				legend: {
 					x: "right",
-					data: ["价格", "盘口", "盘比", "量差", "上证", "深证", "量比"],
+					data: ["价格", "盘口", "盘比", "量差", "沪深300", "指数期货", "量比"],
 					selected: {
 						"量比": false,
 						"盘比": false,
@@ -208,12 +208,12 @@
 						data: []
 					},
 					{
-						name: "上证",
+						name: "沪深300",
 						type: "line",
 						data: []
 					},
 					{
-						name: "深证",
+						name: "指数期货",
 						type: "line",
 						data: []
 					},
@@ -343,14 +343,14 @@
 							dco.op.legend.selected["量比"] = false;
 							dco.op.legend.selected["价格"] = true;
 							dco.op.legend.selected["盘口"] = true;
-							dco.op.legend.selected["上证"] = true;
-							dco.op.legend.selected["深证"] = true;
+							dco.op.legend.selected["沪深300"] = true;
+							dco.op.legend.selected["指数期货"] = true;
 						} else {
 							dco.op.legend.selected["量比"] = true;
 							dco.op.legend.selected["价格"] = false;
 							dco.op.legend.selected["盘口"] = false;
-							dco.op.legend.selected["上证"] = false;
-							dco.op.legend.selected["深证"] = false;
+							dco.op.legend.selected["沪深300"] = false;
+							dco.op.legend.selected["指数期货"] = false;
 						}
 						dco.chart.setOption(dco.op);
 						break;
@@ -461,18 +461,25 @@
 							i = dco.cid(t[31]);
 							/*指数更新*/
 							if (i > 599) {
+								/*沪深300指数*/
 								d = o[0].split(",");
 								dco.fillOp(i, dco.op.series[4].data, dco.cv[4] ? Math.round((d[3] - 0 + dco.cv[4]) * 100) / 100 : d[3] - 0);
 								thDom.innerHTML = d[3] + "/" + Math.round(d[1]);
 								if (dco.cv[4]) {
 									thDom.innerHTML += "," + dco.cv[4];
 								}
+
+								/*沪深300指数期货连续*/
 								d = o[1].split(",");
-								dco.fillOp(i, dco.op.series[5].data, dco.cv[5] ? Math.round((d[3] - 0 + dco.cv[5]) * 100) / 100 : d[3] - 0);
-								tzDom.innerHTML = d[3] + "/" + Math.round(d[1]);
+								var tt = d[14] - 0;	/*昨收价*/
+								tt = Math.round((d[3] - tt) / tt * 100000) / 1000;	/*涨幅*/
+								dco.fillOp(i, dco.op.series[5].data, dco.cv[5] ? tt + dco.cv[5] : tt);
+								tzDom.innerHTML = tt + "/" + Math.round(d[3]);
 								if (dco.cv[5]) {
 									tzDom.innerHTML += "," + dco.cv[5];
 								}
+
+								/*国债逆回购深证1天期*/
 								d = o[2].split(",");
 								trDom.innerHTML = d[1];
 								if (((d[1] - 0) > 2.7) && (flashDom.className !== "flash")) {

@@ -141,13 +141,9 @@
 			op: {	/*图表属性*/
 				tooltip: {
 					trigger: "axis",
+					formatter: function () {return "";},
 					axisPointer: {
-						type: "cross",
-						crossStyle: {
-							textStyle: {
-								fontSize: 25
-							}
-						}
+						type: "cross"
 					}
 				},
 				grid: {
@@ -157,10 +153,23 @@
 				},
 				xAxis: {
 					boundaryGap : true,
+					axisPointer: {
+						label: {
+							fontSize: 25
+						}
+					},
 					data: []
 				},
 				yAxis: {
 					scale: true,	/*脱离零轴*/
+					axisPointer: {
+						label: {
+							fontSize: 25,
+							formatter: function (p) {
+								return dco.bdb.c ? ((p.value - dco.cv[0] + 100) / 100 * dco.bdb.c).toFixed(2) + "\n" + p.value.toFixed(4) : p.value.toFixed(2);
+							}
+						}
+					},
 					splitArea: {
 						show: true
 					}
